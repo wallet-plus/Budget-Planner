@@ -1,16 +1,40 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { AuthComponent } from './auth/auth.component';
 
 const routes: Routes = [
   {
-    path :'employee',
-    loadChildren: () => import('./employee-management/employee-management.module').then((m) => m.EmployeeManagementModule)
-
+    path: '',
+    redirectTo: 'auth',
+    pathMatch: 'full'
   },
   {
-    path :'',
-    component : DashboardComponent
+    path: '',
+    component: AuthComponent,
+    children: [
+      {
+        path: 'auth',
+        loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)
+      }
+    ]
+  },
+  {
+    path: '',
+    // component: LayoutComponent,
+    children: [
+      {
+        path: 'dashboard',
+        loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule)
+      },
+      {
+        path :'employee',
+        loadChildren: () => import('./employee-management/employee-management.module').then((m) => m.EmployeeManagementModule)
+      }
+    ]
+  },
+  {
+    path: '**',
+    redirectTo: '/login'
   }
 ];
 

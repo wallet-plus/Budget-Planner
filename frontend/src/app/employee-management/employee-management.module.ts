@@ -21,7 +21,7 @@ const routes: Routes = [
       component : DirectoryComponent
     },
     {
-      path :'Onboarding',
+      path :'onboarding',
       component : OnboardingComponent
     },
     {
