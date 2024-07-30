@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthComponent } from './auth/auth.component';
 import { BaseComponent } from './theme/base/base.component';
+import { AuthGuard } from './services/auth.guard';
 
 const routes: Routes = [
   {
@@ -22,7 +23,12 @@ const routes: Routes = [
   {
     path: '',
     component: BaseComponent,
+    canActivate: [AuthGuard],
     children: [
+      {
+        path: 'personal-finance',
+        loadChildren: () => import('./personal-finance/personal-finance.module').then(m => m.PersonalFinanceModule)
+      },
       {
         path: 'dashboard',
         loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule)
