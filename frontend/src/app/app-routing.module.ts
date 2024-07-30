@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthComponent } from './auth/auth.component';
+import { BaseComponent } from './theme/base/base.component';
 
 const routes: Routes = [
   {
@@ -20,7 +21,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    // component: LayoutComponent,
+    component: BaseComponent,
     children: [
       {
         path: 'dashboard',
