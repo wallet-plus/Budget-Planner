@@ -8,10 +8,6 @@ import { Router } from '@angular/router';
 })
 export class BaseComponent {
 
-  constructor(private router: Router) { }
+  constructor() { }
   
-  logout(){
-    localStorage.clear();
-    this.router.navigate(['/auth/login']);
-  }
 }
