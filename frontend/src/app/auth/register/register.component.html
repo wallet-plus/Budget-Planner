@@ -72,22 +72,22 @@
               <p class="mb-4">Make your app management easy and fun!</p>
 
               <form [formGroup]="registerForm" (ngSubmit)="register()" novalidate>
-                <!-- Username Field -->
+                <!-- name Field -->
                 <div class="mb-3">
-                  <label for="username" class="form-label">Username</label>
+                  <label for="name" class="form-label">name</label>
                   <input
                     type="text"
                     class="form-control"
-                    id="username"
-                    formControlName="username"
-                    placeholder="Enter your username"
+                    id="name"
+                    formControlName="name"
+                    placeholder="Enter your name"
                     autofocus
                   />
-                  <div *ngIf="registerForm.controls['username'].invalid && (registerForm.controls['username'].dirty || registerForm.controls['username'].touched)" class="text-danger">
-                    <div *ngIf="registerForm.controls['username'].errors?.['required']">Username is required.</div>
-                    <div *ngIf="registerForm.controls['username'].errors?.['minlength']">Username must be at least 3 characters long.</div>
-                    <div *ngIf="registerForm.controls['username'].errors?.['maxlength']">Username cannot exceed 20 characters.</div>
-                    <div *ngIf="registerForm.controls['username'].errors?.['pattern']">Username can only contain letters, numbers, and underscores.</div>
+                  <div *ngIf="registerForm.controls['name'].invalid && (registerForm.controls['name'].dirty || registerForm.controls['name'].touched)" class="text-danger">
+                    <div *ngIf="registerForm.controls['name'].errors?.['required']">name is required.</div>
+                    <div *ngIf="registerForm.controls['name'].errors?.['minlength']">name must be at least 3 characters long.</div>
+                    <div *ngIf="registerForm.controls['name'].errors?.['maxlength']">name cannot exceed 20 characters.</div>
+                    <div *ngIf="registerForm.controls['name'].errors?.['pattern']">name can only contain letters, numbers, and underscores.</div>
                   </div>
                 </div>
               

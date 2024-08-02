@@ -64,18 +64,18 @@
 
                     <form [formGroup]="loginForm" (ngSubmit)="login()" novalidate>
                         <div class="mb-3">
-                          <label for="emailOrPhone" class="form-label">Email or Phone</label>
+                          <label for="email" class="form-label">Email</label>
                           <input 
                             type="text"
                             class="form-control"
-                            id="emailOrPhone"
-                            formControlName="emailOrPhone"
-                            placeholder="Enter your email or phone"
+                            id="email"
+                            formControlName="email"
+                            placeholder="Enter your email"
                             autofocus
                           />
-                          <div *ngIf="loginForm.controls['emailOrPhone'].invalid && (loginForm.controls['emailOrPhone'].dirty || loginForm.controls['emailOrPhone'].touched)" class="text-danger">
-                            <div *ngIf="loginForm.controls['emailOrPhone'].errors?.['required']">Email or Phone is required.</div>
-                            <div *ngIf="loginForm.controls['emailOrPhone'].errors?.['pattern']">Invalid email or phone format.</div>
+                          <div *ngIf="loginForm.controls['email'].invalid && (loginForm.controls['email'].dirty || loginForm.controls['email'].touched)" class="text-danger">
+                            <div *ngIf="loginForm.controls['email'].errors?.['required']">Email is required.</div>
+                            <div *ngIf="loginForm.controls['email'].errors?.['pattern']">Invalid email.</div>
                           </div>
                         </div>
                       
@@ -120,6 +120,11 @@
                           <button type="submit" class="btn btn-primary d-grid w-100" [disabled]="loginForm.invalid">Sign in</button>
                         </div>
                       </form>
+
+                      <pre>
+                        {{this.loginForm.value | json}}
+                     
+                      </pre>
                       
                       
 

@@ -90,24 +90,25 @@ class AuthController extends \yii\web\Controller
         // 6: Reset Password 
         // 7: Password Updated 
         
-        try {
-            // Set content-type header for sending HTML email 
-            $headers = "MIME-Version: 1.0" . "\r\n"; 
-            $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n"; 
-            $headers .= 'From: '.$fromName.'<'.$from.'>' . "\r\n"; 
+        return true;
+        // try {
+        //     // Set content-type header for sending HTML email 
+        //     $headers = "MIME-Version: 1.0" . "\r\n"; 
+        //     $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n"; 
+        //     $headers .= 'From: '.$fromName.'<'.$from.'>' . "\r\n"; 
 
-            if($email['cc_email']){
-                $headers .= 'Cc: '.$email['cc_email'] . "\r\n";  
-            }
+        //     if($email['cc_email']){
+        //         $headers .= 'Cc: '.$email['cc_email'] . "\r\n";  
+        //     }
            
-            if(mail($to, $subject, $htmlContent, $headers)){ 
-                return true;
-            }else{ 
-                return false;
-            }
-        } catch (Exception $e) {
-            echo "Email could not be sent. Error: {$mailer->ErrorInfo}";
-        }
+        //     if(mail($to, $subject, $htmlContent, $headers)){ 
+        //         return true;
+        //     }else{ 
+        //         return false;
+        //     }
+        // } catch (Exception $e) {
+        //     echo "Email could not be sent. Error: {$mailer->ErrorInfo}";
+        // }
     }
 
 

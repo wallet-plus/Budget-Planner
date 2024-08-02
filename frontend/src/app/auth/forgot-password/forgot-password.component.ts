@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ErrorResponse, ForgotPasswordRequest } from 'src/app/services/auth.model';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-forgot-password',
@@ -9,8 +11,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class ForgotPasswordComponent {
 
   forgotPasswordForm: FormGroup;
+  serverError: string | null = null;  
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private authService: AuthService) {
     this.forgotPasswordForm = this.fb.group({
       email: ['', [
         Validators.required,
@@ -21,13 +24,21 @@ export class ForgotPasswordComponent {
 
   sendResetLink() {
     if (this.forgotPasswordForm.valid) {
-      // Implement the logic to send the reset link
-      console.log(this.forgotPasswordForm.value);
+      const forgotPasswordRequest: ForgotPasswordRequest = {
+        email: this.forgotPasswordForm.controls['email'].value
+      };
+
+      this.authService.forgotPassword(forgotPasswordRequest).subscribe(response => {
+        // Handle successful response
+        console.log('Reset link sent successfully', response);
+      }, (error ) => {
+        debugger;
+        this.serverError = error.error.error || 'An error occurred. Please try again later.';
+      });
     } else {
       this.focusInvalidField();
     }
   }
-
   focusInvalidField() {
     for (const key of Object.keys(this.forgotPasswordForm.controls)) {
       if (this.forgotPasswordForm.controls[key].invalid) {

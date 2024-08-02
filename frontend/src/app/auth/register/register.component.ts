@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { RegisterRequest } from 'src/app/services/auth.model';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -10,9 +13,9 @@ export class RegisterComponent {
 
   registerForm: FormGroup;
 
-  constructor(private fb: FormBuilder){
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router){
     this.registerForm = this.fb.group({
-      username: ['', [
+      name: ['', [
         Validators.required,
         Validators.minLength(3),
         Validators.maxLength(20),
@@ -37,8 +40,22 @@ export class RegisterComponent {
 
   register() {
     if (this.registerForm.valid) {
-      // Implement registration logic
-      console.log(this.registerForm.value);
+      const registerRequest: RegisterRequest = {
+        name: this.registerForm.controls['name'].value,
+        email: this.registerForm.controls['email'].value,
+        phone: this.registerForm.controls['phone'].value,
+        password: this.registerForm.controls['password'].value,
+        terms: this.registerForm.controls['terms'].value
+      };
+
+      this.authService.register(registerRequest).subscribe(response => {
+        // Handle successful registration
+        console.log('Registration successful', response);
+        this.router.navigate(['/auth/login']);
+      }, error => {
+        // Handle registration error
+        console.error('Registration failed', error);
+      });
     } else {
       this.focusInvalidField();
     }

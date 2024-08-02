@@ -7,9 +7,6 @@ export const environment = {
 
 	//TODO:  Local DB and API
 	webURL: 'http://localhost:4200',
-	apiURL: 'http://http://localhost/walletplus/',
-	gdsURL: 'https://api.otadevtest.com/umrah/',
-	issuer: "https://sso.otadevtest.com",
-	clientId: 'ota_portal',
+	apiURL: 'http://localhost/w2/backend/',
 
 };
