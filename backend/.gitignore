@@ -1,0 +1,11 @@
+/fm-selection-1235902_06-09-21/home/sites/16b/2/2af88df354/public_html/walletplus/vendor/
+/config/db_remote.php
+
+# Vendor Files
+/vendor
+
+
+# Client Files Files
+/web/assets
+/web/category
+/web/expenses
