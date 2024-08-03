@@ -37,9 +37,50 @@ export class LoginComponent {
     });
   }
 
+  ngOnInit(): void {
+
+    const rememberMe = localStorage.getItem('rememberMe') === 'true';
+    if (rememberMe) {
+      const email = localStorage.getItem('email');
+      const password = localStorage.getItem('password');
+      this.loginForm.patchValue({
+        email: email,
+        password: password,
+        rememberMe: true
+      });
+    }
+
+  }
+  private loadRememberedCredentials(): void {
+    const email = localStorage.getItem('email');
+    const password = localStorage.getItem('password');
+    if (email && password) {
+      this.loginForm.patchValue({
+        email: email,
+        password: password,
+        rememberMe: true
+      });
+    }
+  }
 
   login() {
     if (this.loginForm.valid) {
+
+      const rememberMe = this.loginForm.get('rememberMe')?.value;
+      if (rememberMe) {
+
+        const email = this.loginForm.get('email')?.value;
+        const password = this.loginForm.get('password')?.value;
+        localStorage.setItem('email', email);
+        localStorage.setItem('password', password);
+        localStorage.setItem('rememberMe', 'true');
+
+      } else {
+        localStorage.removeItem('email');
+        localStorage.removeItem('password');
+        localStorage.removeItem('rememberMe');
+      }
+
       const loginRequest: LoginRequest = {
         email: this.loginForm.controls['email'].value, // Correct form control name
         password: this.loginForm.controls['password'].value
@@ -47,11 +88,11 @@ export class LoginComponent {
 
       this.authService.login(loginRequest.email, loginRequest.password).subscribe(response => {
         // Handle successful login
-        
+
         localStorage.setItem('accessToken', response.accessToken);
-      
+
         // Save the user object in local storage
-        localStorage.setItem('user', JSON.stringify({
+        localStorage.setItem('g', JSON.stringify({
           id: response.id,
           email: response.email,
           phone: response.phone,

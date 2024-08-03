@@ -10,7 +10,8 @@ export class HeaderMenuComponent {
   constructor(private router: Router) { }
   
   logout(){
-    localStorage.clear();
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('user');
     this.router.navigate(['/auth/login']);
   }
 }
