@@ -5,29 +5,30 @@ import { IncomeComponent } from './income/income.component';
 import { SavingsComponent } from './savings/savings.component';
 import { PersonalFinanceComponent } from './personal-finance.component';
 import { RouterModule, Routes } from '@angular/router';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 const routes: Routes = [
   {
-    path : '',
+    path: '',
     component: PersonalFinanceComponent,
     children: [
-    {
-      path:'',
-      redirectTo : 'expense',
-      pathMatch: 'full'
-    },
-    {
-      path :'expenses',
-      component : ExpensesComponent
-    },
-    {
-      path :'savings',
-      component : SavingsComponent
-    },
-    {
-      path :'income',
-      component : IncomeComponent
-    }
+      {
+        path: '',
+        redirectTo: 'expenses',
+        pathMatch: 'full'
+      },
+      {
+        path: 'expenses',
+        component: ExpensesComponent
+      },
+      {
+        path: 'savings',
+        component: SavingsComponent
+      },
+      {
+        path: 'income',
+        component: IncomeComponent
+      }
     ]
   }
 ];
@@ -41,7 +42,8 @@ const routes: Routes = [
   ],
   imports: [
     CommonModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    InfiniteScrollModule
   ]
 })
 export class PersonalFinanceModule { }
