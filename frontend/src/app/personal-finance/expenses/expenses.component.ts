@@ -9,7 +9,7 @@ import { PersonalFinanceService } from 'src/app/services/personal-finance.servic
 })
 export class ExpensesComponent implements OnInit {
 
-  transactionRequest: TransactionRequest = { type: 0 };
+  // transactionRequest: TransactionRequest = { type: 0 };
   transactionResponse: TransactionResponse | undefined;
   
   transactionList: any[] = [];
@@ -22,29 +22,29 @@ export class ExpensesComponent implements OnInit {
 
   ngOnInit(): void {
    
-    this.getTransactions();
+    // this.getTransactions();
 
   
   }
 
-  getTransactions(): void {
-    this.personalFinanceService.getTransactions(this.transactionRequest).subscribe(
-      (response: TransactionResponse) => {
-        this.transactionResponse = response;
-        this.transactionList = [...this.transactionList, ...this.transactionResponse?.list || []];
-          this.hasMore = this.transactionResponse?.list.length === this.limit;
-        console.log(this.transactionResponse);
-      },
-      (error) => {
-        console.error('Error fetching transactions', error);
-      }
-    );
-  }
+  // getTransactions(): void {
+  //   this.personalFinanceService.getTransactions(0).subscribe(
+  //     (response: TransactionResponse) => {
+  //       this.transactionResponse = response;
+  //       this.transactionList = [...this.transactionList, ...this.transactionResponse?.list || []];
+  //         this.hasMore = this.transactionResponse?.list.length === this.limit;
+  //       console.log(this.transactionResponse);
+  //     },
+  //     (error) => {
+  //       console.error('Error fetching transactions', error);
+  //     }
+  //   );
+  // }
   
   loadData(): void {
     if (this.hasMore) {
       this.page++;
-      this.getTransactions();
+      // this.getTransactions();
     }
   }
 

@@ -5,7 +5,8 @@ import { IncomeComponent } from './income/income.component';
 import { SavingsComponent } from './savings/savings.component';
 import { PersonalFinanceComponent } from './personal-finance.component';
 import { RouterModule, Routes } from '@angular/router';
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { AddTransactionComponent } from './add-transaction/add-transaction.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 const routes: Routes = [
   {
@@ -22,12 +23,8 @@ const routes: Routes = [
         component: ExpensesComponent
       },
       {
-        path: 'savings',
-        component: SavingsComponent
-      },
-      {
-        path: 'income',
-        component: IncomeComponent
+        path : 'add',
+        component : AddTransactionComponent
       }
     ]
   }
@@ -38,12 +35,13 @@ const routes: Routes = [
     ExpensesComponent,
     IncomeComponent,
     SavingsComponent,
-    PersonalFinanceComponent
+    PersonalFinanceComponent,
+    AddTransactionComponent
   ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
-    InfiniteScrollModule
+    ReactiveFormsModule
   ]
 })
 export class PersonalFinanceModule { }

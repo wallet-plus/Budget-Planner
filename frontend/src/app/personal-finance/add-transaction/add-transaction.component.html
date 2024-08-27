@@ -1,0 +1,107 @@
+<pre>
+    {{expenseForm.value | json}}
+</pre>
+<div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Forms/</span> Horizontal Layouts</h4>
+
+    <!-- Basic Layout & Basic with Icons -->
+    <div class="row">
+    <!-- Basic Layout -->
+    <div class="col-xxl">
+        <div class="card mb-4">
+        <div class="card-header d-flex align-items-center justify-content-between">
+            <h5 class="mb-0">Basic Layout</h5>
+            <small class="text-muted float-end">Default label</small>
+        </div>
+        <div class="card-body">
+            
+            <form [formGroup]="expenseForm">
+                <div class="row mb-3">
+                  <label class="col-sm-2 col-form-label" for="date_of_transaction">Date of Transaction</label>
+                  <div class="col-sm-10">
+                    <input type="date" class="form-control" id="date_of_transaction" formControlName="date_of_transaction" />
+                    <div *ngIf="expenseForm.get('date_of_transaction')?.invalid && expenseForm.get('date_of_transaction')?.touched">
+                      <small class="text-danger">Date of Transaction is required</small>
+                    </div>
+                  </div>
+                </div>
+              
+                <div class="row mb-3">
+                  <label class="col-sm-2 col-form-label" for="description">Description</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="description" formControlName="description" />
+                  </div>
+                </div>
+              
+                <div class="row mb-3">
+                  <label class="col-sm-2 col-form-label" for="expense_name">Expense Name</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="expense_name" formControlName="expense_name" />
+                  </div>
+                </div>
+              
+                <div class="row mb-3" *ngIf="categories">
+                  <label class="col-sm-2 col-form-label" for="id_category">Category</label>
+                  <div class="col-sm-10">
+                    <select class="form-control" id="id_category" formControlName="id_category">
+                      <option value="" disabled>Select a category</option>
+                      <option *ngFor="let category of categories" [value]="category.id_category">{{ category.category_name }}</option>
+                    </select>
+                    <div *ngIf="expenseForm.get('id_category')?.invalid && expenseForm.get('id_category')?.touched">
+                      <small class="text-danger">Category is required</small>
+                    </div>
+                  </div>
+                </div>
+              
+                <div class="row mb-3">
+                  <label class="col-sm-2 col-form-label" for="id_customer">Customer ID</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="id_customer" formControlName="id_customer" />
+                    <div *ngIf="expenseForm.get('id_customer')?.invalid && expenseForm.get('id_customer')?.touched">
+                      <small class="text-danger">Customer ID is required</small>
+                    </div>
+                  </div>
+                </div>
+              
+                <div class="row mb-3">
+                  <label class="col-sm-2 col-form-label" for="id_expense">Expense ID</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="id_expense" formControlName="id_expense" />
+                    <div *ngIf="expenseForm.get('id_expense')?.invalid && expenseForm.get('id_expense')?.touched">
+                      <small class="text-danger">Expense ID is required</small>
+                    </div>
+                  </div>
+                </div>
+              
+                <div class="row mb-3">
+                  <label class="col-sm-2 col-form-label" for="amount">Amount</label>
+                  <div class="col-sm-10">
+                    <input type="number" class="form-control" id="amount" formControlName="amount" />
+                    <div *ngIf="expenseForm.get('amount')?.invalid && expenseForm.get('amount')?.touched">
+                      <small class="text-danger">Amount is required</small>
+                    </div>
+                  </div>
+                </div>
+              
+                <div class="row mb-3">
+                  <label class="col-sm-2 col-form-label" for="deleted">Deleted</label>
+                  <div class="col-sm-10">
+                    <input type="checkbox" id="deleted" formControlName="deleted" />
+                  </div>
+                </div>
+              
+                <div class="row justify-content-end">
+                  <div class="col-sm-10">
+                    <button type="button" class="btn btn-primary" (click)="saveTransaction()">Save</button>
+                  </div>
+                </div>
+              </form>
+              
+
+              
+        </div>
+        </div>
+    </div>
+    </div>
+</div>
+
