@@ -84,6 +84,19 @@ use app\models\Category;
                     </div>
                 </div>
 
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label"
+                        for="basic-default-name"><?= Html::label('Event', null, []); ?></label>
+                    <div class="col-sm-10">
+                        <?= Html::activeDropDownList(
+                            $model,
+                            'id_event',
+                            $events,
+                            array('prompt' => '--Select Event--', 'class' => 'form-control')
+                        ) ?>
+                    </div>
+                </div>
+
 
                 <div class="row mb-3">
                     <label class="col-sm-2 col-form-label"

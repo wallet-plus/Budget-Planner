@@ -1,6 +1,8 @@
 <?php
 
 namespace app\controllers;
+
+use app\models\Events;
 use Yii;
 use app\models\Expense;
 use yii\data\ActiveDataProvider;
@@ -93,6 +95,7 @@ class ExpenseController extends Controller
     public function actionCreate()
     {
         $catagories = ArrayHelper::map(ExpenseCategory::find()->orderBy(['category_name' => SORT_ASC])->where(['=','id_type','2'])->all(), 'id_category', 'category_name');
+        $events = ArrayHelper::map(Events::find()->orderBy(['event_name' => SORT_ASC])->where(['=','status',1])->all(), 'id_event', 'event_name');
         $model = new Expense();
 
         if ($this->request->isPost) {
@@ -122,7 +125,8 @@ class ExpenseController extends Controller
         }
         return $this->render('create', [
             'model' => $model,
-            'catagories' => $catagories
+            'catagories' => $catagories,
+            'events'=> $events
         ]);
     }
 
@@ -136,6 +140,8 @@ class ExpenseController extends Controller
     public function actionUpdate($id_expense)
     {
         $catagories = ArrayHelper::map(ExpenseCategory::find()->orderBy(['category_name' => SORT_ASC])->where(['=','id_type','2'])->all(), 'id_category', 'category_name');
+        $events = ArrayHelper::map(Events::find()->orderBy(['event_name' => SORT_ASC])->where(['=','status',1])->all(), 'id_event', 'event_name');
+
         $model = $this->findModel($id_expense);
         $oldImage = $model->image; // save the old image name for later use
 
@@ -169,7 +175,8 @@ class ExpenseController extends Controller
 
         return $this->render('update', [
             'model' => $model,
-            'catagories' =>$catagories
+            'catagories' =>$catagories,
+            'events' => $events
         ]);
     }
 

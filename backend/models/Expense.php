@@ -52,7 +52,9 @@ class Expense extends \yii\db\ActiveRecord
             [['expense_name','image'], 'string', 'max' => 255],
             [['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg, pdf'],
             // [['date_of_transaction'], 'date', 'format' => 'yyyy-MM-dd'],
-            ['amount', 'number', 'min' => 0, 'max' => 9999999.99]
+            ['amount', 'number', 'min' => 0, 'max' => 9999999.99],
+            ['id_event', 'number']
+            
         ];
     }
 
@@ -77,6 +79,7 @@ class Expense extends \yii\db\ActiveRecord
             'updated_by' => Yii::t('app', 'Updated By'),
             'date_updated' => Yii::t('app', 'Date Updated'),
             'imageFile'=> Yii::t('app', 'imageFile'),
+            'id_event'=> Yii::t('app', 'Event'),
         ];
     }
 
