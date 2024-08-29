@@ -12,7 +12,7 @@ use yii\helpers\ArrayHelper;
 use yii\web\UploadedFile;
 use Intervention\Image\ImageManagerStatic as Image;
 
-/**
+/** 
  * CategoryController implements the CRUD actions for ExpenseCategory model.
  */
 class CategoryController extends Controller
@@ -28,7 +28,7 @@ class CategoryController extends Controller
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [
-                        'delete' => ['POST'],
+                        'delete' => ['POST','GET'],
                     ],
                 ],
             ]
@@ -228,7 +228,7 @@ class CategoryController extends Controller
         $model->delete();
 
         // $this->findModel($id_category)->delete();
-
+        Yii::$app->session->setFlash('success', "Category deleted successfully."); 
         return $this->redirect(['index']);
     }
 

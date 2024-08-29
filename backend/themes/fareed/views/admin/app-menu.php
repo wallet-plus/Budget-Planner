@@ -76,6 +76,14 @@ AppAsset::register($this);
       ); ?>
     </li>
 
+    <li class="menu-item">
+        <?php echo Html::a(
+          '<i class="menu-icon tf-icons bx bx-file"></i> <div data-i18n="Documentation">Events</div>',
+          ['/events/index'],
+          ['class' => 'menu-link', 'encode' => false]
+        ); ?>
+      </li>
+      
     <?php if (Yii::$app->user->identity && Yii::$app->user->identity->id_customer_type == 1) { ?>
 
     <li class="menu-item">
