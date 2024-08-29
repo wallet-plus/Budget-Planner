@@ -117,13 +117,13 @@ AppAsset::register($this);
         ); ?>
       </li> -->
 
-      <!-- <li class="menu-item">
+      <li class="menu-item">
           <?php echo Html::a(
             '<i class="menu-icon tf-icons bx bx-file"></i> <div data-i18n="Customers">Customers</div>',
             ['/customer/index'],
             ['class' => 'menu-link', 'encode' => false]
           ); ?>
-      </li> -->
+      </li>
 
 
       <li class="menu-item">

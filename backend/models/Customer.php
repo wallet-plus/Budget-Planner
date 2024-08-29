@@ -11,19 +11,24 @@ use Yii;
  * @property int $id_customer_type
  * @property string $firstname
  * @property string $lastname
+ * @property string $gender f: Female; m:Male
  * @property string $username
+ * @property string $image
  * @property string $email
- * @property string $gender
  * @property string $password
  * @property string $otp
  * @property string $phone
- * @property string $email_verification_code
- * @property int $email_verified 1 : Verified; 0: Not Verified
+ * @property string|null $email_verification_code
+ * @property int $email_verified  1 : Verified; 0: Not Verified
  * @property string $mobile_verification_code
- * @property int $mobile_verified 1 : Verified; 0: Not Verified
+ * @property int $mobile_verified
+ * @property string $ipaddress
  * @property string $authKey
  * @property string $date_created
  * @property string $date_updated
+ * @property int $active 1: Enable : 0 : Disable
+ * @property int $offline_access 1: Enable : 0 : Disable
+ * @property int $email_notification 1: Enable : 0 : Disable
  */
 class Customer extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
@@ -35,25 +40,25 @@ class Customer extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
     {
         return 'bt_customer';
     }
-    
 
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
-        return [    
-            [[ 'firstname', 'username', 'email', 'password'], 'required'],
-            [['id_customer_type', 'email_verified', 'mobile_verified'], 'integer'],
-            [['date_of_birth','date_created', 'date_updated', 'firstname', 'lastname'], 'safe'],
-            [['firstname', 'lastname', 'username', 'email', 'password', 'phone', 'email_verification_code', 'mobile_verification_code', 'authKey'], 'string', 'max' => 255],
-            [['gender'], 'string', 'max' => 4],
+        return [
+            [['firstname', 'phone'], 'required'],
+            // [['id_customer_type', 'firstname', 'lastname', 'gender', 'username', 'image', 'email', 'password', 'otp', 'phone', 'email_verified', 'mobile_verification_code', 'mobile_verified', 'ipaddress', 'authKey', 'date_created', 'active', 'offline_access', 'email_notification'], 'required'],
+
+            [['id_customer_type', 'email_verified', 'mobile_verified', 'active', 'offline_access', 'email_notification'], 'integer'],
+            [['date_created', 'date_updated'], 'safe'],
+            [['firstname', 'lastname', 'username', 'image', 'email', 'password', 'phone', 'email_verification_code', 'mobile_verification_code', 'authKey'], 'string', 'max' => 255],
+            [['gender'], 'string', 'max' => 1],
             [['otp'], 'string', 'max' => 4],
-            [['ipaddress'], 'string'],
+            [['ipaddress'], 'string', 'max' => 50],
             ['username', 'unique','message'=>'Phone Number already exists!'],
             ['email', 'unique','message'=>'Email already exists!'],
             [['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg'],
-            
         ];
     }
 
@@ -67,9 +72,10 @@ class Customer extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
             'id_customer_type' => 'Id Customer Type',
             'firstname' => 'Firstname',
             'lastname' => 'Lastname',
-            'username' => 'Phone number',
-            'email' => 'Email',
             'gender' => 'Gender',
+            'username' => 'Phone number',
+            'image' => 'Image',
+            'email' => 'Email',
             'password' => 'Password',
             'otp' => 'Otp',
             'phone' => 'Phone',
@@ -77,14 +83,16 @@ class Customer extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
             'email_verified' => 'Email Verified',
             'mobile_verification_code' => 'Mobile Verification Code',
             'mobile_verified' => 'Mobile Verified',
+            'ipaddress' => 'Ipaddress',
             'authKey' => 'Auth Key',
             'date_created' => 'Date Created',
             'date_updated' => 'Date Updated',
-            'ipaddress' => 'ipaddress',
+            'active' => 'Active',
+            'offline_access' => 'Offline Access',
+            'email_notification' => 'Email Notification',
             'image' => 'Profile Picture',
         ];
     }
-
 
     /**
      * {@inheritdoc}
@@ -203,6 +211,5 @@ class Customer extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
         return Yii::$app->getSecurity()->validatePassword($password, $this->password);
         
     }
-
 
 }

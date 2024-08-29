@@ -1,7 +1,7 @@
 <?php
 
-namespace app\Controllers;
-
+namespace app\controllers;
+use Yii;
 use app\models\Customer;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
@@ -16,10 +16,15 @@ class CustomerController extends Controller
 
     public function __construct($id, $module, $config = [])
     {
-        $this->layout = '@app/views/admin/applayout';
+        $themeName =Yii::$app->params['currentTheme'];
+        $this->layout = '@app/themes/'.$themeName.'/views/admin/applayout';
+        $theme = Yii::$app->view->theme;
+        $theme->pathMap = ['@app/views' => '@app/themes/'.$themeName.'/views'];
+        
         parent::__construct($id, $module, $config);
     }
-    
+
+
     /**
      * @inheritDoc
      */
@@ -31,7 +36,7 @@ class CustomerController extends Controller
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [
-                        'delete' => ['POST'],
+                        'delete' => ['POST','GET'],
                     ],
                 ],
             ]
@@ -50,13 +55,13 @@ class CustomerController extends Controller
             /*
             'pagination' => [
                 'pageSize' => 50
-            ],
+            ],*/
             'sort' => [
                 'defaultOrder' => [
                     'id' => SORT_DESC,
                 ]
             ],
-            */
+            
         ]);
 
         return $this->render('index', [
@@ -88,7 +93,8 @@ class CustomerController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+                Yii::$app->session->setFlash('success', "Customer created successfully."); 
+                $this->redirect(['index']);
             }
         } else {
             $model->loadDefaultValues();
@@ -111,7 +117,8 @@ class CustomerController extends Controller
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            Yii::$app->session->setFlash('success', "Customer updated successfully."); 
+                $this->redirect(['index']);
         }
 
         return $this->render('update', [
@@ -129,6 +136,7 @@ class CustomerController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
+        Yii::$app->session->setFlash('success', "Customer deleted successfully."); 
 
         return $this->redirect(['index']);
     }
@@ -147,14 +155,5 @@ class CustomerController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
-    }
-
-    public function beforeAction($action)
-    {
-        if (Yii::$app->user->isGuest) {
-            return Yii::$app->getResponse()->redirect(['/site/login']);
-        }
-
-        return parent::beforeAction($action);
     }
 }
