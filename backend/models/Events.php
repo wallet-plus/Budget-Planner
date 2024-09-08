@@ -29,11 +29,10 @@ class Events extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['event_name', 'start_date', 'end_date'], 'required'],
+            [['event_name'], 'required'],
             [['start_date', 'end_date'], 'safe'],
-            [['status'], 'integer'],
-            [['event_name'], 'string', 'max' => 255],
-            [['event_name'], 'unique'],
+            [['status','id_customer'], 'integer'],
+            [['event_name'], 'string', 'max' => 255]
         ];
     }
 
@@ -44,6 +43,7 @@ class Events extends \yii\db\ActiveRecord
     {
         return [
             'id_event' => 'Id Event',
+            'id_customer' => 'Customer Id',
             'event_name' => 'Event Name',
             'start_date' => 'Start Date',
             'end_date' => 'End Date',

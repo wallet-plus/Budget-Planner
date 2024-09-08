@@ -210,12 +210,12 @@ class AuthController extends \yii\web\Controller
         $rawBody = Yii::$app->request->rawBody;
         $data = json_decode($rawBody, true);
 
-        $user = Customer::find()->where(['email' => $data['email']])->one();
+        $user = Customer::find()->where(['phone' => $data['phone']])->one();
         if (!$user) {
             Yii::$app->response->statusCode = 400;
             return \yii\helpers\Json::encode( [
-                    'key' => 'email',
-                    'message' => 'Invalid email or password',
+                    'key' => 'phone',
+                    'message' => 'Invalid phone number or password',
             ]);
         } else if ($user->active == '1') {
             Yii::$app->response->statusCode = 400;
@@ -244,7 +244,7 @@ class AuthController extends \yii\web\Controller
             Yii::$app->response->statusCode = 400;
             return \yii\helpers\Json::encode( [
                     'key' => 'password',
-                    'message' => 'Invalid email or password',
+                    'message' => 'Invalid phone number or password',
             ]);
         }
     }
@@ -648,9 +648,36 @@ class AuthController extends \yii\web\Controller
         }
     }
 
+    public function actionParticipants()
+    {
+        $headers = Yii::$app->request->headers;
+        if ($headers->has('Authorization')) {
+            $authorizationHeader = $headers->get('Authorization');
+            $token = str_replace('Bearer ', '', $authorizationHeader);
+            $user = Customer::find()->where(['authKey' => $token])->one();
+
+            if($user){
+                $users = Customer::find()
+                ->where(['created_by' => $user->id])
+                ->all();
+                $response['list'] = $users;
+                $response['userImagePath'] = 'https://walletplus.in/users/';
+                
+                Yii::$app->response->statusCode = 200;
+                return \yii\helpers\Json::encode($response);  
+            } else {
+                Yii::$app->response->statusCode = 401;
+                return \yii\helpers\Json::encode(['error' => 'UnAuthorized']);
+            }
+        } else {
+            Yii::$app->response->statusCode = 401;
+            return \yii\helpers\Json::encode(['error' => 'UnAuthorized']);
+        }
+    }
+
     public function beforeAction($action)
     {
-        if (in_array($action->id, ['save-user-details', 'user-details', 'users', 'login', 'register','forgot-password','reset-password', 'profile', 'save-profile','verifyemail'])) {
+        if (in_array($action->id, ['participants','save-user-details', 'user-details', 'users', 'login', 'register','forgot-password','reset-password', 'profile', 'save-profile','verifyemail'])) {
             $this->enableCsrfValidation = false;
         }
         return parent::beforeAction($action);
