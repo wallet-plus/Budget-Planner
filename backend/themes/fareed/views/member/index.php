@@ -72,7 +72,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'urlCreator' => function ($action, app\models\Member $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id_member]);
                 },
-                'buttons' => [
+                'buttons' => [          
                   'update' => function ($url, $model, $key) {
                       return Html::a('<button class="btn btn-sm btn-icon"><i class="bx bx-edit"></i></button>', $url, [
                           'title' => Yii::t('app', 'Update'),
