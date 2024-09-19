@@ -1100,195 +1100,6 @@ class BudgetController extends \yii\web\Controller
         }
     }
 
-    public function actionCategoryList()
-    {
-
-        $headers = Yii::$app->request->headers;
-        if ($headers->has('Authorization')) {
-            $authorizationHeader = $headers->get('Authorization');
-            $token = str_replace('Bearer ', '', $authorizationHeader);
-            $user = Customer::find()->where(['authKey' => $token])->one();
-
-
-            if ($user) {
-                $rawBody = Yii::$app->request->rawBody;
-                $data = json_decode($rawBody, true);
-                $id_type = 2;
-
-                switch ($data['type']) {
-                    case 'expense':
-                        $id_type = 2;
-                        break;
-                    case 'savings':
-                        $id_type = 1;
-                        break;
-                    case 'income':
-                        $id_type = 3;
-                        break;
-                }
-
-                $categories = ExpenseCategory::find()
-                    ->where(['id_type' => $id_type])
-                    ->orderBy(['category_name' => SORT_ASC])
-                    ->all();
-                $response['list'] = $categories;
-                $response['categoryImagePath'] = 'https://walletplus.in/category/';
-                $response['imagePath'] = 'https://walletplus.in/expenses/';
-
-                Yii::$app->response->statusCode = 200;
-                return \yii\helpers\Json::encode($response);
-            } else {
-                Yii::$app->response->statusCode = 401;
-                return \yii\helpers\Json::encode(['error' => 'UnAuthorized']);
-            }
-        } else {
-            Yii::$app->response->statusCode = 401;
-            return \yii\helpers\Json::encode(['error' => 'UnAuthorized']);
-        }
-    }
-
-    public function actionCategoryDetails()
-    {
-        $headers = Yii::$app->request->headers;
-        if ($headers->has('Authorization')) {
-            $authorizationHeader = $headers->get('Authorization');
-            $token = str_replace('Bearer ', '', $authorizationHeader);
-            $user = Customer::find()->where(['authKey' => $token])->one();
-            if ($user) {
-                $request = Yii::$app->request;
-                $data = json_decode($request->getRawBody(), true);
-                $id = $data['id'];
-                $query = (new Query())
-                    ->select('*')
-                    ->from('bt_category')
-                    ->where(['bt_category.id_category' => $id]);
-
-                $command = $query->createCommand();
-                $data = $command->queryOne();
-                $response['data'] = $data;
-                $response['imagePath'] = 'http://localhost/walletplus/category/';
-                Yii::$app->response->statusCode = 200;
-                return \yii\helpers\Json::encode($response);
-            } else {
-                Yii::$app->response->statusCode = 401;
-                return \yii\helpers\Json::encode(['error' => 'UnAuthorized']);
-            }
-        } else {
-            Yii::$app->response->statusCode = 401;
-            return \yii\helpers\Json::encode(['error' => 'UnAuthorized']);
-        }
-    }
-
-    public function actionDeleteCategory()
-    {
-
-        $headers = Yii::$app->request->headers;
-        if ($headers->has('Authorization')) {
-            $authorizationHeader = $headers->get('Authorization');
-            $token = str_replace('Bearer ', '', $authorizationHeader);
-            $user = Customer::find()->where(['authKey' => $token])->one();
-            if ($user) {
-                $rawBody = Yii::$app->request->rawBody;
-                $data = json_decode($rawBody, true);
-
-                $event = ExpenseCategory::findOne($data['id']);
-
-                if ($event) {
-
-                    if ($event->delete()) {
-                        Yii::$app->response->statusCode = 204; // No Content status code
-                        return \yii\helpers\Json::encode(['message' => 'Event deleted successfully']);
-                    } else {
-                        Yii::$app->response->statusCode = 500; // Internal Server Error status code
-                        return \yii\helpers\Json::encode(['error' => 'Failed to delete event']);
-                    }
-                } else {
-                    Yii::$app->response->statusCode = 404; // Not Found status code
-                    return \yii\helpers\Json::encode(['error' => 'Event not found']);
-                }
-            } else {
-                Yii::$app->response->statusCode = 401;
-                return \yii\helpers\Json::encode(['error' => 'UnAuthorized']);
-            }
-        } else {
-            Yii::$app->response->statusCode = 401;
-            return \yii\helpers\Json::encode(['error' => 'UnAuthorized']);
-        }
-    }
-
-
-
-    public function actionCategory()
-    {
-        $headers = Yii::$app->request->headers;
-        if ($headers->has('Authorization')) {
-            $authorizationHeader = $headers->get('Authorization');
-            $token = str_replace('Bearer ', '', $authorizationHeader);
-            $user = Customer::find()->where(['authKey' => $token])->one();
-
-            if ($user) {
-                $data = Yii::$app->request->post();
-                $categoryId = Yii::$app->request->post('id_category'); // ID to determine add or update
-                $category = $categoryId ? ExpenseCategory::findOne($categoryId) : new ExpenseCategory();
-
-                if (!$category) {
-                    Yii::$app->response->statusCode = 404;
-                    return \yii\helpers\Json::encode(['error' => 'Category not found']);
-                }
-
-                // Assign data to category model
-                $category->id_type = Yii::$app->request->post('id_type');
-                $category->id_user = $user->id; // Default to current user
-                // $category->parent = Yii::$app->request->post('parent');
-                $category->category_name = Yii::$app->request->post('category_name');
-                $category->category_description = Yii::$app->request->post('category_description', '');
-                // $category->category_image = Yii::$app->request->post('category_image', null); // Optional
-                $category->status = Yii::$app->request->post('status');
-
-                // Handle the uploaded image
-                $imageFile = UploadedFile::getInstanceByName('category_image');
-                if ($imageFile) {
-                    $uploadPath = Yii::getAlias('@webroot') . '/category/';
-                    $imageName = time() . '_' . $imageFile->baseName . '.' . $imageFile->extension;
-                    $imageFile->saveAs($uploadPath . $imageName);
-
-
-
-                    $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
-                    $fileExtensions = ['pdf'];
-                    $imageFileExtension = strtolower($imageFile->extension);
-
-                    if (in_array($imageFileExtension, $imageExtensions)) {
-
-                        $image = Image::make($uploadPath . $imageName);
-                        $image->encode('jpg', 70);
-                        $compressedImageName = 'wplus_' . $imageName;
-                        $image->save($uploadPath . $compressedImageName);
-                        $category->category_image = $compressedImageName;
-                    } else if (in_array($imageFileExtension, $fileExtensions)) {
-                        $category->category_image = $imageName;
-                    } else {
-                        Yii::$app->response->statusCode = 500;
-                        return \yii\helpers\Json::encode(['error' => 'Unsupported image type. Please upload a JPG, PNG, GIF, BMP, or WebP file.']);
-                    }
-                }
-                // Save category data
-                if ($category->save()) {
-                    Yii::$app->response->statusCode = $categoryId ? 200 : 201;
-                    return \yii\helpers\Json::encode($category);
-                } else {
-                    Yii::$app->response->statusCode = 422;
-                    return \yii\helpers\Json::encode($category->getErrors());
-                }
-            } else {
-                Yii::$app->response->statusCode = 401;
-                return \yii\helpers\Json::encode(['error' => 'Unauthorized']);
-            }
-        } else {
-            Yii::$app->response->statusCode = 401;
-            return \yii\helpers\Json::encode(['error' => 'Unauthorized']);
-        }
-    }
 
 
     public function actionMembersList()
@@ -1410,6 +1221,7 @@ class BudgetController extends \yii\web\Controller
         }
     }
 
+
     public function actionExpenseMemberTotal()
     {
         $headers = Yii::$app->request->headers;
@@ -1418,86 +1230,45 @@ class BudgetController extends \yii\web\Controller
         if ($headers->has('Authorization')) {
             $authorizationHeader = $headers->get('Authorization');
             $token = str_replace('Bearer ', '', $authorizationHeader);
-    
+            
             // Find the user based on the provided auth key
             $user = Customer::find()->where(['authKey' => $token])->one();
-    
+            
             // Check if the user is authenticated
             if ($user) {
                 $eventId = Yii::$app->request->post('id');
-                
-                if (!$eventId) {
-                    Yii::$app->response->statusCode = 400;
-                    return \yii\helpers\Json::encode(['error' => 'Event ID is required']);
-                }
+                // $eventId = $data['id'];
     
-                // Fetch all expenses for the given event
-                $expensesQuery = (new Query())
-                    ->select('e.id_expense, e.amount')
-                    ->from('bt_expense e')
-                    ->where(['e.id_event' => $eventId]);
+                // Fetch expenses for the given event
+                $query = (new Query())
+                ->select([
+                    'em.id_member',
+                    'm.firstname',
+                    'm.lastname',
+                    'SUM(e.amount) AS total_amount'
+                ])
+                ->from('bt_expense e')
+                ->innerJoin('bt_expense_member em', 'e.id_expense = em.id_expense')
+                ->innerJoin('bt_member m', 'em.id_member = m.id_member') // Join with member table
+                ->where(['e.id_event' => $eventId])
+                ->groupBy('em.id_member, m.firstname, m.lastname'); // Group by member details
+
     
-                $expensesCommand = $expensesQuery->createCommand();
-                $expenses = $expensesCommand->queryAll();
+                $command = $query->createCommand();
+                $results = $command->queryAll();
     
-                // Initialize array to keep track of member expenses
-                $memberTotals = [];
-                $eventTotal = 0;
-    
-                foreach ($expenses as $expense) {
-                    // Accumulate total event expenses
-                    $eventTotal += $expense['amount'];
-    
-                    // Fetch members for each expense
-                    $membersQuery = (new Query())
-                        ->select('em.id_member')
-                        ->from('bt_expense_member em')
-                        ->where(['em.id_expense' => $expense['id_expense']]);
-    
-                    $membersCommand = $membersQuery->createCommand();
-                    $members = $membersCommand->queryColumn(); // Get members as an array
-    
-                    // Calculate individual share
-                    $numMembers = count($members);
-                    $share = $numMembers > 0 ? $expense['amount'] / $numMembers : 0;
-    
-                    // Add the share to each member's total
-                    foreach ($members as $memberId) {
-                        if (!isset($memberTotals[$memberId])) {
-                            $memberTotals[$memberId] = 0;
-                        }
-                        $memberTotals[$memberId] += $share;
-                    }
-                }
-    
-                // Fetch member details
-                $membersQuery = (new Query())
-                    ->select('m.id_member, m.firstname, m.lastname')
-                    ->from('bt_member m')
-                    ->where(['m.id_member' => array_keys($memberTotals)]);
-    
-                $membersCommand = $membersQuery->createCommand();
-                $members = $membersCommand->queryAll();
-    
-                // Prepare the response
-                $response = [
-                    'event_total' => $eventTotal, // Add the event total to the response
-                    'data' => []
-                ];
-    
-                foreach ($members as $member) {
-                    $response['data'][] = [
-                        'id_member' => $member['id_member'],
-                        'firstname' => $member['firstname'],
-                        'lastname' => $member['lastname'],
-                        'total_amount' => isset($memberTotals[$member['id_member']]) ? $memberTotals[$member['id_member']] : 0
+                // Check if results were found
+                if ($results) {
+                    $response = [
+                        'data' => $results,
+                        'imagePath' => 'http://localhost/walletplus/expenses/',
                     ];
+                    Yii::$app->response->statusCode = 200;
+                    return \yii\helpers\Json::encode($response);
+                } else {
+                    Yii::$app->response->statusCode = 404;
+                    return \yii\helpers\Json::encode(['error' => 'No expenses found for the specified event']);
                 }
-    
-                $response['imagePath'] = 'http://localhost/walletplus/expenses/';
-    
-                Yii::$app->response->statusCode = 200;
-                return \yii\helpers\Json::encode($response);
             } else {
                 Yii::$app->response->statusCode = 401;
                 return \yii\helpers\Json::encode(['error' => 'Unauthorized']);
@@ -1507,8 +1278,6 @@ class BudgetController extends \yii\web\Controller
             return \yii\helpers\Json::encode(['error' => 'Authorization header is missing']);
         }
     }
-    
-    
     
     
 

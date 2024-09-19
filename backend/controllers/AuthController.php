@@ -540,113 +540,7 @@ class AuthController extends \yii\web\Controller
     }
 
 
-    public function actionSaveUserDetails()
-    { 
 
-        $headers = Yii::$app->request->headers;
-        if ($headers->has('Authorization')) {
-            $authorizationHeader = $headers->get('Authorization');
-            $token = str_replace('Bearer ', '', $authorizationHeader);
-            $user = Customer::find()->where(['authKey' => $token])->one();
-            if($user){
-
-
-                $userData = Customer::find()->where(['id' => Yii::$app->request->post('id')])->one();
-
-                if(!$userData){
-                    Yii::$app->response->statusCode = 500;
-                    return \yii\helpers\Json::encode(['error' => 'User Not Found']);
-                }
-
-                $oldImageName = $userData->image;
-            
-                $userData->firstname = Yii::$app->request->post('firstname');
-                $userData->lastname = Yii::$app->request->post('lastname');
-                // $userData->username = Yii::$app->request->post('username');
-                // $userData->otp = Yii::$app->request->post('otp');
-                $userData->phone = Yii::$app->request->post('phone');
-                $userData->gender = Yii::$app->request->post('gender');
-
-                $userData->active = Yii::$app->request->post('accountDeactivation');
-                $userData->offline_access = Yii::$app->request->post('enableOfflineAccess');
-                $userData->email_notification = Yii::$app->request->post('emailNotification');
-
-
-
-                // $userData->email = Yii::$app->request->post('email');
-
-                if(Yii::$app->request->post('password')){
-                    $userData->password = Yii::$app->security->generatePasswordHash(Yii::$app->request->post('password'));
-                }
-                
-                $imageFile = UploadedFile::getInstanceByName('image');
-                if ($imageFile) {
-                    
-                    $uploadPath = Yii::getAlias('@webroot') . '/users/';
-                    $imageName = time() . '_' . $imageFile->baseName . '.' . $imageFile->extension;
-                    $imageFile->saveAs($uploadPath . $imageName);
-                    $userData->image = $imageName;
-                    // $userData->image = $imageName;   
-                    // $image = Image::make($uploadPath . $imageName);
-                    // $image->encode('jpg', 70); // Compress the image to JPEG format with 70% quality
-                    // $image->fit(200, 200);
-                    // $compressedImageName = 'wplus_' . $imageName;
-                    // $image->save($uploadPath . $compressedImageName);
-                    // $userData->image = $compressedImageName;
-
-                    if ($oldImageName) {
-                        $oldImagePath = $uploadPath . $oldImageName;
-                        if (file_exists($oldImagePath)) {
-                            unlink($oldImagePath);
-                        }
-                    }
-                }
-
-                if ($userData->save()) {   
-                    
-                    $response = [
-                        // 'authKey' =>$userData->date_updated ,
-                        // 'date_created' => $userData->date_updated ,
-                        // 'date_updated' => $userData->date_updated ,
-                        'email_verification_code' => $userData->email_verification_code,
-                        'email_verified' => $userData->email_verified,
-                        'firstname' => $userData->firstname,
-                        'id' => $userData->id,
-                        'id_customer_type' => $userData->id_customer_type,
-                        'image' => $userData->image,
-                        'ipaddress' => $userData->ipaddress,
-                        'lastname' => $userData->lastname,
-                        'mobile_verification_code' => $userData->mobile_verification_code,
-                        'mobile_verified' => $userData->mobile_verified,
-                        'otp' => $userData->otp,
-                        'gender' => $userData->gender,
-                        'phone' => $userData->phone,
-                        'username' => $userData->username,
-                        
-                        'active' => $userData->active, 
-                        'offline_access' => $userData->offline_access ,
-                        'email_notification' => $userData->email_notification 
-                    ];
-
-                    // $response['userData'] = $user;
-                    $response['imagePath'] = 'https://walletplus.in/users/';
-                    Yii::$app->response->statusCode = 200;
-                    return \yii\helpers\Json::encode($response);
-                } else {
-                    Yii::$app->response->statusCode = 500;
-                    return \yii\helpers\Json::encode(['error' => 'Failed to update profile']);
-                }
-            }
-            
-            if (!$user) {
-                Yii::$app->response->statusCode = 401;
-                return \yii\helpers\Json::encode(['error' => 'UnAuthorized']);
-            }
-        } else {
-            Yii::$app->response->statusCode = 401;
-            return \yii\helpers\Json::encode(['error' => 'UnAuthorized']);
-        }
-    }
 
     public function actionParticipants()
     {
@@ -675,9 +569,107 @@ class AuthController extends \yii\web\Controller
         }
     }
 
+
+    public function actionCreateUser()
+    {
+        $headers = Yii::$app->request->headers;
+        
+        if ($headers->has('Authorization')) {
+            $authorizationHeader = $headers->get('Authorization');
+            $token = str_replace('Bearer ', '', $authorizationHeader);
+            $authUser = Customer::find()->where(['authKey' => $token])->one();
+    
+            if ($authUser) {
+                // Check if we are updating an existing user or adding a new one
+                $userId = Yii::$app->request->post('id');
+                if ($userId) {
+                    $userData = Customer::find()->where(['id' => $userId])->one();
+                } else {
+                    $userData = new Customer(); // New user for creation
+                }
+    
+                if (!$userData) {
+                    Yii::$app->response->statusCode = 500;
+                    return \yii\helpers\Json::encode(['error' => 'User Not Found']);
+                }
+    
+                // If the user is found or is new, update/add user data
+                $oldImageName = $userData->image;
+    
+                // Update user data from the request
+                $userData->firstname = Yii::$app->request->post('firstname');
+                $userData->lastname = Yii::$app->request->post('lastname');
+                $userData->phone = Yii::$app->request->post('phone');
+                $userData->gender = Yii::$app->request->post('gender');
+                $userData->active = Yii::$app->request->post('accountDeactivation');
+                $userData->offline_access = Yii::$app->request->post('enableOfflineAccess');
+                $userData->email_notification = Yii::$app->request->post('emailNotification');
+    
+                // Only set password if it's provided in the request
+                if (Yii::$app->request->post('password')) {
+                    $userData->password = Yii::$app->security->generatePasswordHash(Yii::$app->request->post('password'));
+                }
+    
+                // Handle image upload
+                $imageFile = UploadedFile::getInstanceByName('image');
+                if ($imageFile) {
+                    $uploadPath = Yii::getAlias('@webroot') . '/users/';
+                    $imageName = time() . '_' . $imageFile->baseName . '.' . $imageFile->extension;
+                    $imageFile->saveAs($uploadPath . $imageName);
+                    $userData->image = $imageName;
+    
+                    // Remove old image if exists
+                    if ($oldImageName) {
+                        $oldImagePath = $uploadPath . $oldImageName;
+                        if (file_exists($oldImagePath)) {
+                            unlink($oldImagePath);
+                        }
+                    }
+                }
+    
+                // Save the user data
+                if ($userData->save()) {
+                    $response = [
+                        'email_verification_code' => $userData->email_verification_code,
+                        'email_verified' => $userData->email_verified,
+                        'firstname' => $userData->firstname,
+                        'id' => $userData->id,
+                        'id_customer_type' => $userData->id_customer_type,
+                        'image' => $userData->image,
+                        'ipaddress' => $userData->ipaddress,
+                        'lastname' => $userData->lastname,
+                        'mobile_verification_code' => $userData->mobile_verification_code,
+                        'mobile_verified' => $userData->mobile_verified,
+                        'otp' => $userData->otp,
+                        'gender' => $userData->gender,
+                        'phone' => $userData->phone,
+                        'username' => $userData->username,
+                        'active' => $userData->active,
+                        'offline_access' => $userData->offline_access,
+                        'email_notification' => $userData->email_notification,
+                    ];
+    
+                    $response['imagePath'] = 'https://walletplus.in/users/';
+                    Yii::$app->response->statusCode = 200;
+                    return \yii\helpers\Json::encode($response);
+                } else {
+                    Yii::$app->response->statusCode = 500;
+                    return \yii\helpers\Json::encode(['error' => 'Failed to save user data']);
+                }
+            } else {
+                Yii::$app->response->statusCode = 401;
+                return \yii\helpers\Json::encode(['error' => 'Unauthorized']);
+            }
+        } else {
+            Yii::$app->response->statusCode = 401;
+            return \yii\helpers\Json::encode(['error' => 'Unauthorized']);
+        }
+    }
+    
+
     public function beforeAction($action)
     {
-        if (in_array($action->id, ['participants','save-user-details', 'user-details', 'users', 'login', 'register','forgot-password','reset-password', 'profile', 'save-profile','verifyemail'])) {
+        if (in_array($action->id, ['participants','create-user', 'user-details', 'users', 'login', 'register','forgot-password','reset-password', 'profile', 'save-profile','verifyemail'])) {
             $this->enableCsrfValidation = false;
         }
         return parent::beforeAction($action);

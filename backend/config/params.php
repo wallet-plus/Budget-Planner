@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'allowedOrigins' => ['http://localhost:4200', 'https://secure.walletplus.in', 'https://walletplus.in'],
     'productionMode' => false, // default / basic
     'currentTheme' => 'fareed', // default / basic / fareed
     'adminEmail' => 'info@walletplus.in',
@@ -8,4 +9,6 @@ return [
     'senderName' => 'Wallet Plus',
     'address' => 'address',
     'phone' => 'phone',
+    'categoryImagePath' => 'https://walletplus.in/category/',
+    'expenseImagePath' => 'https://walletplus.in/expenses/'
 ];
