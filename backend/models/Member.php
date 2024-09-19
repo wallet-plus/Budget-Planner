@@ -31,11 +31,11 @@ class Member extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['firstname', 'lastname', 'phone_number'], 'required'],
-            [['date_created', 'date_updated'], 'safe'],
-            [['firstname', 'lastname', 'id_customer'], 'string', 'max' => 255],
+            [['firstname', 'id_customer'], 'required'],
+            [['date_created', 'date_updated',], 'safe'],
+            [['firstname', 'lastname', ], 'string', 'max' => 255],
             [['phone_number'], 'string', 'max' => 15],
-            [['firstname', 'lastname', 'phone_number', 'id_customer'], 'unique', 'targetAttribute' => ['firstname', 'lastname', 'phone_number', 'id_customer']],
+            [['firstname', 'lastname', 'phone_number'], 'unique', 'targetAttribute' => ['firstname', 'lastname', 'phone_number', 'id_customer']],
         ];
     }
 

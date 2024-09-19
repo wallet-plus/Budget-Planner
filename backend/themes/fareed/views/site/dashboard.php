@@ -432,26 +432,14 @@ use app\helpers\CurrencyFormatHelper;
       <div class="card h-100">
         <div class="card-header d-flex align-items-center justify-content-between">
           <h5 class="card-title m-0 me-2">Categories</h5>
-          <div class="dropdown">
-            <button class="btn p-0" type="button" id="transactionID" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <i class="bx bx-dots-vertical-rounded"></i>
-            </button>
-            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="transactionID">
-              <a class="dropdown-item" href="javascript:void(0);">Last 28 Days</a>
-              <a class="dropdown-item" href="javascript:void(0);">Last Month</a>
-              <a class="dropdown-item" href="javascript:void(0);">Last Year</a>
-            </div>
-          </div>
         </div>
 
-        <!-- <pre>
-                    <?php print_r($categories); ?>
-                    </pre>
-                     -->
-
-        <div class="card-body">
-          <ul class="p-0 m-0">
-            <?php for ($i = 0; $i < count($categories) && $i < 6; $i++) { ?>
+        <div class="card-body" >
+          <ul class="p-0 m-0" style="max-height: 500px; overflow-y: auto;   
+          scrollbar-width: thin; 
+          scrollbar-color: #888 #f1f1f1; ">
+            <!-- && $i < 6; -->
+            <?php for ($i = 0; $i < count($categories); $i++) { ?>
               <?php $cat = $categories[$i]; ?>
               <li class="d-flex mb-4 pb-1">
                 <div class="avatar flex-shrink-0 me-3">
