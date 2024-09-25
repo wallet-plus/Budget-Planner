@@ -9,7 +9,7 @@
     An awesome README template to jumpstart your projects!
     <br />
     <br />
-    <a href="https://beta.walletplus.in">View Demo</a>
+    <a href="https://secure.walletplus.in">View Demo</a>
     ·
     <a href="https://github.com/Wallet-Plus/Budget-Tracker-App/issues">Report Bug</a>
   </p>
