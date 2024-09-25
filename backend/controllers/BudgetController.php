@@ -199,8 +199,8 @@ class BudgetController extends \yii\web\Controller
                 $command = $query->createCommand();
                 $data = $command->queryOne();
 
-                 // Query to get the associated members
-                    $membersQuery = (new Query())
+                // Query to get the associated members
+                $membersQuery = (new Query())
                     ->select('bt_member.id_member, bt_member.firstname, bt_member.lastname')
                     ->from('bt_expense_member')
                     ->leftJoin('bt_member', 'bt_expense_member.id_member = bt_member.id_member')
@@ -415,9 +415,6 @@ class BudgetController extends \yii\web\Controller
                     $uploadPath = Yii::getAlias('@webroot') . '/expenses/';
                     $imageName = time() . '_' . $imageFile->baseName . '.' . $imageFile->extension;
                     $imageFile->saveAs($uploadPath . $imageName);
-
-
-
                     $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
                     $fileExtensions = ['pdf'];
                     $imageFileExtension = strtolower($imageFile->extension);
@@ -437,28 +434,40 @@ class BudgetController extends \yii\web\Controller
                     }
                 }
 
-                $newExpense->id_event = Yii::$app->request->post('id_event');
 
-                // Handle expense-member relationships
-                $members = Yii::$app->request->post('members', []);
-                if (!is_array($members)) {
-                    $members = json_decode($members, true); // Ensure members is an array
+                $id_event = Yii::$app->request->post('id_event');
+                if ($id_event !== null) {
+                    $newExpense->id_event = $id_event;
                 }
 
-                // Remove existing members
-                ExpenseMember::deleteAll(['id_expense' => $newExpense->id_expense]);
-
-                // Add new members
-                foreach ($members as $id_member) {
-                    $expenseMember = new ExpenseMember();
-                    $expenseMember->id_expense = $newExpense->id_expense;
-                    $expenseMember->id_member = $id_member;
-                    if (!$expenseMember->save()) {
-                        Yii::error('Failed to add member ID: ' . $id_member);
-                    }
-                }
+               
 
                 if ($newExpense->save()) {
+
+                     // Handle expense-member relationships after saving the expense
+                        $members = Yii::$app->request->post('members', []);
+
+                        // Ensure members is a valid array
+                        if (!is_array($members)) {
+                            $members = json_decode($members, true);
+
+                            // Handle cases where json_decode fails
+                            if ($members === null || !is_array($members)) {
+                                Yii::error('Invalid members data: ' . print_r(Yii::$app->request->post('members'), true));
+                                $members = []; // Fallback to empty array to prevent further errors
+                            }
+                        }
+
+                        // Add new members
+                        foreach ($members as $id_member) {
+                            $expenseMember = new ExpenseMember();
+                            $expenseMember->id_expense = $newExpense->id_expense; // Now $newExpense->id_expense is set
+                            $expenseMember->id_member = $id_member;
+                            if (!$expenseMember->save()) {
+                                Yii::error('Failed to add member ID: ' . $id_member);
+                            }
+                        }
+                        
                     Yii::$app->response->statusCode = 201; // Created status code
                     return \yii\helpers\Json::encode($newExpense);
                 } else {
@@ -485,10 +494,6 @@ class BudgetController extends \yii\web\Controller
             $user = Customer::find()->where(['authKey' => $token])->one();
             if ($user) {
                 $id = Yii::$app->request->post('id');
-                // $data = Yii::$app->request->post();
-
-                $rawBody = Yii::$app->request->rawBody;
-                $data = json_decode($rawBody, true);
 
                 $id_type = 0;
                 switch (Yii::$app->request->post('type')) {
@@ -549,44 +554,50 @@ class BudgetController extends \yii\web\Controller
                     }
                 }
 
-                $newExpense->id_event = Yii::$app->request->post('id_event');
-                
-                 // Handle members list
-            $members = Yii::$app->request->post('members');
-            if (is_null($members)) {
-                $members = []; // Default to empty array if null
-            } else {
-                $members = json_decode($members, true);
-                if (!is_array($members)) {
-                    Yii::$app->response->statusCode = 400;
-                    return \yii\helpers\Json::encode(['error' => 'Invalid members format']);
+
+
+                $id_event = Yii::$app->request->post('id_event');
+                if ($id_event != 'null') {
+                    $newExpense->id_event = $id_event;
                 }
-            }
 
-            // Get existing members for the expense
-            $existingMembers = ExpenseMember::findAll(['id_expense' => $id]);
-            $existingMemberIds = array_map(function($member) {
-                return $member->id_member;
-            }, $existingMembers);
 
-            // Determine members to add and remove
-            $membersToAdd = array_diff($members, $existingMemberIds);
-            $membersToRemove = array_diff($existingMemberIds, $members);
-
-            // Add new members
-            foreach ($membersToAdd as $memberId) {
-                $expenseMember = new ExpenseMember();
-                $expenseMember->id_expense = $id;
-                $expenseMember->id_member = $memberId;
-                if (!$expenseMember->save()) {
-                    Yii::error('Failed to add member ID: ' . $memberId);
+                // Handle members list
+                $members = Yii::$app->request->post('members');
+                if (is_null($members)) {
+                    $members = []; // Default to empty array if null
+                } else {
+                    $members = json_decode($members, true);
+                    if (!is_array($members)) {
+                        Yii::$app->response->statusCode = 400;
+                        return \yii\helpers\Json::encode(['error' => 'Invalid members format']);
+                    }
                 }
-            }
 
-            // Remove old members
-            foreach ($membersToRemove as $memberId) {
-                ExpenseMember::deleteAll(['id_expense' => $id, 'id_member' => $memberId]);
-            }
+                // Get existing members for the expense
+                $existingMembers = ExpenseMember::findAll(['id_expense' => $id]);
+                $existingMemberIds = array_map(function ($member) {
+                    return $member->id_member;
+                }, $existingMembers);
+
+                // Determine members to add and remove
+                $membersToAdd = array_diff($members, $existingMemberIds);
+                $membersToRemove = array_diff($existingMemberIds, $members);
+
+                // Add new members
+                foreach ($membersToAdd as $memberId) {
+                    $expenseMember = new ExpenseMember();
+                    $expenseMember->id_expense = $id;
+                    $expenseMember->id_member = $memberId;
+                    if (!$expenseMember->save()) {
+                        Yii::error('Failed to add member ID: ' . $memberId);
+                    }
+                }
+
+                // Remove old members
+                foreach ($membersToRemove as $memberId) {
+                    ExpenseMember::deleteAll(['id_expense' => $id, 'id_member' => $memberId]);
+                }
 
                 if ($newExpense->save()) {
                     Yii::$app->response->statusCode = 201; // Created status code
@@ -629,6 +640,9 @@ class BudgetController extends \yii\web\Controller
                         }
                     }
 
+                    // Delete related records in bt_expense_member first
+                    ExpenseMember::deleteAll(['id_expense' => $expense->id_expense]);
+
                     if ($expense->delete()) {
                         Yii::$app->response->statusCode = 204; // No Content status code
                         return \yii\helpers\Json::encode(['message' => 'Expense deleted successfully']);
@@ -668,10 +682,10 @@ class BudgetController extends \yii\web\Controller
                 foreach ($events as $event) {
                     // Retrieve participants with names for each event
                     $participantsQuery = (new Query())
-                    ->select(['bt_event_member.id_member', 'bt_member.firstname', 'bt_member.lastname']) // Correct table
-                    ->from('bt_event_member')
-                    ->leftJoin('bt_member', 'bt_event_member.id_member = bt_member.id_member')
-                    ->where(['bt_event_member.id_event' => $event->id_event]);
+                        ->select(['bt_event_member.id_member', 'bt_member.firstname', 'bt_member.lastname']) // Correct table
+                        ->from('bt_event_member')
+                        ->leftJoin('bt_member', 'bt_event_member.id_member = bt_member.id_member')
+                        ->where(['bt_event_member.id_event' => $event->id_event]);
 
                     $participantsCommand = $participantsQuery->createCommand();
                     $participants = $participantsCommand->queryAll(); // Get all participant details
@@ -708,555 +722,42 @@ class BudgetController extends \yii\web\Controller
         }
     }
 
-    public function actionEvent()
-    {
-        $headers = Yii::$app->request->headers;
-        if ($headers->has('Authorization')) {
-            $authorizationHeader = $headers->get('Authorization');
-            $token = str_replace('Bearer ', '', $authorizationHeader);
-            $user = Customer::find()->where(['authKey' => $token])->one();
-    
-            if ($user) {
-                $data = Yii::$app->request->post();
-                $eventId = Yii::$app->request->post('id'); // Event ID will determine add or update
-                $newEvent = $eventId ? Events::findOne($eventId) : new Events();
-    
-                if (!$newEvent) {
-                    Yii::$app->response->statusCode = 404;
-                    return \yii\helpers\Json::encode(['error' => 'Event not found']);
-                }
-    
-                // Assign event data
-                $newEvent->id_customer = $user->id;
-                $newEvent->event_name = Yii::$app->request->post('name');
-                $newEvent->status = Yii::$app->request->post('status');
-    
-                $start_date = DateTime::createFromFormat('Y-m-d', Yii::$app->request->post('start_date'));
-                if ($start_date) {
-                    $newEvent->start_date = $start_date->format('Y-m-d');
-                } else {
-                    Yii::$app->response->statusCode = 400;
-                    return \yii\helpers\Json::encode(['error' => 'Invalid start date format']);
-                }
-    
-                $end_date = DateTime::createFromFormat('Y-m-d', Yii::$app->request->post('end_date'));
-                if ($end_date) {
-                    $newEvent->end_date = $end_date->format('Y-m-d');
-                } else {
-                    Yii::$app->response->statusCode = 400;
-                    return \yii\helpers\Json::encode(['error' => 'Invalid end date format']);
-                }
-    
-                // Save the event first before managing participants
-                if ($newEvent->save()) {
-                    // Handle participants logic
-                    $participantsJson = Yii::$app->request->post('members', '[]');
-                    $newParticipants = json_decode($participantsJson, true);
-    
-                    // Ensure $newParticipants is an array
-                    if (!is_array($newParticipants)) {
-                        $newParticipants = [];
-                    }
-    
-                    // Get existing participants or initialize as an empty array
-                    $existingParticipants = EventMember::find()
-                        ->select('id_member')
-                        ->where(['id_event' => $newEvent->id_event])
-                        ->column();
-                    $existingParticipants = $existingParticipants ?: [];
-    
-                    // Find participants to add and remove
-                    if (is_array($existingParticipants) && is_array($newParticipants)) {
-                        $participantsToRemove = array_diff($existingParticipants, $newParticipants);
-                        $participantsToAdd = array_diff($newParticipants, $existingParticipants);
-    
-                        // Remove unassigned participants
-                        if (!empty($participantsToRemove)) {
-                            EventMember::deleteAll(['id_event' => $newEvent->id_event, 'id_member' => $participantsToRemove]);
-                        }
-    
-                        // Add new participants
-                        if (!empty($participantsToAdd)) {
-                            foreach ($participantsToAdd as $participantId) {
-                                $eventParticipant = new EventMember();
-                                $eventParticipant->id_event = $newEvent->id_event;
-                                $eventParticipant->id_member = $participantId;
-                                if (!$eventParticipant->save()) {
-                                    Yii::error('Failed to add participant ID: ' . $participantId);
-                                }
-                            }
-                        }
-                    }
-    
-                    // Return the newly saved event data
-                    Yii::$app->response->statusCode = $eventId ? 200 : 201;
-                    return \yii\helpers\Json::encode($newEvent);
-                } else {
-                    Yii::$app->response->statusCode = 422;
-                    return \yii\helpers\Json::encode($newEvent->getErrors());
-                }
-            } else {
-                Yii::$app->response->statusCode = 401;
-                return \yii\helpers\Json::encode(['error' => 'Unauthorized']);
-            }
-        } else {
-            Yii::$app->response->statusCode = 401;
-            return \yii\helpers\Json::encode(['error' => 'Unauthorized']);
-        }
-    }
-    
-    
-
-    // public function actionAddEvent()
-    // {   
-    //     $headers = Yii::$app->request->headers;
-    //     if ($headers->has('Authorization')) {
-    //         $authorizationHeader = $headers->get('Authorization');
-    //         $token = str_replace('Bearer ', '', $authorizationHeader);
-    //         $user = Customer::find()->where(['authKey' => $token])->one();
-
-    //         if($user){
-
-    //             $data = Yii::$app->request->post();
-    //             $rawBody = Yii::$app->request->rawBody;
-    //             $data = json_decode($rawBody, true);
-
-
-    //             $newEvent = new Events();
-    //             // $newExpense->id_type = $id_event;
-    //             $newEvent->id_customer = $user->id;
-    //             // $newExpense->id_category = Yii::$app->request->post('category'); 
-    //             // $newEvent->description = Yii::$app->request->post('description'); 
-    //             $newEvent->event_name =  Yii::$app->request->post('name'); 
-    //             $newEvent->status = Yii::$app->request->post('status'); 
-
-    //             $start_date = DateTime::createFromFormat('Y-m-d', Yii::$app->request->post('start_date'));
-    //             if ($start_date) {
-    //                 $newEvent->start_date = $start_date->format('Y-m-d');
-    //             } else {
-    //                 Yii::$app->response->statusCode = 400;
-    //                 return \yii\helpers\Json::encode(['error' => 'Invalid date format']);
-    //             }
-
-    //             $end_date = DateTime::createFromFormat('Y-m-d', Yii::$app->request->post('end_date'));
-    //             if ($end_date) {
-    //                 $newEvent->end_date = $end_date->format('Y-m-d');
-    //             } else {
-    //                 Yii::$app->response->statusCode = 400;
-    //                 return \yii\helpers\Json::encode(['error' => 'Invalid date format']);
-    //             }
-
-    //             // Handle the uploaded image
-    //             // $imageFile = UploadedFile::getInstanceByName('image');
-    //             // if ($imageFile) {
-    //             //     $uploadPath = Yii::getAlias('@webroot') . '/expenses/';
-    //             //     $imageName = time() . '_' . $imageFile->baseName . '.' . $imageFile->extension;
-    //             //     $imageFile->saveAs($uploadPath . $imageName);
-
-
-    //             //     $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
-    //             //     $fileExtensions = ['pdf'];
-    //             //     $imageFileExtension = strtolower($imageFile->extension);
-
-    //             //     if (in_array($imageFileExtension, $imageExtensions)) {
-
-    //             //         $image = Image::make($uploadPath . $imageName);
-    //             //         $image->encode('jpg', 70); 
-    //             //         $compressedImageName = 'wplus_' . $imageName;
-    //             //         $image->save($uploadPath . $compressedImageName);
-    //             //         $newExpense->image = $compressedImageName;
-
-    //             //     } else if (in_array($imageFileExtension, $fileExtensions)) {
-    //             //         $newExpense->image = $imageName;
-    //             //     } else {
-    //             //         Yii::$app->response->statusCode = 500;
-    //             //         return \yii\helpers\Json::encode(['error' => 'Unsupported image type. Please upload a JPG, PNG, GIF, BMP, or WebP file.']);
-    //             //     }
-
-    //             // }
-
-    //             if ($newEvent->save()) {
-
-    //                 if (!empty($participants)) {
-    //                     foreach ($participants as $participantId) {
-    //                         $eventParticipant = new EventParticipants();
-    //                         $eventParticipant->id_event = $newEvent->id; // Assuming $newEvent is the event object
-    //                         $eventParticipant->id_customer = $participantId; // Assuming participant ID is the user ID
-    //                         if (!$eventParticipant->save()) {
-    //                             // Handle error if saving fails
-    //                             Yii::error('Failed to add participant ID: ' . $participantId);
-    //                         }
-    //                     }
-    //                 }
-
-    //                 Yii::$app->response->statusCode = 201; // Created status code
-    //                 return \yii\helpers\Json::encode($newEvent);
-    //             } else {
-    //                 Yii::$app->response->statusCode = 422; // Unprocessable Entity status code
-    //                 return \yii\helpers\Json::encode($newEvent->getErrors());
-    //             }
-    //         } else {
-    //             Yii::$app->response->statusCode = 401;
-    //             return \yii\helpers\Json::encode(['error' => 'UnAuthorized']);
-    //         }
-    //     } else {
-    //         Yii::$app->response->statusCode = 401;
-    //         return \yii\helpers\Json::encode(['error' => 'UnAuthorized']);
-    //     }
-
-    // }
-
-    // public function actionUpdateEvent()
-    // {   
-
-    //     $headers = Yii::$app->request->headers;
-    //     if ($headers->has('Authorization')) {
-    //         $authorizationHeader = $headers->get('Authorization');
-    //         $token = str_replace('Bearer ', '', $authorizationHeader);
-    //         $user = Customer::find()->where(['authKey' => $token])->one();
-    //         if($user){
-    //             $id = Yii::$app->request->post('id');
-    //             // $data = Yii::$app->request->post();
-
-
-    //             $newEvent = Events::findOne($id);
-    //             $newEvent->id_customer = $user->id;
-    //             $newEvent->event_name =  Yii::$app->request->post('name'); 
-    //             $newEvent->status = Yii::$app->request->post('status'); 
-
-    //             $start_date = DateTime::createFromFormat('Y-m-d', Yii::$app->request->post('start_date'));
-    //             if ($start_date) {
-    //                 $newEvent->start_date = $start_date->format('Y-m-d');
-    //             } else {
-    //                 Yii::$app->response->statusCode = 400;
-    //                 return \yii\helpers\Json::encode(['error' => 'Invalid date format']);
-    //             }
-
-    //             $end_date = DateTime::createFromFormat('Y-m-d', Yii::$app->request->post('end_date'));
-    //             if ($end_date) {
-    //                 $newEvent->end_date = $end_date->format('Y-m-d');
-    //             } else {
-    //                 Yii::$app->response->statusCode = 400;
-    //                 return \yii\helpers\Json::encode(['error' => 'Invalid date format']);
-    //             }
-
-    //             $participantsJson = Yii::$app->request->post('members', '[]');  // Default to empty JSON array if not set
-    //             $newParticipants = json_decode($participantsJson, true);  
-
-    //             $existingParticipants = EventParticipants::find()
-    //                 ->select('id_customer')
-    //                 ->where(['id_event' => $id])
-    //                 ->column(); 
-
-    //             // Find participants to remove (present in the existing but not in the new list)
-    //             $participantsToRemove = array_diff($existingParticipants, $newParticipants);
-
-    //             // Find participants to add (present in the new list but not in the existing list)
-    //             $participantsToAdd = array_diff($newParticipants, $existingParticipants);
-
-    //             // Remove participants no longer assigned to the event
-    //             if (!empty($participantsToRemove)) {
-    //                 EventParticipants::deleteAll([
-    //                     'id_event' => $id,
-    //                     'id_customer' => $participantsToRemove,
-    //                 ]);
-    //             }
-
-    //             // Add new participants to the event
-    //             if (!empty($participantsToAdd)) {
-    //                 foreach ($participantsToAdd as $participantId) {
-    //                     $eventParticipant = new EventParticipants();
-    //                     $eventParticipant->id_event = $id;
-    //                     $eventParticipant->id_customer = $participantId;
-    //                     if (!$eventParticipant->save()) {
-    //                         Yii::error('Failed to add participant ID: ' . $participantId);
-    //                     }
-    //                 }
-    //             }
-
-    //             // // Handle the uploaded image
-    //             // $imageFile = UploadedFile::getInstanceByName('image');
-    //             // if ($imageFile) {
-    //             //     $uploadPath = Yii::getAlias('@webroot') . '/expenses/';
-    //             //     $imageName = time() . '_' . $imageFile->baseName . '.' . $imageFile->extension;
-    //             //     $imageFile->saveAs($uploadPath . $imageName);
-
-    //             //     $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
-    //             //     $fileExtensions = ['pdf'];
-    //             //     $imageFileExtension = strtolower($imageFile->extension);
-
-    //             //     if (in_array($imageFileExtension, $imageExtensions)) {
-
-    //             //         $image = Image::make($uploadPath . $imageName);
-    //             //         $image->encode('jpg', 70); 
-    //             //         $compressedImageName = 'wplus_' . $imageName;
-    //             //         $image->save($uploadPath . $compressedImageName);
-    //             //         $newExpense->image = $compressedImageName;
-
-    //             //     } else if (in_array($imageFileExtension, $fileExtensions)) {
-    //             //         $newExpense->image = $imageName;
-    //             //     } else {
-    //             //         Yii::$app->response->statusCode = 500;
-    //             //         return \yii\helpers\Json::encode(['error' => 'Unsupported image type. Please upload a JPG, PNG, GIF, BMP, or WebP file.']);
-    //             //     }
-    //             // }
-
-    //             if ($newEvent->save()) {
-    //                 Yii::$app->response->statusCode = 201; // Created status code
-    //                 return \yii\helpers\Json::encode($newEvent);
-    //             } else {
-    //                 Yii::$app->response->statusCode = 422; // Unprocessable Entity status code
-    //                 return \yii\helpers\Json::encode($newEvent->getErrors());
-    //             }
-    //         } else {
-    //             Yii::$app->response->statusCode = 401;
-    //             return \yii\helpers\Json::encode(['error' => 'UnAuthorized']);
-    //         }
-    //     } else {
-    //         Yii::$app->response->statusCode = 401;
-    //         return \yii\helpers\Json::encode(['error' => 'UnAuthorized']);
-    //     }
-    // }
-
-    public function actionDeleteEvent()
-    {
-
-        $headers = Yii::$app->request->headers;
-        if ($headers->has('Authorization')) {
-            $authorizationHeader = $headers->get('Authorization');
-            $token = str_replace('Bearer ', '', $authorizationHeader);
-            $user = Customer::find()->where(['authKey' => $token])->one();
-            if ($user) {
-                $rawBody = Yii::$app->request->rawBody;
-                $data = json_decode($rawBody, true);
-
-                $event = Events::findOne($data['id']);
-
-                if ($event) {
-
-                    if ($event->delete()) {
-                        Yii::$app->response->statusCode = 204; // No Content status code
-                        return \yii\helpers\Json::encode(['message' => 'Event deleted successfully']);
-                    } else {
-                        Yii::$app->response->statusCode = 500; // Internal Server Error status code
-                        return \yii\helpers\Json::encode(['error' => 'Failed to delete event']);
-                    }
-                } else {
-                    Yii::$app->response->statusCode = 404; // Not Found status code
-                    return \yii\helpers\Json::encode(['error' => 'Event not found']);
-                }
-            } else {
-                Yii::$app->response->statusCode = 401;
-                return \yii\helpers\Json::encode(['error' => 'UnAuthorized']);
-            }
-        } else {
-            Yii::$app->response->statusCode = 401;
-            return \yii\helpers\Json::encode(['error' => 'UnAuthorized']);
-        }
-    }
-
-    public function actionEventDetails()
-    {
-        $headers = Yii::$app->request->headers;
-        if ($headers->has('Authorization')) {
-            $authorizationHeader = $headers->get('Authorization');
-            $token = str_replace('Bearer ', '', $authorizationHeader);
-            $user = Customer::find()->where(['authKey' => $token])->one();
-            if ($user) {
-                $id = Yii::$app->request->post('id');
-                $query = (new Query())
-                    ->select('*')
-                    ->from('bt_events')
-                    // ->where(['bt_events.id_customer' => $user->id])
-                    ->where(['bt_events.id_event' => $id]);
-
-                $command = $query->createCommand();
-                $eventData = $command->queryOne();
-
-
-                $participantsQuery = (new Query())
-                    ->select('id_member')
-                    ->from('bt_event_member')
-                    ->where(['id_event' => $id]);
-
-                $participantsCommand = $participantsQuery->createCommand();
-                $participants = $participantsCommand->queryColumn(); // Retrieves an array of participant IDs
-
-                $participants = array_map('intval', $participants);
-
-                $response = [
-                    'data' => $eventData,
-                    'members' => $participants,
-                ];
-                Yii::$app->response->statusCode = 200;
-                return \yii\helpers\Json::encode($response);
-            } else {
-                Yii::$app->response->statusCode = 401;
-                return \yii\helpers\Json::encode(['error' => 'UnAuthorized']);
-            }
-        } else {
-            Yii::$app->response->statusCode = 401;
-            return \yii\helpers\Json::encode(['error' => 'UnAuthorized']);
-        }
-    }
-
-
-
-    public function actionMembersList()
-    {
-        $headers = Yii::$app->request->headers;
-        if ($headers->has('Authorization')) {
-            $authorizationHeader = $headers->get('Authorization');
-            $token = str_replace('Bearer ', '', $authorizationHeader);
-            $user = Customer::find()->where(['authKey' => $token])->one();
-            if ($user) {
-
-                $rawBody = Yii::$app->request->rawBody;
-                $data = json_decode($rawBody, true);
-
-                $query = (new Query())
-                    ->select('*')
-                    ->from('bt_member')
-                    ->where(['id_customer' => $user->id]);
-
-                $command = $query->createCommand();
-                $list = $command->queryAll();
-                $response['list'] = $list;
-                $response['categoryImagePath'] = 'https://walletplus.in/category/';
-                $response['imagePath'] = 'https://walletplus.in/expenses/';
-                $response['expenseImagePath'] = 'https://walletplus.in/expenses/';
-                $response['userImagePath'] = 'https://walletplus.in/users/';
-
-
-                Yii::$app->response->statusCode = 200;
-                return \yii\helpers\Json::encode($response);
-            } else {
-                Yii::$app->response->statusCode = 401;
-                return \yii\helpers\Json::encode(['error' => 'UnAuthorized']);
-            }
-        } else {
-            Yii::$app->response->statusCode = 401;
-            return \yii\helpers\Json::encode(['error' => 'UnAuthorized']);
-        }
-    }
-
-    public function actionMember()
-    {
-        $headers = Yii::$app->request->headers;
-        if ($headers->has('Authorization')) {
-            $authorizationHeader = $headers->get('Authorization');
-            $token = str_replace('Bearer ', '', $authorizationHeader);
-            $user = Customer::find()->where(['authKey' => $token])->one();
-
-            if ($user) {
-                $data = Yii::$app->request->post();
-                $memberId = Yii::$app->request->post('id_member'); // ID to determine add or update
-                $member = $memberId ? Member::findOne($memberId) : new Member();
-
-                if (!$member) {
-                    Yii::$app->response->statusCode = 404;
-                    return \yii\helpers\Json::encode(['error' => 'Member not found']);
-                }
-
-                // Assign data to member model
-                $member->firstname = Yii::$app->request->post('firstname');
-                $member->lastname = Yii::$app->request->post('lastname');
-                $member->phone_number = Yii::$app->request->post('phone_number');
-                $member->id_customer = $user->id;
-
-                $member->date_updated = date('Y-m-d H:i:s'); // Update timestamp
-
-                // If creating a new member, set the creation date
-                if (!$memberId) {
-                    $member->date_created = date('Y-m-d H:i:s');
-                }
-
-                // Save member data
-                if ($member->save()) {
-                    Yii::$app->response->statusCode = $memberId ? 200 : 201;
-                    return \yii\helpers\Json::encode($member);
-                } else {
-                    Yii::$app->response->statusCode = 422;
-                    return \yii\helpers\Json::encode($member->getErrors());
-                }
-            } else {
-                Yii::$app->response->statusCode = 401;
-                return \yii\helpers\Json::encode(['error' => 'Unauthorized']);
-            }
-        } else {
-            Yii::$app->response->statusCode = 401;
-            return \yii\helpers\Json::encode(['error' => 'Unauthorized']);
-        }
-    }
-
-    public function actionMemberDetails()
-    {
-        $headers = Yii::$app->request->headers;
-        if ($headers->has('Authorization')) {
-            $authorizationHeader = $headers->get('Authorization');
-            $token = str_replace('Bearer ', '', $authorizationHeader);
-            $user = Customer::find()->where(['authKey' => $token])->one();
-            if ($user) {
-                $request = Yii::$app->request;
-                $data = json_decode($request->getRawBody(), true);
-                $id = $data['id'];
-                $query = (new Query())
-                    ->select('*')
-                    ->from('bt_member')
-                    ->where(['bt_member.id_member' => $id]);
-
-                $command = $query->createCommand();
-                $data = $command->queryOne();
-                $response['data'] = $data;
-                $response['imagePath'] = 'http://localhost/walletplus/category/';
-                Yii::$app->response->statusCode = 200;
-                return \yii\helpers\Json::encode($response);
-            } else {
-                Yii::$app->response->statusCode = 401;
-                return \yii\helpers\Json::encode(['error' => 'UnAuthorized']);
-            }
-        } else {
-            Yii::$app->response->statusCode = 401;
-            return \yii\helpers\Json::encode(['error' => 'UnAuthorized']);
-        }
-    }
-
 
     public function actionExpenseMemberTotal()
     {
         $headers = Yii::$app->request->headers;
-    
+
         // Check if the Authorization header is present
         if ($headers->has('Authorization')) {
             $authorizationHeader = $headers->get('Authorization');
             $token = str_replace('Bearer ', '', $authorizationHeader);
-            
+
             // Find the user based on the provided auth key
             $user = Customer::find()->where(['authKey' => $token])->one();
-            
+
             // Check if the user is authenticated
             if ($user) {
                 $eventId = Yii::$app->request->post('id');
                 // $eventId = $data['id'];
-    
+
                 // Fetch expenses for the given event
                 $query = (new Query())
-                ->select([
-                    'em.id_member',
-                    'm.firstname',
-                    'm.lastname',
-                    'SUM(e.amount) AS total_amount'
-                ])
-                ->from('bt_expense e')
-                ->innerJoin('bt_expense_member em', 'e.id_expense = em.id_expense')
-                ->innerJoin('bt_member m', 'em.id_member = m.id_member') // Join with member table
-                ->where(['e.id_event' => $eventId])
-                ->groupBy('em.id_member, m.firstname, m.lastname'); // Group by member details
+                    ->select([
+                        'em.id_member',
+                        'm.firstname',
+                        'm.lastname',
+                        'SUM(e.amount) AS total_amount'
+                    ])
+                    ->from('bt_expense e')
+                    ->innerJoin('bt_expense_member em', 'e.id_expense = em.id_expense')
+                    ->innerJoin('bt_member m', 'em.id_member = m.id_member') // Join with member table
+                    ->where(['e.id_event' => $eventId])
+                    ->groupBy('em.id_member, m.firstname, m.lastname'); // Group by member details
 
-    
+
                 $command = $query->createCommand();
                 $results = $command->queryAll();
-    
+
                 // Check if results were found
                 if ($results) {
                     $response = [
@@ -1278,12 +779,12 @@ class BudgetController extends \yii\web\Controller
             return \yii\helpers\Json::encode(['error' => 'Authorization header is missing']);
         }
     }
-    
-    
+
+
 
     public function beforeAction($action)
     {
-        if (in_array($action->id, ['expense-member-total','member-details', 'member', 'members-list', 'category', 'category-details', 'events', 'event', 'event-details', 'send-report', 'statistics', 'category-list', 'get', 'update', 'delete', 'delete-event', 'get-list', 'add', 'suggestion'])) {
+        if (in_array($action->id, [ 'category', 'category-details', 'send-report', 'statistics', 'category-list', 'get', 'update', 'delete', 'get-list', 'add', 'suggestion'])) {
             $this->enableCsrfValidation = false;
         }
         return parent::beforeAction($action);
