@@ -76,13 +76,7 @@ class ZakatController extends \yii\web\Controller
         $command = $query->createCommand();
         $list = $command->queryAll();
         $response['list'] = $list;
-
-        // // $categories = ExpenseCategory::find();
-        // ->where(['id_type' => 5])
-        // // ->orderBy(['category_name' => SORT_ASC])
-        // ->all();
-        // $response['list'] = $list;
-        $response['categoryImagePath'] = 'https://walletplus.in/category/';
+        $response['categoryImagePath'] = Yii::$app->params['categoryImagePath'];
         
         Yii::$app->response->statusCode = 200;
         return \yii\helpers\Json::encode($response);    
@@ -90,12 +84,7 @@ class ZakatController extends \yii\web\Controller
     
 
     public function actionCountries() {
-        $rawBody = Yii::$app->request->rawBody;
-        $data = json_decode($rawBody, true);
-
         $categories = Countries::find()
-        // ->where(['id_type' => 5])
-        // ->orderBy(['category_name' => SORT_ASC])
         ->all();
 
         $response['list'] = $categories;

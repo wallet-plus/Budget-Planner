@@ -205,8 +205,7 @@ class AuthController extends \yii\web\Controller
         }
     }
 
-    public function actionLogin()
-    {
+    public function actionLogin() {
         $rawBody = Yii::$app->request->rawBody;
         $data = json_decode($rawBody, true);
 
@@ -234,7 +233,7 @@ class AuthController extends \yii\web\Controller
                 'phone' => $user->phone,
                 'name' => $user->firstname,
                 'image' => $user->image,
-                'imagePath' => 'https://walletplus.in/users/',
+                'imagePath' => Yii::$app->params['userImagePath'],
                 'status' => null,
                 'accessToken' => $user->authKey
             ];
@@ -395,20 +394,11 @@ class AuthController extends \yii\web\Controller
                         'active' => $user->active, 
                         'offline_access' => $user->offline_access ,
                         'email_notification' => $user->email_notification,
-                        'date_of_birth'=> $date_of_birth
- 
-                    //     'id' => $user->id,
-                    //     'email' => $user->email,
-                    //     'phone' => $user->phone,
-                    //     'name' => $user->firstname,
-                    //     'image' => $user->image,
-                    //     'imagePath' => 'https://walletplus.in/users/',
-                    //     'status' => null,
-                    //     'accessToken' => $user->authKey
+                        // 'date_of_birth'=> $date_of_birth
                     ];
 
                     // $response['userData'] = $user;
-                    $response['imagePath'] = 'https://walletplus.in/users/';
+                    $response['imagePath'] = Yii::$app->params['userImagePath'];
                     Yii::$app->response->statusCode = 200;
                     return \yii\helpers\Json::encode($response);
                 } else {
@@ -434,7 +424,7 @@ class AuthController extends \yii\web\Controller
             $authorizationHeader = $headers->get('Authorization');
             $token = str_replace('Bearer ', '', $authorizationHeader);
             $response['userData'] = Customer::find()->where(['authKey' => $token])->one();
-            $response['imagePath'] = 'https://walletplus.in/users/';
+            $response['imagePath'] = Yii::$app->params['userImagePath'];
             Yii::$app->response->statusCode = 200;
             return \yii\helpers\Json::encode($response); 
             
@@ -495,8 +485,8 @@ class AuthController extends \yii\web\Controller
             if($user){
                 $users = Customer::find()->all();
                 $response['list'] = $users;
-                $response['userImagePath'] = 'https://walletplus.in/users/';
-                $response['imagePath'] = 'https://walletplus.in/users/';
+                $response['userImagePath'] = Yii::$app->params['userImagePath'];
+                $response['imagePath'] = Yii::$app->params['userImagePath'];
 
                 
                 Yii::$app->response->statusCode = 200;
@@ -525,7 +515,7 @@ class AuthController extends \yii\web\Controller
                 $data = json_decode($rawBody, true);
                 $userId = $data['id'];
                 $response['userData'] = Customer::find()->where(['id' => $userId])->one();
-                $response['imagePath'] = 'https://walletplus.in/users/';
+                $response['imagePath'] = Yii::$app->params['userImagePath'];
                 Yii::$app->response->statusCode = 200;
                 return \yii\helpers\Json::encode($response); 
             } else {
@@ -537,36 +527,6 @@ class AuthController extends \yii\web\Controller
             return \yii\helpers\Json::encode(['error' => 'UnAuthorized']);
         }
         
-    }
-
-
-
-
-    public function actionParticipants()
-    {
-        $headers = Yii::$app->request->headers;
-        if ($headers->has('Authorization')) {
-            $authorizationHeader = $headers->get('Authorization');
-            $token = str_replace('Bearer ', '', $authorizationHeader);
-            $user = Customer::find()->where(['authKey' => $token])->one();
-
-            if($user){
-                $users = Customer::find()
-                ->where(['created_by' => $user->id])
-                ->all();
-                $response['list'] = $users;
-                $response['userImagePath'] = 'https://walletplus.in/users/';
-                
-                Yii::$app->response->statusCode = 200;
-                return \yii\helpers\Json::encode($response);  
-            } else {
-                Yii::$app->response->statusCode = 401;
-                return \yii\helpers\Json::encode(['error' => 'UnAuthorized']);
-            }
-        } else {
-            Yii::$app->response->statusCode = 401;
-            return \yii\helpers\Json::encode(['error' => 'UnAuthorized']);
-        }
     }
 
 
@@ -649,7 +609,7 @@ class AuthController extends \yii\web\Controller
                         'email_notification' => $userData->email_notification,
                     ];
     
-                    $response['imagePath'] = 'https://walletplus.in/users/';
+                    $response['imagePath'] = Yii::$app->params['userImagePath'];
                     Yii::$app->response->statusCode = 200;
                     return \yii\helpers\Json::encode($response);
                 } else {
@@ -665,11 +625,109 @@ class AuthController extends \yii\web\Controller
             return \yii\helpers\Json::encode(['error' => 'Unauthorized']);
         }
     }
-    
+
+    public function actionUpdateUser()
+    {
+        $headers = Yii::$app->request->headers;
+
+        if ($headers->has('Authorization')) {
+            $authorizationHeader = $headers->get('Authorization');
+            $token = str_replace('Bearer ', '', $authorizationHeader);
+            $authUser = Customer::find()->where(['authKey' => $token])->one();
+
+            if ($authUser) {
+                // Get the user ID from the request
+                $userId = Yii::$app->request->post('id');
+
+                // Find the user to update
+                $userData = Customer::find()->where(['id' => $userId])->one();
+                if (!$userData) {
+                    Yii::$app->response->statusCode = 404;
+                    return \yii\helpers\Json::encode(['error' => 'User Not Found']);
+                }
+
+                $userData->firstname = Yii::$app->request->post('firstname');
+                $userData->lastname = Yii::$app->request->post('lastname');
+                $userData->phone = Yii::$app->request->post('phone');
+                $userData->gender = Yii::$app->request->post('gender');
+
+                // Only set password if it's provided in the request
+                if (Yii::$app->request->post('password')) {
+                    $userData->password = Yii::$app->security->generatePasswordHash(Yii::$app->request->post('password'));
+                }
+
+                // Store the old image name
+                // $oldImageName = $userData->image;
+
+                // Update user data from the request
+                
+                // $userData->phone = Yii::$app->request->post('phone', $userData->phone);
+                // $userData->gender = Yii::$app->request->post('gender', $userData->gender);
+                // $userData->active = Yii::$app->request->post('accountDeactivation', $userData->active);
+                // $userData->offline_access = Yii::$app->request->post('enableOfflineAccess', $userData->offline_access);
+                // $userData->email_notification = Yii::$app->request->post('emailNotification', $userData->email_notification);
+
+                
+
+                // Handle image upload
+                // $imageFile = UploadedFile::getInstanceByName('image');
+                // if ($imageFile) {
+                //     $uploadPath = Yii::getAlias('@webroot') . '/users/';
+                //     $imageName = time() . '_' . $imageFile->baseName . '.' . $imageFile->extension;
+                //     $imageFile->saveAs($uploadPath . $imageName);
+                //     $userData->image = $imageName;
+
+                //     // Remove old image if exists
+                //     if ($oldImageName) {
+                //         $oldImagePath = $uploadPath . $oldImageName;
+                //         if (file_exists($oldImagePath)) {
+                //             unlink($oldImagePath);
+                //         }
+                //     }
+                // }
+
+                // Save the user data
+                if ($userData->save()) {
+                    $response = [
+                        'email_verification_code' => $userData->email_verification_code,
+                        'email_verified' => $userData->email_verified,
+                        'firstname' => $userData->firstname,
+                        'id' => $userData->id,
+                        'id_customer_type' => $userData->id_customer_type,
+                        'image' => $userData->image,
+                        'ipaddress' => $userData->ipaddress,
+                        'lastname' => $userData->lastname,
+                        'mobile_verification_code' => $userData->mobile_verification_code,
+                        'mobile_verified' => $userData->mobile_verified,
+                        'otp' => $userData->otp,
+                        'gender' => $userData->gender,
+                        'phone' => $userData->phone,
+                        'username' => $userData->username,
+                        'active' => $userData->active,
+                        'offline_access' => $userData->offline_access,
+                        'email_notification' => $userData->email_notification,
+                    ];
+
+                    $response['imagePath'] = Yii::$app->params['userImagePath'];
+                    Yii::$app->response->statusCode = 200;
+                    return \yii\helpers\Json::encode($response);
+                } else {
+                    Yii::$app->response->statusCode = 500;
+                    return \yii\helpers\Json::encode(['error' => 'Failed to update user data']);
+                }
+            } else {
+                Yii::$app->response->statusCode = 401;
+                return \yii\helpers\Json::encode(['error' => 'Unauthorized']);
+            }
+        } else {
+            Yii::$app->response->statusCode = 401;
+            return \yii\helpers\Json::encode(['error' => 'Unauthorized']);
+        }
+    }
 
     public function beforeAction($action)
     {
-        if (in_array($action->id, ['participants','create-user', 'user-details', 'users', 'login', 'register','forgot-password','reset-password', 'profile', 'save-profile','verifyemail'])) {
+        if (in_array($action->id, ['update-user','create-user', 'user-details', 'users', 'login', 'register','forgot-password','reset-password', 'profile', 'save-profile','verifyemail'])) {
             $this->enableCsrfValidation = false;
         }
         return parent::beforeAction($action);

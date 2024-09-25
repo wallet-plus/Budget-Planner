@@ -51,7 +51,7 @@ class BudgetController extends \yii\web\Controller
         $behaviors['corsFilter'] = [
             'class' => \yii\filters\Cors::class,
             'cors' => [
-                'Origin' => ['http://localhost:4200', 'https://secure.walletplus.in', 'https://walletplus.in'],
+                'Origin' => Yii::$app->params['allowedOrigins'],
                 'Access-Control-Request-Method' => ['FETCH', 'GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
                 'Access-Control-Allow-Credentials' => true,
                 'Access-Control-Request-Headers' => ['*'],
@@ -162,10 +162,9 @@ class BudgetController extends \yii\web\Controller
                 $command = $query->createCommand();
                 $list = $command->queryAll();
                 $response['list'] = $list;
-                $response['categoryImagePath'] = 'https://walletplus.in/category/';
-                $response['imagePath'] = 'https://walletplus.in/expenses/';
-                $response['expenseImagePath'] = 'https://walletplus.in/expenses/';
-                $response['userImagePath'] = 'https://walletplus.in/users/';
+                $response['categoryImagePath'] = Yii::$app->params['categoryImagePath'];
+                $response['expenseImagePath'] = Yii::$app->params['expenseImagePath'];
+                $response['userImagePath'] = Yii::$app->params['userImagePath'];
 
 
                 Yii::$app->response->statusCode = 200;
@@ -211,7 +210,7 @@ class BudgetController extends \yii\web\Controller
 
                 $response['data'] = $data;
                 $response['members'] = $membersData;
-                $response['imagePath'] = 'http://localhost/walletplus/expenses/';
+                $response['imagePath'] =  Yii::$app->params['expenseImagePath'];
                 Yii::$app->response->statusCode = 200;
                 return \yii\helpers\Json::encode($response);
             } else {
@@ -341,7 +340,7 @@ class BudgetController extends \yii\web\Controller
 
 
 
-                $response['categoryImagePath'] = 'https://walletplus.in/category/';
+                $response['categoryImagePath'] = Yii::$app->params['categoryImagePath']; 
                 $response['expenseTotal'] = ($expenseTotal) ? $expenseTotal : 0;
                 $response['expenditureTotal'] = ($expenditureTotal) ? $expenditureTotal : 0;
                 $response['incomeTotal'] = ($incomeTotal) ? $incomeTotal : 0;
@@ -762,7 +761,7 @@ class BudgetController extends \yii\web\Controller
                 if ($results) {
                     $response = [
                         'data' => $results,
-                        'imagePath' => 'http://localhost/walletplus/expenses/',
+                        'imagePath' => Yii::$app->params['expenseImagePath']
                     ];
                     Yii::$app->response->statusCode = 200;
                     return \yii\helpers\Json::encode($response);

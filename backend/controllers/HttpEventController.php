@@ -316,10 +316,10 @@ class HttpEventController extends \yii\web\Controller
                 $command = $query->createCommand();
                 $list = $command->queryAll();
                 $response['list'] = $list;
-                $response['categoryImagePath'] = 'https://walletplus.in/category/';
-                $response['imagePath'] = 'https://walletplus.in/expenses/';
-                $response['expenseImagePath'] = 'https://walletplus.in/expenses/';
-                $response['userImagePath'] = 'https://walletplus.in/users/';
+                $response['categoryImagePath'] = Yii::$app->params['categoryImagePath'];
+                $response['imagePath'] = Yii::$app->params['expenseImagePath'];
+                $response['expenseImagePath'] = Yii::$app->params['expenseImagePath'];
+                $response['userImagePath'] = Yii::$app->params['userImagePath'];
 
 
                 Yii::$app->response->statusCode = 200;
