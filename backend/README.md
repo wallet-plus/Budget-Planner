@@ -10,8 +10,7 @@
     <br />
     <br />
     <a href="https://secure.walletplus.in">View Demo</a>
-    ·
-    <a href="https://github.com/Wallet-Plus/Budget-Tracker-App/issues">Report Bug</a>
+    <a href="https://github.com/wallet-plus/WalletPlus_v2/issues">Report Bug</a>
   </p>
 </div>
 
