@@ -44,7 +44,11 @@ class AuthController extends \yii\web\Controller
     {
         // 1: Welcome Email
         // 2: Credentials 
-        // 3: Email Verfication 
+        // 3: Email Verification 
+        // 4: Login  
+        // 5: Forgot Password 
+        // 6: Reset Password 
+        // 7: Password Updated 
 
         $templateQuery = Yii::$app->db->createCommand("select * from bt_email_templates where id_email_template = 1");
         $templateData = $templateQuery->queryOne();
@@ -85,30 +89,28 @@ class AuthController extends \yii\web\Controller
             $htmlContent = str_replace("template_button_content" , $text, $htmlContent);
         }
 
-        // 4: Login  
-        // 5: Forgot Password 
-        // 6: Reset Password 
-        // 7: Password Updated 
-        
-        return true;
-        // try {
-        //     // Set content-type header for sending HTML email 
-        //     $headers = "MIME-Version: 1.0" . "\r\n"; 
-        //     $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n"; 
-        //     $headers .= 'From: '.$fromName.'<'.$from.'>' . "\r\n"; 
-
-        //     if($email['cc_email']){
-        //         $headers .= 'Cc: '.$email['cc_email'] . "\r\n";  
-        //     }
-           
-        //     if(mail($to, $subject, $htmlContent, $headers)){ 
-        //         return true;
-        //     }else{ 
-        //         return false;
-        //     }
-        // } catch (Exception $e) {
-        //     echo "Email could not be sent. Error: {$mailer->ErrorInfo}";
-        // }
+        if(Yii::$app->params['productionMode']){
+            try {
+                // Set content-type header for sending HTML email 
+                $headers = "MIME-Version: 1.0" . "\r\n"; 
+                $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n"; 
+                $headers .= 'From: '.$fromName.'<'.$from.'>' . "\r\n"; 
+    
+                if($email['cc_email']){
+                    $headers .= 'Cc: '.$email['cc_email'] . "\r\n";  
+                }
+               
+                if(mail($to, $subject, $htmlContent, $headers)){ 
+                    return true;
+                }else{ 
+                    return false;
+                }
+            } catch (Exception $e) {
+                echo "Email could not be sent. Error: {$mailer->ErrorInfo}";
+            }
+        }else{
+            return true;
+        }
     }
 
 
