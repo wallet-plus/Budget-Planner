@@ -1,0 +1,27 @@
+
+
+<div class="row mb-3">
+    <div class="col">
+        <h6 class="title">Cards<br>
+        </h6>
+    </div>
+    <div class="col-auto align-self-center">
+        <a [routerLink]="['/card']" class="small">Add</a>
+    </div>
+</div>
+<div class="row mb-4">
+    <div class="col-12 px-0">
+        <ul class="list-group list-group-flush bg-none">
+            <li class="list-group-item" *ngFor="let card of cardsList"
+            (click)="openCards(card)">
+                <div class="row">
+                    <div class="col-auto">
+                        <div class="avatar avatar-card shadow rounded-10 ">
+                            <img *ngIf="!!categoryImagePath+card.image" [src]="imagePath+card.image">
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

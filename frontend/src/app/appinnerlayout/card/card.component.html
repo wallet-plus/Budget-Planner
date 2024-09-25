@@ -1,0 +1,100 @@
+<div class="row mb-3">
+    <div class="col">
+        <h6 class="title">Details<br>
+        </h6>
+    </div>
+    <div class="col-auto align-self-center">
+        <a *ngIf="!!this.currentId" (click)="delete()" class="small">Delete</a>
+    </div>
+</div>
+
+<div class="row mb-3">
+
+    <form [formGroup]="cardForm">
+        <!-- <div class="form-group form-floating mb-1"
+            [class.is-valid]="cardForm.controls['name'].valid && (cardForm.controls['name'].dirty || cardForm.controls['name'].touched)"
+            [class.is-invalid]="cardForm.controls['name'].invalid && (cardForm.controls['name'].dirty || cardForm.controls['name'].touched)">
+            <input type="text" class="form-control " id="name" placeholder="{{type | titlecase}} Name"
+                formControlName="name">
+            <label class="form-control-label" for="name"> {{type | titlecase}} Name</label>
+        </div> -->
+
+        <!-- <div (click)="onOptionSelect(option)" *ngFor="let option of expenseSuggestion"
+            class="card shadow-sm mb-4 alert-danger">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-auto"> </div>
+                    <div class="col px-0">
+                        <p class="text-muted small">{{option.expense_name}}</p>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+
+
+        <!-- <div class="form-floating mb-3"
+            [class.is-valid]="cardForm.controls['category'].valid && (cardForm.controls['category'].dirty || cardForm.controls['category'].touched)"
+            [class.is-invalid]="cardForm.controls['category'].invalid && (cardForm.controls['category'].dirty || cardForm.controls['category'].touched)">
+            <select class="form-control" id="category" formControlName="category">
+                <option selected>Select</option>
+                <option [value]="category.id_category" *ngFor="let category of categoryList">{{category.category_name}}
+                </option>
+            </select>
+            <label for="category">Category</label>
+        </div> -->
+
+        <!-- <div class="form-group form-floating mb-3"
+            [class.is-valid]="cardForm.controls['amount'].valid && (cardForm.controls['amount'].dirty || cardForm.controls['amount'].touched)"
+            [class.is-invalid]="cardForm.controls['amount'].invalid && (cardForm.controls['amount'].dirty || cardForm.controls['amount'].touched)">
+            <input type="text" class="form-control " id="amount" placeholder="Amount" formControlName="amount">
+            <label class="form-control-label" for="amount">Amount</label>
+        </div> -->
+
+        <!-- <div class="form-group form-floating mb-3"
+            [class.is-valid]="cardForm.controls['dateOfTransaction'].valid && (cardForm.controls['dateOfTransaction'].dirty || cardForm.controls['dateOfTransaction'].touched)"
+            [class.is-invalid]="cardForm.controls['dateOfTransaction'].invalid && (cardForm.controls['dateOfTransaction'].dirty || cardForm.controls['dateOfTransaction'].touched)">
+            <input type="date" class="form-control " id="dateOfTransaction" formControlName="dateOfTransaction">
+            <label class="form-control-label" for="dateOfTransaction">Date Of Transaction</label>
+        </div> -->
+
+
+        <!-- <div class="form-group form-floating mb-4"
+            [class.is-valid]="cardForm.controls['description'].valid && (cardForm.controls['description'].dirty || cardForm.controls['description'].touched)"
+            [class.is-invalid]="cardForm.controls['description'].invalid && (cardForm.controls['description'].dirty || cardForm.controls['description'].touched)">
+            <textarea class="form-control " id="description" formControlName="description"
+                placeholder="description"> </textarea>
+            <label class="form-control-label" for="description">Description</label>
+        </div> -->
+
+
+        <div class="form-group form-floating mb-3"
+            [class.is-valid]="cardForm.controls['name'].valid && (cardForm.controls['name'].dirty || cardForm.controls['name'].touched)"
+            [class.is-invalid]="cardForm.controls['name'].invalid && (cardForm.controls['name'].dirty || cardForm.controls['name'].touched)">
+            <input type="text" class="form-control " id="name" placeholder="Name" formControlName="name">
+            <label class="form-control-label" for="amount">Name</label>
+        </div>
+
+        <div class="form-group form-floating mb-4">
+            <input class="form-control" type="file" id="image" name="image" (change)="onFileChange($event)"
+                formControlName="image" placeholder="image">
+        </div>
+
+
+        <div class="row" *ngIf="cardData">
+            <div class="col-auto">
+                <div class="avatar avatar-card shadow rounded-10 ">
+                    <img *ngIf="!!imagePath+cardData.image" [src]="imagePath+cardData.image">
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+<div class="row mb-4">
+    <div class="col-12 ">
+        <button (click)="onSubmit()" class="btn btn-default btn-lg shadow-sm w-100">
+            Save
+        </button>
+    </div>
+</div>

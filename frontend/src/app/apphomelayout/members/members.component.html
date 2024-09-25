@@ -1,0 +1,32 @@
+<div class="row mb-3">
+    <div class="col">
+        <h6 class="title">{{'MEMBERS' | translate}}<br>
+        </h6>
+    </div>
+    <div class="col-auto align-self-center">
+        <a [routerLink]="['/add-member']" class="small">{{'ADD' |translate}}</a>
+    </div>
+</div>
+<div class="row mb-4">
+    <div class="col-12 px-0">
+        <ul class="list-group list-group-flush bg-none">
+            <li class="list-group-item" (click)="openMember(member)" *ngFor="let member of memberList">
+                <div class="row">
+                    <div class="col-auto">
+                        <div class="avatar avatar-50 shadow rounded-10 ">
+                            <img *ngIf="!!categoryImagePath+member.category_image" [src]="categoryImagePath+member.category_image" [alt]="member?.member_name">
+                        </div>
+                    </div>
+                    <div class="col align-self-center ps-0">
+                        <p class="text-color-theme mb-0">{{member?.firstname}} {{member?.lastname}}</p>
+                        <p class="text-muted size-12">{{member.phone_number}}</p>
+                    </div>
+                    <div class="col align-self-center text-end">
+                        <!-- <p class="mb-0">{{member?.amount | currency}}</p> -->
+                        <!-- <p class="text-muted size-12">{{member?.date_of_transaction | date: 'EEE, dd MMM yyyy'}}</p> -->
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

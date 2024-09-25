@@ -1,0 +1,49 @@
+<div class="row mb-3">
+    <div class="col">
+        <h6 class="title">{{'DETAILS' | translate}}<br>
+        </h6>
+    </div>
+    <div class="col-auto align-self-center">
+        <a *ngIf="!!this.currentId" (click)="delete()" class="small">{{'DELETE' | translate}}</a>
+    </div>
+</div>
+
+<div class="row mb-3">
+
+    <form [formGroup]="memberForm">
+
+        <!-- First Name -->
+        <div class="form-group form-floating mb-3"
+            [class.is-valid]="memberForm.controls['firstname'].valid && (memberForm.controls['firstname'].dirty || memberForm.controls['firstname'].touched)"
+            [class.is-invalid]="memberForm.controls['firstname'].invalid && (memberForm.controls['firstname'].dirty || memberForm.controls['firstname'].touched)">
+            <input type="text" class="form-control" id="firstname" placeholder="First Name" formControlName="firstname">
+            <label for="firstname">{{ 'FIRST_NAME' | translate }}</label>
+        </div>
+
+        <!-- Last Name -->
+        <div class="form-group form-floating mb-3"
+            [class.is-valid]="memberForm.controls['lastname'].valid && (memberForm.controls['lastname'].dirty || memberForm.controls['lastname'].touched)"
+            [class.is-invalid]="memberForm.controls['lastname'].invalid && (memberForm.controls['lastname'].dirty || memberForm.controls['lastname'].touched)">
+            <input type="text" class="form-control" id="lastname" placeholder="Last Name" formControlName="lastname">
+            <label for="lastname">{{ 'LAST_NAME' | translate }}</label>
+        </div>
+
+        <!-- Phone Number -->
+        <div class="form-group form-floating mb-3"
+            [class.is-valid]="memberForm.controls['phone_number'].valid && (memberForm.controls['phone_number'].dirty || memberForm.controls['phone_number'].touched)"
+            [class.is-invalid]="memberForm.controls['phone_number'].invalid && (memberForm.controls['phone_number'].dirty || memberForm.controls['phone_number'].touched)">
+            <input type="text" class="form-control" id="phone_number" placeholder="Phone Number"
+                formControlName="phone_number">
+            <label for="phone_number">{{ 'PHONE_NUMBER' | translate }}</label>
+        </div>
+
+    </form>
+</div>
+
+<div class="row mb-4">
+    <div class="col-12 ">
+        <button (click)="onSubmit()" class="btn btn-default btn-lg shadow-sm w-100">
+            {{'SAVE' | translate}}
+        </button>
+    </div>
+</div>

@@ -1,0 +1,97 @@
+<div class="row mb-3">
+    <div class="col">
+        <h6 class="title">{{'DETAILS' | translate}}<br>
+        </h6>
+    </div>
+    <div class="col-auto align-self-center">
+        <a *ngIf="!!this.currentId && 
+        (categoryData?.id_user == userInfo?.id)
+        " (click)="delete()" class="small">{{'DELETE' | translate}}</a>
+    </div>
+</div>
+
+<div class="row mb-3">
+
+    <form [formGroup]="categoryForm">
+
+        <!-- <div class="form-floating mb-3"
+            [class.is-valid]="categoryForm.controls['id_type'].valid && (categoryForm.controls['id_type'].dirty || categoryForm.controls['id_type'].touched)"
+            [class.is-invalid]="categoryForm.controls['id_type'].invalid && (categoryForm.controls['id_type'].dirty || categoryForm.controls['id_type'].touched)">
+            <select class="form-control" id="id_type" formControlName="id_type">
+                <option selected>{{ 'SELECT' | translate }}</option>
+                <option [value]="type.id" *ngFor="let type of typeList">{{ type.name }}</option>
+            </select>
+            <label for="id_type">{{ 'ID TYPE' | translate }}</label>
+        </div> -->
+
+        <div class="form-group form-floating mb-3"
+            [class.is-valid]="categoryForm.controls['category_name'].valid && (categoryForm.controls['category_name'].dirty || categoryForm.controls['category_name'].touched)"
+            [class.is-invalid]="categoryForm.controls['category_name'].invalid && (categoryForm.controls['category_name'].dirty || categoryForm.controls['category_name'].touched)">
+            <input type="text" class="form-control" id="category_name" placeholder="Category Name"
+                formControlName="category_name">
+            <label for="category_name">{{ 'CATEGORY_NAME' | translate }}</label>
+        </div>
+
+        <div class="form-floating mb-3"
+            [class.is-valid]="categoryForm.controls['parent'].valid && (categoryForm.controls['parent'].dirty || categoryForm.controls['parent'].touched)"
+            [class.is-invalid]="categoryForm.controls['parent'].invalid && (categoryForm.controls['parent'].dirty || categoryForm.controls['parent'].touched)">
+            <select class="form-control" id="parent" formControlName="parent">
+                <option selected>{{ 'SELECT_PARENT_CATEGORY' | translate }}</option>
+                <option [value]="parent.id" *ngFor="let parent of categoryList">{{ parent.category_name }}</option>
+            </select>
+            <label for="parent">{{ 'PARENT_CATEGORY' | translate }}</label>
+        </div>
+
+        <div class="form-group form-floating mb-3"
+            [class.is-valid]="categoryForm.controls['category_description'].valid && (categoryForm.controls['category_description'].dirty || categoryForm.controls['category_description'].touched)"
+            [class.is-invalid]="categoryForm.controls['category_description'].invalid && (categoryForm.controls['category_description'].dirty || categoryForm.controls['category_description'].touched)">
+            <textarea class="form-control" id="category_description" formControlName="category_description"
+                placeholder="Category Description"></textarea>
+            <label for="category_description">{{ 'CATEGORY_DESCRIPTION' | translate }}</label>
+        </div>
+
+
+
+        <div class="form-floating mb-3"
+            [class.is-valid]="categoryForm.controls['status'].valid && (categoryForm.controls['status'].dirty || categoryForm.controls['status'].touched)"
+            [class.is-invalid]="categoryForm.controls['status'].invalid && (categoryForm.controls['status'].dirty || categoryForm.controls['status'].touched)">
+            <select class="form-control" id="status" formControlName="status">
+                <option selected>{{ 'SELECT_STATUS' | translate }}</option>
+                <option value="1">{{ 'Active' | translate }}</option>
+                <option value="0">{{ 'Inactive' | translate }}</option>
+            </select>
+            <label for="status">{{ 'STATUS' | translate }}</label>
+        </div>
+
+
+        <!-- [class.is-valid]="categoryForm.controls['image'].valid && (categoryForm.controls['image'].dirty || categoryForm.controls['image'].touched)" -->
+        <div class="form-group form-floating mb-4">
+            <input class="form-control" type="file" id="category_image" name="category_image"
+                (change)="onFileChange($event)"  placeholder="category_image">
+                <!-- formControlName="category_image" -->
+            <!-- <label class="form-control-label" for="image">Image</label> -->
+        </div>
+
+        <div class="row" *ngIf="categoryData && categoryData.image">
+            <ng-container *ngIf="isImageFile(categoryData.category_image);">
+                <div class="mw-100 position-relative mb-2 figure">
+                    <div class="position-absolute end-0 top-0">
+                        <button class="avatar avatar-36 rounded-circle p-0 btn btn-info text-white shadow-sm m-2">
+                            <i class="bi bi-download"></i>
+                        </button>
+                    </div>
+                    <img [src]="imagePath + categoryData.category_image" alt="Image" class="mw-100">
+                </div>
+            </ng-container>
+        </div>
+    </form>
+</div>
+
+<div class="row mb-4">
+    <div class="col-12 ">
+        <button (click)="onSubmit()" class="btn btn-default btn-lg shadow-sm w-100">
+            {{'SAVE' | translate}}
+        </button>
+    </div>
+</div>
+

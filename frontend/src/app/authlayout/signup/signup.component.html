@@ -1,0 +1,89 @@
+<div class="row h-100">
+    <div class="col-12 text-center mb-auto px-0">
+        <header class="header">
+            <div class="row">
+                <div class="col-auto">
+                    <a routerLink="/signin" target="_self" class="btn btn-light btn-44">
+                        <i class="bi bi-arrow-left"></i>
+                    </a>
+                </div>
+                <div class="col align-self-center">
+                    <h5>{{'SIGN_UP' | translate}}</h5>
+                </div>
+                <div class="col-auto">
+                    <a class="btn btn-light btn-44 invisible"></a>
+                </div>
+            </div>
+        </header>
+    </div>
+    <div class="col-10 col-md-6 col-lg-5 col-xl-3 mx-auto align-self-center text-center py-4">
+        <form [formGroup]="registrationForm" class="was-validated">
+            <div class="form-floating mb-3" [class.is-valid]="registrationForm.controls['name'].valid && (registrationForm.controls['name'].dirty || registrationForm.controls['name'].touched)"
+            [class.is-invalid]="registrationForm.controls['name'].invalid && (registrationForm.controls['name'].dirty || registrationForm.controls['name'].touched)">
+                <input type="text" class="form-control"  placeholder="name"
+                    id="name" formControlName="name">
+                <label for="name">{{'NAME' | translate}}</label>
+            </div>
+            <!-- <div class="form-floating is-valid mb-3">
+                <select class="form-control" id="country">
+                    <option selected>United States (+1)</option>
+                    <option>United Kingdoms (+44)</option>
+                </select>
+                <label for="country">Contry</label>
+            </div> -->
+            <div class="form-floating  mb-3" [class.is-valid]="registrationForm.controls['phone'].valid && (registrationForm.controls['phone'].dirty || registrationForm.controls['phone'].touched)"
+            [class.is-invalid]="registrationForm.controls['phone'].invalid && (registrationForm.controls['phone'].dirty || registrationForm.controls['phone'].touched)">
+                <input type="text" class="form-control"  placeholder="Phone" (input)="validateNumber($event)" maxlength="10"
+                    id="phone" formControlName="phone">
+                <label for="password">{{'PHONE' | translate}}</label>
+            </div>
+            <div class="form-floating mb-3" [class.is-valid]="registrationForm.controls['email'].valid && (registrationForm.controls['email'].dirty || registrationForm.controls['email'].touched)"
+            [class.is-invalid]="registrationForm.controls['email'].invalid && (registrationForm.controls['email'].dirty || registrationForm.controls['email'].touched)">
+                <input type="text" class="form-control" 
+                    placeholder="Email" id="email" formControlName="email">
+                <label for="email">{{'EMAIL' | translate}}</label>
+            </div>
+            <div class="form-floating mb-3" [class.is-valid]="registrationForm.controls['password'].valid && (registrationForm.controls['password'].dirty || registrationForm.controls['password'].touched)"
+            [class.is-invalid]="registrationForm.controls['password'].invalid && (registrationForm.controls['password'].dirty || registrationForm.controls['password'].touched)">
+                <input type="password" class="form-control"  placeholder="Password" 
+                    id="password" formControlName="password" autocomplete="off" [attr.type]="showPassword ? 'text' : 'password'">
+                <label for="password">{{'PASSWORD' | translate}}</label>
+                <button type="button" class="text-danger tooltip-btn" data-bs-toggle="tooltip"
+                    data-bs-placement="left" title="Enter valid Password" id="passworderror">
+                    <i (click)="showPassword = !showPassword" class="bi "
+                    [ngClass]="{'bi-eye' :!!showPassword , 'bi-eye-slash' :!showPassword }"
+                    ></i>
+                </button>
+
+            </div>
+
+            
+            <!-- <div class="form-floating is-invalid mb-3">
+                <input type="password" class="form-control" placeholder="Confirm Password" id="confirmpassword">
+                <label for="confirmpassword">Confirm Password</label>
+                <button type="button" class="btn btn-link text-danger tooltip-btn" data-bs-toggle="tooltip"
+                    data-bs-placement="left" title="Enter valid Password" id="passworderror">
+                    <i class="bi bi-info-circle"></i>
+                </button>
+            </div> -->
+            <p class="mb-3"><span class="text-muted">{{'TERMS_CONDITIONS_AGREE' | translate}}</span> <a
+                    [routerLink]="['/termsandconditions']">{{'TERMS_CONDITIONS' | translate}}</a></p>
+            <button type="button" class="btn btn-lg btn-default w-100 mb-4 shadow"
+                (click)="onSubmit()">
+                {{'SIGN_UP' | translate}}
+            </button>
+        </form>
+    </div>
+    <div class="col-12 text-center mt-auto">
+        <div class="row justify-content-center footer-info">
+            <!-- <div class="col-auto">
+                <p class="text-muted">Or you can continue with </p>
+            </div>
+            <div class="col-auto ps-0">
+                <a routerLink="/#" class="p-1"><i class="bi bi-twitter"></i></a>
+                <a routerLink="/#" class="p-1"><i class="bi bi-google"></i></a>
+                <a routerLink="/#" class="p-1"><i class="bi bi-facebook"></i></a>
+            </div> -->
+        </div>
+    </div>
+</div>

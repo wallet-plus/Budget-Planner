@@ -1,0 +1,81 @@
+<div class="row h-100 overflow-auto">
+    <div class="col-12 text-center mb-auto px-0">
+        <header class="header">
+            <div class="row">
+                <div class="col-auto"></div>
+                <div class="col">
+                    <div class="logo-small">
+                        <img src="assets/img/logo.png" alt="">
+                        <h5>{{'WALLETPLUS' | translate}}</h5>
+                    </div>
+                </div>
+                <div class="col-auto"></div>
+            </div>
+        </header>
+    </div>
+
+   
+
+    <div class="col-10 col-md-6 col-lg-5 col-xl-3 mx-auto align-self-center text-center py-4">
+        
+        <h1 class="mb-4 text-color-theme">{{'SIGN_IN' | translate}}</h1>
+        <form  [formGroup]="loginForm" class="was-validated needs-validation">
+
+            
+            <div class="form-group form-floating mb-3" [class.is-valid]="loginForm.controls['phone'].valid && (loginForm.controls['phone'].dirty || loginForm.controls['phone'].touched)"
+            [class.is-invalid]="loginForm.controls['phone'].invalid && (loginForm.controls['phone'].dirty || loginForm.controls['phone'].touched)">
+                <input type="text" class="form-control" value="maxartkiller" id="phone" placeholder="phone" formControlName="phone">
+                <label class="form-control-label" for="phone">{{'PHONE' | translate}}</label>
+            </div>
+
+            <div class="form-group form-floating mb-3" [class.is-valid]="loginForm.controls['password'].valid && (loginForm.controls['password'].dirty || loginForm.controls['password'].touched)"
+            [class.is-invalid]="loginForm.controls['password'].invalid && (loginForm.controls['password'].dirty || loginForm.controls['password'].touched)">
+            <input type="password" [attr.type]="showPassword ? 'text' : 'password'"
+            class="form-control " id="password" placeholder="Password" formControlName="password">
+                <label class="form-control-label" for="password">{{'PASSWORD' | translate}}</label>
+                <button type="button" class="text-danger tooltip-btn" data-bs-toggle="tooltip"
+                    data-bs-placement="left" title="Enter valid Password" id="passworderror">
+                    <i (click)="showPassword = !showPassword" class="bi "
+                    [ngClass]="{'bi-eye' :!!showPassword , 'bi-eye-slash' :!showPassword }"
+                    ></i>
+                </button>
+            </div>
+            <p class="mb-3 text-center">
+                <a [routerLink]="['/forgetpassword']">
+                    {{'FORGOT_YOUR_PASSWORD' | translate}}
+                </a>
+            </p>
+
+            <button type="button" class="btn btn-lg btn-default w-100 mb-4 shadow"
+                (click)="onSubmit()">
+                {{'SIGN_IN' | translate}}
+            </button>
+        </form>
+        
+
+
+        <p class="mb-2 text-muted">{{'DONT_HAVE_ACCOUNT' | translate}} 
+            <a routerLink="/signup" target="_self" class="">
+            {{'SIGN_UP' | translate}} <i class="bi bi-arrow-right"></i>
+            </a>
+        </p>
+        
+
+        <a routerLink="/zakat-calculator" target="_self" class="">
+            Zakat Calculator <i class="bi bi-arrow-right"></i>
+        </a>
+
+    </div>
+    <div class="col-12 text-center mt-auto">
+        <div class="row justify-content-center footer-info">
+            <!-- <div class="col-auto">
+                <p class="text-muted">Or you can continue with </p>
+            </div>
+            <div class="col-auto ps-0">
+                <a routerLink="#" class="p-1"><i class="bi bi-twitter"></i></a>
+                <a routerLink="#" class="p-1"><i class="bi bi-google"></i></a>
+                <a routerLink="#" class="p-1"><i class="bi bi-facebook"></i></a>
+            </div> -->
+        </div>
+    </div>
+</div>

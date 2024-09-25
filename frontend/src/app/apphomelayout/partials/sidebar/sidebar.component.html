@@ -1,0 +1,176 @@
+<div class="closemenu text-muted" (click)="menuclose()">{{'CLOSE_MENU' | translate}}</div>
+<div class="sidebar dark-bg">
+    <div class="row my-3">
+        <div class="col-12 ">
+            <div class="card shadow-sm bg-opac text-white border-0">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-auto">
+                            <figure class="avatar avatar-44 rounded-15">
+                                <img [src]="userInfo.imagePath+userInfo.image" alt="">
+                            </figure>
+                        </div>
+                        <div class="col px-0 align-self-center">
+                            <p class="mb-1">{{userInfo.name}}</p>
+                            <!-- <p class="text-muted size-12">New York City, US</p> -->
+                        </div>
+                        <div class="col-auto">
+                            <button (click)="logout();" routerLinkActive='active' class="btn btn-44 btn-light">
+                                <i class="bi bi-box-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-12">
+            <ul class="nav nav-pills">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" routerLink="/home" routerLinkActive='active'
+                        (click)="menuclose()">
+                        <div class="avatar avatar-40 rounded icon"><i class="bi bi-house-door"></i></div>
+                        <div class="col">{{'HOME' | translate}}</div>
+                        <div class="arrow"><i class="bi bi-chevron-right"></i></div>
+                    </a>
+                </li>
+
+
+
+                <!-- <li class="nav-item dropdown" >
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">
+                        <div class="avatar avatar-40 rounded icon"><i class="bi bi-cash-coin"></i></div>
+                        <div class="col">{{'ADMIN' | translate}}</div>
+                        <div class="arrow"><i class="bi bi-plus plus"></i> <i class="bi bi-dash minus"></i>
+                        </div>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item nav-link"routerLink="/savings" routerLinkActive='active'
+                            (click)="menuclose()">
+                            <div class="avatar avatar-40 rounded icon"><i class="bi bi-briefcase"></i>
+                            </div>
+                            <div class="col">{{'EMAILS' |translate}}</div>
+                            <div class="arrow"><i class="bi bi-chevron-right"></i></div>
+                        </a></li>
+                    </ul>
+                </li> -->
+
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">
+                        <div class="avatar avatar-40 rounded icon"><i class="bi bi-cash-coin"></i></div>
+                        <div class="col">{{'BUDGET' |translate}}</div>
+                        <div class="arrow"><i class="bi bi-plus plus"></i> <i class="bi bi-dash minus"></i>
+                        </div>
+                    </a>
+                    <ul class="dropdown-menu">
+
+
+                        <li><a class="dropdown-item nav-link" routerLink="/expenses" routerLinkActive='active'
+                                (click)="menuclose()">
+                                <div class="avatar avatar-40 rounded icon"><i class="bi bi-cash-coin"></i></div>
+                                <div class="col">{{'EXPENSES' |translate}}</div>
+                                <div class="arrow"><i class="bi bi-chevron-right"></i></div>
+                            </a></li>
+                        <li><a class="dropdown-item nav-link" routerLink="/income" routerLinkActive='active'
+                                (click)="menuclose()">
+                                <div class="avatar avatar-40 rounded icon"><i class="bi bi-wallet"></i>
+                                </div>
+                                <div class="col">{{'INCOME' |translate}}</div>
+                                <div class="arrow"><i class="bi bi-chevron-right"></i></div>
+                            </a></li>
+                        <li><a class="dropdown-item nav-link" routerLink="/savings" routerLinkActive='active'
+                                (click)="menuclose()">
+                                <div class="avatar avatar-40 rounded icon"><i class="bi bi-briefcase"></i>
+                                </div>
+                                <div class="col">{{'SAVINGS' | translate}}</div>
+                                <div class="arrow"><i class="bi bi-chevron-right"></i></div>
+                            </a></li>
+                        <li><a class="dropdown-item nav-link" routerLink="/categories" routerLinkActive='active'
+                                (click)="menuclose()">
+                                <div class="avatar avatar-40 rounded icon"><i class="bi bi-tags-fill"></i>
+                                </div>
+                                <div class="col">{{'CATEGORIES' |translate}}</div>
+                                <div class="arrow"><i class="bi bi-chevron-right"></i></div>
+                            </a></li>
+
+
+                    </ul>
+                </li>
+
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">
+                        <div class="avatar avatar-40 rounded icon"><i class="bi bi-calendar2-event"></i></div>
+                        <div class="col">{{'EVENTS' |translate}}</div>
+                        <div class="arrow"><i class="bi bi-plus plus"></i> <i class="bi bi-dash minus"></i>
+                        </div>
+                    </a>
+                    <ul class="dropdown-menu">
+
+
+                        <li><a class="dropdown-item nav-link" routerLink="/events" routerLinkActive='active'
+                                (click)="menuclose()">
+                                <div class="avatar avatar-40 rounded icon"><i class="bi bi-calendar2-event"></i>
+                                </div>
+                                <div class="col">{{'EVENTS' |translate}}</div>
+                                <div class="arrow"><i class="bi bi-chevron-right"></i></div>
+                            </a></li>
+
+                        <li><a class="dropdown-item nav-link" routerLink="/members" routerLinkActive='active'
+                                (click)="menuclose()">
+                                <div class="avatar avatar-40 rounded icon"><i class="bi bi-people-fill"></i>
+                                </div>
+                                <div class="col">{{'MEMBERS' |translate}}</div>
+                                <div class="arrow"><i class="bi bi-chevron-right"></i></div>
+                            </a></li>
+
+
+                    </ul>
+                </li>
+
+
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" routerLink="/cards" routerLinkActive='active'
+                        (click)="menuclose()">
+                        <div class="avatar avatar-40 rounded icon"><i class="bi bi-wallet2"></i></div>
+                        <div class="col">{{'CARDS' | translate}}</div>
+                        <div class="arrow"><i class="bi bi-chevron-right"></i></div>
+                    </a>
+                </li>
+
+
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" routerLink="/zakat-calculator" routerLinkActive='active'
+                        (click)="menuclose()">
+                        <div class="avatar avatar-40 rounded icon"><i class="bi bi-wallet-fill"></i></div>
+                        <div class="col">{{'ZAKAT_CALCULATOR' | translate}}</div>
+                        <div class="arrow"><i class="bi bi-chevron-right"></i></div>
+                    </a>
+                </li>
+
+
+
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" routerLink="/users" routerLinkActive='active'
+                        (click)="menuclose()">
+                        <div class="avatar avatar-40 rounded icon"><i class="bi bi-people-fill"></i></div>
+                        <div class="col">{{'USERS' | translate}}</div>
+                        <div class="arrow"><i class="bi bi-chevron-right"></i></div>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" (click)="logout()">
+                        <div class="avatar avatar-40 rounded icon"><i class="bi bi-box-arrow-right"></i></div>
+                        <div class="col">{{'LOGOUT' |translate}}</div>
+                        <div class="arrow"><i class="bi bi-chevron-right"></i></div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

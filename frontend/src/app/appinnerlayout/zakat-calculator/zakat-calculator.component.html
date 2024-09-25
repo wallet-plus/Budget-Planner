@@ -1,0 +1,147 @@
+<div class="row mb-3">
+    <div class="col-12 col-md-6 col-lg-4 mb-3" *ngIf="countryList">
+        <div class="form-group form-floating">
+            <select class="form-control"><!--(change)="getStates($event.target)"-->
+                <option selected value="">Select</option>
+                <option [value]="country.id_country" *ngFor="let country of countryList">{{country.name}}</option>
+            </select>
+            <label class="form-control-label" for="gender">{{'COUNTRY' | translate}}</label>
+        </div>
+    </div>
+
+    <div class="col-12 col-md-6 col-lg-4 mb-3" *ngIf="stateList">
+        <div class="form-group form-floating">
+            <select class="form-control"><!--(change)="getCities($event.target)"-->
+                <option selected value="">Select</option>
+                <option [value]="state.id_state" *ngFor="let state of stateList">{{state.name}}</option>
+            </select>
+            <label class="form-control-label" for="state">{{'STATE' | translate}}</label>
+        </div>
+    </div>
+
+
+    <div class="col-12 col-md-6 col-lg-4 mb-3" *ngIf="cityList">
+        <div class="form-group form-floating">
+            <select class="form-control"><!--(change)="getLocationPrices($event.target)"-->
+                <option selected value="">Select</option>
+                <option [value]="city.id_city" *ngFor="let city of cityList">{{city.name}}</option>
+            </select>
+            <label class="form-control-label" for="city">{{'CITY' | translate}}</label>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<div class="row mb-3" *ngIf="pricesData">
+    <form [formGroup]="zakatForm" >
+
+        <div class="row mb-3" [hidden]="!!category.parent" *ngFor="let category of categoryList; let i = index">
+
+            <div class="form-group">
+                <label class="form-label">
+                    <!-- {{ category.id_category }} --- -->
+                    {{ category.category_name }} 
+
+                    {{category.category_description}}
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input rounded-circle" [formControlName]="category.id_category"
+                            [name]="category.id_category" [value]="'yes'" type="radio"
+                            id="{{ category.id_category }}_yes">
+                        <label class="form-check-label" for="{{ category.id_category }}_yes">Yes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input rounded-circle" [formControlName]="category.id_category"
+                            [name]="category.id_category" [value]="'no'" type="radio"
+                            id="{{ category.id_category }}_no">
+                        <label class="form-check-label" for="{{ category.id_category }}_no">No</label>
+                    </div>
+                </label>
+
+                <div *ngIf="(category.child.length == 0) &&  zakatForm.controls[category.id_category].value == 'yes'">
+                    <div class="form-group form-floating mb-1">
+                        <input type="text" maxlength="10"  class="form-control " id="name"
+                            [formControlName]="category.id_category+'_quantity'"
+                            (input)="checkCategoryZakatAmount(category)" (input)="preventText($event)">
+                        <label class="form-control-label" for="name">{{ category.category_name }}  <span *ngIf="category.units">({{category.units}})</span></label>
+                    </div>
+
+                    <label class="form-control-label" *ngIf="(zakatForm.controls[category.id_category].value == 'yes') && (zakatForm.controls[category.id_category+'_quantity'].value > 0)"
+                        for="name">{{ category.category_name }} Total Amount : {{category.categoryAmount | currency}}
+                    </label><br *ngIf="(zakatForm.controls[category.id_category].value == 'yes') && (zakatForm.controls[category.id_category+'_quantity'].value > 0)" />
+
+                    <label class="form-control-label" *ngIf="(zakatForm.controls[category.id_category].value == 'yes' ) && zakatForm.controls[category.id_category+'_quantity'].value > 0"
+                        for="name">{{ category.category_name }} Zakat Amount : {{category.zakatAmount | currency}}
+                    </label><br *ngIf="(zakatForm.controls[category.id_category].value == 'yes') && (zakatForm.controls[category.id_category+'_quantity'].value > 0)"/>
+
+                    <label class="form-control-label" *ngIf="category.zakatMessage && zakatForm.controls[category.id_category].value == 'yes'"
+                            for="name">{{ category.category_name }} Info : {{category.zakatMessage}}
+                    </label><br *ngIf="(zakatForm.controls[category.id_category].value == 'yes') && (zakatForm.controls[category.id_category+'_quantity'].value >= 0)" /> 
+
+                </div>
+
+                <div *ngIf="(category.child.length > 0) &&  zakatForm.controls[category.id_category].value == 'yes'">
+
+                    <div *ngFor="let child of category.child">
+                        <label class="form-label">
+                            {{ child.category_name }}:
+
+                            {{category.category_description}}
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input rounded-circle" [formControlName]="child.id_category"
+                                    [name]="child.id_category" [value]="'yes'" type="radio"
+                                    id="{{ child.id_category }}_yes">
+                                <label class="form-check-label" for="{{ child.id_category }}_yes">Yes</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input rounded-circle" [formControlName]="child.id_category"
+                                    [name]="child.id_category" [value]="'no'" type="radio"
+                                    id="{{ child.id_category }}_no">
+                                <label class="form-check-label" for="{{ child.id_category }}_no">No</label>
+                            </div>
+                        </label>
+
+                        <div class="form-group form-floating mb-1"
+                            *ngIf="zakatForm.controls[child.id_category].value == 'yes'">
+                            <input type="text" maxlength="10"  class="form-control " id="name"
+                                [formControlName]="child.id_category+'_quantity'"
+                                (input)="checkCategoryZakatAmount(child)" (input)="preventText($event)">
+                            <label class="form-control-label" for="name">{{ child.category_name }} <span *ngIf="child.units">({{child.units}})</span> </label>
+
+                        </div>
+
+                        <label class="form-control-label" *ngIf="(zakatForm.controls[child.id_category].value == 'yes') && (zakatForm.controls[child.id_category+'_quantity'].value > 0)"
+                            for="name">{{ child.category_name }} Amount : {{child.categoryAmount | currency}}
+                        </label><br *ngIf="zakatForm.controls[child.id_category].value == 'yes'" />
+
+                        <label class="form-control-label" *ngIf="(zakatForm.controls[child.id_category].value == 'yes') && (zakatForm.controls[child.id_category+'_quantity'].value > 0)"
+                            for="name">{{ child.category_name }} Zakat Amount : {{child.zakatAmount | currency}}
+                        </label><br *ngIf="zakatForm.controls[child.id_category].value == 'yes'" />
+
+                       
+
+                        <label class="form-control-label" *ngIf="child.zakatMessage && zakatForm.controls[child.id_category].value == 'yes'"
+                            for="name">{{ child.category_name }} Info : {{child.zakatMessage | currency}}
+                        </label><br *ngIf="(zakatForm.controls[child.id_category].value == 'yes') && (zakatForm.controls[child.id_category+'_quantity'].value > 0)" /> 
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+<div class="col-10 col-md-6 col-lg-5 col-xl-3 mx-auto align-self-center text-center py-4" *ngIf="totalZakatAmount > 0">
+    <h1  class="mb-4 text-color-theme">Total Zakat:<br />{{totalZakatAmount | currency}} </h1>
+</div>
+
+<!-- <div class="row mb-4">
+    <div class="col-12 ">
+        <button (click)="checkZakatAmount()" class="btn btn-default btn-lg shadow-sm w-100">
+            {{'SAVE' | translate}}
+        </button>
+    </div>
+</div> -->

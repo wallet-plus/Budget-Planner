@@ -1,0 +1,130 @@
+<div class="row mb-3">
+    <div class="col">
+        <h6 class="title">{{'DETAILS' | translate}}<br>
+        </h6>
+    </div>
+    <div class="col-auto align-self-center">
+        <a *ngIf="!!this.currentId" (click)="delete()" class="small">{{'DELETE' | translate}}</a>
+    </div>
+</div>
+
+<div class="row mb-3">
+
+    <form [formGroup]="expenseForm">
+        <div class="form-group form-floating mb-1"
+            [class.is-valid]="expenseForm.controls['name'].valid && (expenseForm.controls['name'].dirty || expenseForm.controls['name'].touched)"
+            [class.is-invalid]="expenseForm.controls['name'].invalid && (expenseForm.controls['name'].dirty || expenseForm.controls['name'].touched)">
+            <!-- (input)="getSuggestions($event.target)" -->
+            <input type="text" class="form-control " id="name" placeholder="{{ type | uppercase | translate }} "
+                formControlName="name">
+            <label class="form-control-label" for="name"> {{ type | uppercase | translate }} {{'NAME' | translate}}</label>
+        </div>
+
+        <div (click)="onOptionSelect(option)" *ngFor="let option of expenseSuggestion"
+            class="card shadow-sm mb-4 alert-danger">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-auto"> </div>
+                    <div class="col px-0">
+                        <p class="text-muted small">{{option.expense_name}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="form-floating mb-3"
+            [class.is-valid]="expenseForm.controls['category'].valid && (expenseForm.controls['category'].dirty || expenseForm.controls['category'].touched)"
+            [class.is-invalid]="expenseForm.controls['category'].invalid && (expenseForm.controls['category'].dirty || expenseForm.controls['category'].touched)">
+            <select class="form-control" id="category" formControlName="category">
+                <option selected>Select</option>
+                <option [value]="category.id_category" *ngFor="let category of categoryList">{{category.category_name}}
+                </option>
+            </select>
+            <label for="category">{{'CATEGORY' | translate}}</label>
+        </div>
+
+        <div class="form-group form-floating mb-3"
+            [class.is-valid]="expenseForm.controls['amount'].valid && (expenseForm.controls['amount'].dirty || expenseForm.controls['amount'].touched)"
+            [class.is-invalid]="expenseForm.controls['amount'].invalid && (expenseForm.controls['amount'].dirty || expenseForm.controls['amount'].touched)">
+            <input type="text" class="form-control " id="amount" placeholder="Amount" formControlName="amount" (input)="preventText($event)">
+            <label class="form-control-label" for="amount">{{'AMOUNT' | translate}}</label>
+        </div>
+
+        <div class="form-group form-floating mb-3"
+            [class.is-valid]="expenseForm.controls['dateOfTransaction'].valid && (expenseForm.controls['dateOfTransaction'].dirty || expenseForm.controls['dateOfTransaction'].touched)"
+            [class.is-invalid]="expenseForm.controls['dateOfTransaction'].invalid && (expenseForm.controls['dateOfTransaction'].dirty || expenseForm.controls['dateOfTransaction'].touched)">
+            <input type="date" class="form-control " id="dateOfTransaction" formControlName="dateOfTransaction">
+            <label class="form-control-label" for="dateOfTransaction">{{'DATE_OF_TRANSACTION' | translate}}</label>
+        </div>
+
+
+        <div class="form-group form-floating mb-4"
+            [class.is-valid]="expenseForm.controls['description'].valid && (expenseForm.controls['description'].dirty || expenseForm.controls['description'].touched)"
+            [class.is-invalid]="expenseForm.controls['description'].invalid && (expenseForm.controls['description'].dirty || expenseForm.controls['description'].touched)">
+            <textarea class="form-control " id="description" formControlName="description"
+                placeholder="description"> </textarea>
+            <label class="form-control-label" for="description">{{'DESCRIPTION' | translate}}</label>
+        </div>
+
+
+        <!-- [class.is-valid]="expenseForm.controls['image'].valid && (expenseForm.controls['image'].dirty || expenseForm.controls['image'].touched)" -->
+        <div class="form-group form-floating mb-4">
+            <input class="form-control" type="file" id="image" name="image" (change)="onFileChange($event)"
+                formControlName="image" placeholder="image">
+            <!-- <label class="form-control-label" for="image">Image</label> -->
+        </div>
+
+
+       
+
+        
+        <div class="row" *ngIf="transactionData && transactionData.image">
+            <ng-container *ngIf="isImageFile(transactionData.image); else pdfViewer">
+                <div class="mw-100 position-relative mb-2 figure">
+                    <div class="position-absolute end-0 top-0">
+                        <button  class="avatar avatar-36 rounded-circle p-0 btn btn-info text-white shadow-sm m-2">
+                            <i (click)="downloadImage()"  class="bi bi-download"></i>
+                        </button>
+                    </div>
+                    <img [src]="imagePath + transactionData.image" alt="Image" class="mw-100">
+                </div>
+                
+            </ng-container>
+            <ng-template #pdfViewer>
+                <!-- <a download="wp_.pdf" target="_blank" [href]="imagePath + transactionData.image">Download</a> -->
+                <!-- <div *ngIf="isPdfFile(transactionData.image)">
+                  <pdf-viewer [src]="imagePath + transactionData.image" style="width: 400px; height: 500px"></pdf-viewer>
+                </div> -->
+              </ng-template>
+        </div>
+
+        <div class="form-floating mb-3"
+            [class.is-valid]="expenseForm.controls['id_event'].valid && (expenseForm.controls['id_event'].dirty || expenseForm.controls['id_event'].touched)"
+            [class.is-invalid]="expenseForm.controls['id_event'].invalid && (expenseForm.controls['id_event'].dirty || expenseForm.controls['id_event'].touched)">
+            <select class="form-control" id="id_event" formControlName="id_event" (change)="onEventSelect($event)">
+                <option selected>Select</option>
+                <option [value]="event.id_event" *ngFor="let event of eventsList">{{event.event_name}}
+                </option>
+            </select>
+            <label for="event">{{'EVENT' | translate}}</label>
+        </div>
+
+        <div class="form-floating mb-3" *ngIf="expenseForm.controls['id_event'].value">
+            <select class="form-control" multiple id="event" formControlName="members">
+                <option [value]="member.id_member" *ngFor="let member of members">{{member.firstname}} {{member.lastname}}</option>
+            </select>
+            <label for="event">{{'Members' | translate}}</label>
+        </div>        
+
+    </form>
+
+</div>
+
+<div class="row mb-4">
+    <div class="col-12 ">
+        <button (click)="onSubmit()" class="btn btn-default btn-lg shadow-sm w-100">
+            {{'SAVE' | translate}}
+        </button>
+    </div>
+</div>

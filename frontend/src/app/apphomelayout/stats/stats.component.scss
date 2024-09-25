@@ -1,0 +1,15 @@
+.calendar-daterange{
+    opacity: 1;
+    position: relative;
+    border:none;
+    background-color: transparent;
+    padding: 0;
+}
+.calendar-daterange:focus{
+    outline: none;
+}
+.smallchart{
+    margin-bottom: 0;
+     border: 0 0 15px 15px;
+     overflow: hidden;
+}

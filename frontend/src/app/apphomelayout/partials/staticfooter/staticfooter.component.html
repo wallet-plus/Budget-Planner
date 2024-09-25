@@ -1,0 +1,63 @@
+<div class="container">
+    <ul class="nav nav-pills nav-justified">
+        <li class="nav-item">
+            <a class="nav-link" routerLink="/home" routerLinkActive="active">
+                <span>
+                    <i class="nav-icon bi bi-house"></i>
+                    <span class="nav-text">{{'HOME' | translate}}</span>
+                </span>
+            </a>
+        </li>
+        
+        
+        <li class="nav-item">
+            <a class="nav-link" routerLink="/expenses" routerLinkActive="active">
+                <span>
+                    <i class="nav-icon bi bi-cash-coin"></i>
+                    <span class="nav-text">{{'EXPENSES' |translate}}</span>
+                </span>
+            </a>
+        </li>
+
+        <li class="nav-item centerbutton">
+            <div class="nav-link"  [class.active]="isVisited == true" (click)="checkVisited()">
+                <span class="theme-radial-gradient">
+                    <i class="close bi bi-x"></i>
+                    <img src="assets/img/centerbutton.svg" class="nav-icon" alt="" />
+                </span>
+                <div class="nav-menu-popover justify-content-between">
+                    <button type="button" class="btn btn-lg btn-icon-text" (click)="LogTransaction('/add/expense')" routerLink="/add/expense" routerLinkActive="active">
+                        <i class="bi bi-cash-coin size-32"></i><span>{{'EXPENSES' | translate}}</span>
+                    </button>
+
+                    <button type="button" class="btn btn-lg btn-icon-text" (click)="LogTransaction('/add/income')" routerLink="/add/income" routerLinkActive="active">
+                        <i class="bi bi-wallet size-32"></i><span>{{'INCOME' | translate}}</span>
+                    </button>
+
+                    <button type="button" class="btn btn-lg btn-icon-text" (click)="LogTransaction('/add/savings')" routerLink="/add/savings" routerLinkActive="active">
+                        <i class="bi bi-briefcase size-32"></i><span>{{'SAVINGS' | translate}}</span>
+                    </button>
+
+                </div>
+            </div>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" routerLink="/stats" routerLinkActive="active">
+                <span>
+                    <i class="nav-icon bi bi-laptop"></i>
+                    <span class="nav-text">{{'STATISTICS' | translate}}</span>
+                </span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" routerLink="/profile" routerLinkActive="active">
+                <span>
+                    <i class="nav-icon bi bi-person"></i>
+                    <span class="nav-text">{{'PROFILE' | translate}}</span>
+                </span>
+            </a>
+        </li>
+    </ul>
+</div>

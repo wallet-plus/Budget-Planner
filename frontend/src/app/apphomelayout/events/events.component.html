@@ -1,0 +1,32 @@
+<div class="row mb-3">
+    <div class="col">
+        <h6 class="title">{{'EVENTS' | translate}}<br>
+        </h6>
+    </div>
+    <div class="col-auto align-self-center">
+        <a [routerLink]="['/add-event']" class="small">{{'ADD' |translate}}</a>
+    </div>
+</div>
+<div class="row mb-4">
+    <div class="col-12 px-0">
+        <ul class="list-group list-group-flush bg-none">
+            <li class="list-group-item" *ngFor="let event of events" (click)="openEvent(event)">
+                <div class="row">
+                    <div class="col-auto">
+                        <!-- <div class="avatar avatar-50 shadow rounded-10 ">
+                            <img *ngIf="!!categoryImagePath+event.category_image" [src]="categoryImagePath+category.category_image" [alt]="category?.expense_name">
+                        </div> -->
+                    </div>
+                    <div class="col align-self-center ps-0">
+                        <p class="text-color-theme mb-0">{{event?.event_name}}</p>
+                        <p class="text-muted size-12">{{event.start_date}}- {{event.end_date}}</p>
+                    </div>
+                    <!-- <div class="col align-self-center text-end">
+                        <p class="mb-0">{{category?.amount | currency}}</p>
+                        <p class="text-muted size-12">{{category?.date_of_transaction | date: 'EEE, dd MMM yyyy'}}</p>
+                    </div> -->
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
