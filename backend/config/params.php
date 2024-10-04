@@ -11,5 +11,6 @@ return [
     'phone' => 'phone',
     'categoryImagePath' => 'https://walletplus.in/category/',
     'expenseImagePath' => 'https://walletplus.in/expenses/',
-    'userImagePath' => 'https://walletplus.in/users/' //  Yii::$app->params['categoryImagePath']
+    'userImagePath' => 'https://walletplus.in/users/', //  Yii::$app->params['categoryImagePath']
+    'cardImagePath' => 'https://walletplus.in/cards/'
 ];
