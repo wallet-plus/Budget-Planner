@@ -24,7 +24,7 @@ export class CardsComponent implements OnInit {
     if (this.userInfo) {
       this.cardService.getList().subscribe(
         (response) => {
-          this.imagePath = response.imagePath;
+          this.imagePath = response.cardsImagePath;
           this.cardsList = response.list;
         },
         (error) => {},

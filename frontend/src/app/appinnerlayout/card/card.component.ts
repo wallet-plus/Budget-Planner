@@ -57,20 +57,13 @@ export class CardComponent implements OnInit {
     }
   }
 
-  // getCategories(){
-  //   this.cardService.categoryList(this.type).subscribe(
-  //     (response) => {
-  //       this.categoryList = response;
-  //     },(error) => { },
-  //   );
-  // }
 
   onSubmit() {
     this.formSubmitted = true;
     if (this.cardForm.valid) {
       const formData = new FormData();
       formData.append('name', this.cardForm.value.name);
-      formData.append('id', this.cardForm.value.id);
+      formData.append('id', this.currentId.toString());
       formData.append('image', this.selectedImage);
 
       if (this.currentId) {
@@ -128,7 +121,7 @@ export class CardComponent implements OnInit {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Activate!',
+      confirmButtonText: 'Delete!',
     }).then((result) => {
       if (result.isConfirmed) {
         this.cardService.deleteCard(this.currentId).subscribe(

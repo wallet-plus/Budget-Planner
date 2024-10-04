@@ -22,25 +22,31 @@ export class CardService {
   }
 
   getList(): Observable<any> {
-    return this._httpClient.post(`${environment.apiUrl}card/get-list`, null);
+    return this._httpClient.post(`${environment.apiUrl}http-card/cards`, null);
   }
 
   getDetails(cardId: number): Observable<any> {
-    return this._httpClient.get(`${environment.apiUrl}card/get/${cardId}`);
+    const formData = new FormData();
+    formData.append('id', cardId.toString());
+    return this._httpClient.post(`${environment.apiUrl}http-card/get`,formData);
   }
 
-  addCard(expenseData: any): Observable<any> {
-    return this._httpClient.post(`${environment.apiUrl}card/add`, expenseData);
-  }
-
-  deleteCard(id: number): Observable<any> {
-    return this._httpClient.post(`${environment.apiUrl}card/delete/`, { id });
+  addCard(cardData: any): Observable<any> {
+    return this._httpClient.post(`${environment.apiUrl}http-card/add-card`, cardData);
   }
 
   updateCard(expenseData: any): Observable<any> {
     return this._httpClient.post(
-      `${environment.apiUrl}card/update`,
+      `${environment.apiUrl}http-card/update-card`,
       expenseData,
     );
   }
+
+  deleteCard(cardId: number): Observable<any> {
+    const formData = new FormData();
+    formData.append('id', cardId.toString());
+    return this._httpClient.post(`${environment.apiUrl}http-card/delete`, formData);
+  }
+
+
 }
