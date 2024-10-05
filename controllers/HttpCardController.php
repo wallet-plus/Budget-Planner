@@ -219,6 +219,8 @@ class HttpCardController extends \yii\web\Controller
 
             $response = [
                 'data' => $cardData,
+                'imagePath' => Yii::$app->params['cardImagePath'],
+
             ];
             Yii::$app->response->statusCode = 200;
             return \yii\helpers\Json::encode($response);
