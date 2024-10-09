@@ -1,0 +1,26 @@
+<div class="row">
+    <div class="col-auto">
+        <button class="btn btn-light btn-44 back-btn"  (click)="backnav()">
+            <i class="bi bi-arrow-left"></i>
+        </button>
+    </div>
+    <div class="col align-self-center text-center">
+        <h5>{{ pageName | uppercase | translate }}</h5>
+    </div>
+    <div class="col-auto">
+
+        <!-- <a *ngIf="pageName == 'Expense' || pageName == 'Income' || pageName == 'Savings'" 
+        (click)="delete()" routerLinkActive="active" target="_self" class="btn btn-light btn-44">
+            <i class="bi bi-trash"></i><span *ngIf="false" class="count-indicator"></span>
+        </a> -->
+        
+        <!-- <a *ngIf="pageName != 'Expense' && pageName != 'Income' && pageName != 'Savings'" routerLink="/notifications" routerLinkActive="active" target="_self" class="btn btn-light btn-44">
+            <i class="bi bi-bell"></i><span *ngIf="false" class="count-indicator"></span>
+        </a> -->
+
+        <a *ngIf="pageName != 'Expense' && pageName != 'Income' && pageName != 'Savings'" class="btn btn-light btn-44">
+            <i (click)="share()" class="bi bi-share"></i> 
+        </a>
+
+    </div>
+</div>

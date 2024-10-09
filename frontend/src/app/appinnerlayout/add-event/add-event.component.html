@@ -1,0 +1,123 @@
+<div class="row mb-3">
+    <div class="col">
+        <h6 class="title">{{'EVENT' | translate}}<br>
+        </h6>
+    </div>
+    <div class="col-auto align-self-center">
+        <a *ngIf="!!this.currentId" (click)="delete()" class="small">{{'DELETE' | translate}}</a>
+    </div>
+</div>
+
+<div class="row mb-3">
+
+    <form [formGroup]="eventForm">
+        <div class="form-group form-floating mb-1"
+            [class.is-valid]="eventForm.controls['name'].valid && (eventForm.controls['name'].dirty || eventForm.controls['name'].touched)"
+            [class.is-invalid]="eventForm.controls['name'].invalid && (eventForm.controls['name'].dirty || eventForm.controls['name'].touched)">
+            <input type="text" class="form-control " id="name" placeholder=""
+                formControlName="name">
+            <label class="form-control-label" for="name">  {{'NAME' | translate}}</label>
+        </div>
+
+        <!-- <div (click)="onOptionSelect(option)" *ngFor="let option of expenseSuggestion"
+            class="card shadow-sm mb-4 alert-danger">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-auto"> </div>
+                    <div class="col px-0">
+                        <p class="text-muted small">{{option.expense_name}}</p>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+
+
+        <!-- <div class="form-floating mb-3"
+            [class.is-valid]="eventForm.controls['category'].valid && (eventForm.controls['category'].dirty || eventForm.controls['category'].touched)"
+            [class.is-invalid]="eventForm.controls['category'].invalid && (eventForm.controls['category'].dirty || eventForm.controls['category'].touched)">
+            <select class="form-control" id="category" formControlName="category">
+                <option selected>Select</option>
+                <option [value]="category.id_category" *ngFor="let category of categoryList">{{category.category_name}}
+                </option>
+            </select>
+            <label for="category">{{'CATEGORY' | translate}}</label>
+        </div> -->
+
+        <!-- <div class="form-group form-floating mb-3"
+            [class.is-valid]="eventForm.controls['amount'].valid && (eventForm.controls['amount'].dirty || eventForm.controls['amount'].touched)"
+            [class.is-invalid]="eventForm.controls['amount'].invalid && (eventForm.controls['amount'].dirty || eventForm.controls['amount'].touched)">
+            <input type="text" class="form-control " id="amount" placeholder="Amount" formControlName="amount" (input)="preventText($event)">
+            <label class="form-control-label" for="amount">{{'AMOUNT' | translate}}</label>
+        </div> -->
+
+        <div class="form-group form-floating mb-3"
+            [class.is-valid]="eventForm.controls['start_date'].valid && (eventForm.controls['start_date'].dirty || eventForm.controls['start_date'].touched)"
+            [class.is-invalid]="eventForm.controls['start_date'].invalid && (eventForm.controls['start_date'].dirty || eventForm.controls['start_date'].touched)">
+            <input type="date" class="form-control " id="start_date" formControlName="start_date">
+            <label class="form-control-label" for="start_date">{{'START_DATE' | translate}}</label>
+        </div>
+
+        <div class="form-group form-floating mb-3"
+            [class.is-valid]="eventForm.controls['end_date'].valid && (eventForm.controls['end_date'].dirty || eventForm.controls['end_date'].touched)"
+            [class.is-invalid]="eventForm.controls['end_date'].invalid && (eventForm.controls['end_date'].dirty || eventForm.controls['end_date'].touched)">
+            <input type="date" class="form-control " id="end_date" formControlName="end_date">
+            <label class="form-control-label" for="end_date">{{'END_DATE' | translate}}</label>
+        </div>
+
+        <div class="form-floating mb-3"
+            [class.is-valid]="eventForm.controls['status'].valid && (eventForm.controls['status'].dirty || eventForm.controls['status'].touched)"
+            [class.is-invalid]="eventForm.controls['status'].invalid && (eventForm.controls['status'].dirty || eventForm.controls['status'].touched)">
+            <select class="form-control" id="status" formControlName="status">
+                <option selected>Select</option>
+                <option value="1">Enable</option>
+                <option value="2">Disable</option>
+                
+            </select>
+            <label for="category">{{'STATUS' | translate}}</label>
+        </div>
+
+        <div class="form-floating mb-3">
+            <select class="form-control" multiple id="event" formControlName="members">
+                <option [value]="member.id_member" *ngFor="let member of members">{{member.firstname}} {{member.lastname}}</option>
+            </select>
+            <label for="event">{{'members' | translate}}</label>
+        </div>
+    </form>
+</div>
+
+<div class="row mb-3">
+    <div class="col">
+        <h6 class="title">{{'Expense Details' | translate}}<br>
+        </h6>
+    </div>
+    <div class="col-auto align-self-center">
+    </div>
+</div>
+<div class="row mb-3" *ngFor="let expense of eventExpenseData?.data">
+    <div class="col">
+        {{expense.firstname}} {{expense.lastname}}<br>
+    </div>
+    <div class="col-auto align-self-center">
+        <a (click)="delete()" class="small">{{expense.total_amount | currency}}</a>
+    </div>
+</div>
+
+
+<div class="row mb-3">
+    <div class="col">
+        <h6>Total Expenses</h6>
+    </div>
+    <div class="col-auto align-self-center">
+        <a (click)="delete()" class="small"><h6>{{eventExpenseData?.event_total| currency}}</h6></a>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-12 ">
+        <button (click)="onSubmit()" class="btn btn-default btn-lg shadow-sm w-100">
+            {{'SAVE' | translate}}
+        </button>
+    </div>
+</div>
+
+

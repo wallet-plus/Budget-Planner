@@ -1,0 +1,13 @@
+<app-sidebar  class="sidebar-wrap  sidebar-pushcontent"></app-sidebar>
+
+<main #mainPage>
+    <app-headermenu class="header position-fixed" #HeaderEl></app-headermenu>
+    <div class="main-container container">
+        <div class="clearfix"></div>
+        <router-outlet></router-outlet>
+        <div class="clearfix"></div>
+    </div>
+</main>
+ 
+<app-staticfooter class="footer" #FooterEl></app-staticfooter>
+ 

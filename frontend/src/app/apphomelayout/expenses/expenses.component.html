@@ -1,0 +1,60 @@
+
+<div class="row mb-3">
+    <div class="col">
+        <h6 class="title">{{'EXPENSES' |translate}}<br>
+        </h6>
+    </div>
+    <div class="col-auto align-self-center">
+        <a [routerLink]="['/add', 'expense']" class="small">{{'ADD' |translate}}</a>
+    </div>
+</div>
+
+<div class="row mb-3">
+    <div class="col">
+        <input type="text" class="form-control" id="name" [(ngModel)]="queryParam" 
+        placeholder="{{'ENTER_QUERY' | translate}}" (input)="resetTotalExpense()">
+    </div>
+    <div class="col">
+        <select [(ngModel)]="category" class="form-control " (input)="resetTotalExpense()">
+            <option *ngFor="let category of categoryList" [value]="category.id_category">{{category.category_name}}</option>
+        </select>
+    </div>
+    <div class="col-auto align-self-center" >
+        <i class="bi bi-search" (click)="getRecords()"></i>
+    </div>
+</div>
+
+
+<div class="row mb-3" *ngIf="totalExpense > 0 && (queryParam || category)">
+    <div class="col">
+        <h6 class="title">{{'TOTAL' | translate}}<br>
+        </h6>
+    </div>
+    <div class="title col-auto align-self-center">{{totalExpense | currency}}  </div>
+</div>
+
+
+<div class="row mb-4">
+    <div class="col-12 px-0">
+        <ul class="list-group list-group-flush bg-none">
+            <li class="list-group-item" *ngFor="let expense of expenseList"
+            (click)="openTransaction(expense, 'expense')">
+                <div class="row">
+                    <div class="col-auto">
+                        <div class="avatar avatar-50 shadow rounded-10 ">
+                            <img *ngIf="!!categoryImagePath+expense.category_image" [src]="categoryImagePath+expense.category_image" [alt]="expense?.expense_name">
+                        </div>
+                    </div>
+                    <div class="col align-self-center ps-0">
+                        <p class="text-color-theme mb-0">{{expense?.expense_name}}</p>
+                        <p class="text-muted size-12">{{expense.category_name}}</p>
+                    </div>
+                    <div class="col align-self-center text-end">
+                        <p class="mb-0">{{expense?.amount | currency}}</p>
+                        <p class="text-muted size-12">{{expense?.date_of_transaction | date: 'EEE, dd MMM yyyy'}}</p>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
