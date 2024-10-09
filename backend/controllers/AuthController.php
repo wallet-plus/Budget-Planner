@@ -4,6 +4,8 @@ namespace app\controllers;
 use yii\filters\auth\CompositeAuth;
 use yii\filters\AccessControl;
 use app\models\Customer;
+use app\models\CustomerType;
+
 use Yii;
 
 use yii\web\Controller;
@@ -229,8 +231,12 @@ class AuthController extends \yii\web\Controller
             $user->authKey = Yii::$app->security->generatePasswordHash($token);
             $user->save();
 
+            $customerType = CustomerType::find()->where(['id_customer_type' => $user->id_customer_type])->one();
+
             $response = [
                 'id' => $user->id,
+                'customerType' => $customerType->name,
+                'customerTypeId' => $user->id_customer_type,
                 'email' => $user->email,
                 'phone' => $user->phone,
                 'name' => $user->firstname,
@@ -238,6 +244,7 @@ class AuthController extends \yii\web\Controller
                 'imagePath' => Yii::$app->params['userImagePath'],
                 'status' => null,
                 'accessToken' => $user->authKey
+
             ];
             Yii::$app->response->statusCode = 200;
             return \yii\helpers\Json::encode($response);

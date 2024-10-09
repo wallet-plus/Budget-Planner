@@ -3,21 +3,13 @@
 namespace app\controllers;
 
 use Yii;
-use yii\filters\auth\CompositeAuth;
-use yii\filters\AccessControl;
 use app\models\Expense;
 use app\models\ExpenseMember;
-use app\models\Member;
-use app\models\ExpenseCategory;
-use yii\data\ActiveDataProvider;
-use yii\data\Pagination;
 use DateTime;
-use Firebase\JWT\JWT;
 use yii\db\Query;
 use yii\web\UploadedFile;
 use app\models\Customer;
 use app\models\Events;
-use app\models\EventMember;
 use yii\web\Response;
 use Intervention\Image\ImageManagerStatic as Image;
 

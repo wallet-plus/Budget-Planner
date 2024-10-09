@@ -73,12 +73,13 @@ class HttpCategoryController extends \yii\web\Controller
 
                 $categories = ExpenseCategory::find()
                     ->where(['id_type' => $id_type]);
+                $categories->andWhere(['id_user' => 1]);
 
-                if ($user->id != 1) {
-                    $categories->andWhere(['id_user' => $user->id]);
+                if ($user->id != 1) { // if any user crated categories
+                    $categories->orWhere(['id_user' => $user->id]);
                 }
 
-                $categories = $categories->orderBy(['category_name' => SORT_ASC])->all();
+                $categories = $categories->orderBy(['id_user' => SORT_DESC, 'category_name' => SORT_ASC])->all();
                     
                 $response['list'] = $categories;
                 $response['categoryImagePath'] = Yii::$app->params['categoryImagePath'];
@@ -187,7 +188,7 @@ class HttpCategoryController extends \yii\web\Controller
                 // $category->parent = Yii::$app->request->post('parent');
                 $category->category_name = Yii::$app->request->post('category_name');
                 $category->category_description = Yii::$app->request->post('category_description', '');
-                // $category->category_image = Yii::$app->request->post('category_image', null); // Optional
+                $category->category_image = Yii::$app->request->post('category_image', 'no-image.jpg'); // Optional
                 $category->status = Yii::$app->request->post('status');
 
                 // Handle the uploaded image
