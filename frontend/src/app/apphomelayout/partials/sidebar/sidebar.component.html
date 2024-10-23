@@ -7,13 +7,13 @@
                     <div class="row">
                         <div class="col-auto">
                             <figure class="avatar avatar-44 rounded-15">
-                                <img [src]="userInfo.imagePath+userInfo.image" alt="">
+                                <img [src]="userInfo?.imagePath+userInfo?.image" alt="">
                             </figure>
                         </div>
 
                         
                         <div class="col px-0 align-self-center">
-                            <p class="mb-1">{{userInfo.name}}</p>
+                            <p class="mb-1">{{userInfo.firstname}} {{userInfo.lastname}}</p>
                             <p class="text-muted size-12">{{userInfo.customerType}}</p>
                         </div>
                         <div class="col-auto">

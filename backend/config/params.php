@@ -9,8 +9,8 @@ return [
     'senderName' => 'Wallet Plus',
     'address' => 'address',
     'phone' => 'phone',
-    'categoryImagePath' => 'https://walletplus.in/category/',
-    'expenseImagePath' => 'https://walletplus.in/expenses/',
-    'userImagePath' => 'https://walletplus.in/users/', //  Yii::$app->params['categoryImagePath']
-    'cardImagePath' => 'https://walletplus.in/cards/'
+    'categoryImagePath' => 'https://walletplus.in/backend/category/',
+    'expenseImagePath' => 'https://walletplus.in/backend/expenses/',
+    'userImagePath' => 'https://walletplus.in/backend/users/', //  Yii::$app->params['categoryImagePath']
+    'cardImagePath' => 'https://walletplus.in/backend/cards/'
 ];

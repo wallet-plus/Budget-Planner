@@ -239,7 +239,8 @@ class AuthController extends \yii\web\Controller
                 'customerTypeId' => $user->id_customer_type,
                 'email' => $user->email,
                 'phone' => $user->phone,
-                'name' => $user->firstname,
+                'firstname' => $user->firstname,
+                'lastname' => $user->lastname,
                 'image' => $user->image,
                 'imagePath' => Yii::$app->params['userImagePath'],
                 'status' => null,
@@ -381,29 +382,41 @@ class AuthController extends \yii\web\Controller
 
                 if ($user->save()) {   
                     
+                    $customerType = CustomerType::find()->where(['id_customer_type' => $user->id_customer_type])->one();
+
+
+                   
+
                     $response = [
                         // 'authKey' =>$user->date_updated ,
                         // 'date_created' => $user->date_updated ,
                         // 'date_updated' => $user->date_updated ,
+
+                        'accessToken' => $user->authKey ,
+                        'customerType' => $customerType->name,
+                        'customerTypeId' => $user->id_customer_type,
+                        
                         'email_verification_code' => $user->email_verification_code,
                         'email_verified' => $user->email_verified,
                         'firstname' => $user->firstname,
                         'id' => $user->id,
                         'id_customer_type' => $user->id_customer_type,
                         'image' => $user->image,
-                        'ipaddress' => $user->ipaddress,
+                       
                         'lastname' => $user->lastname,
-                        'mobile_verification_code' => $user->mobile_verification_code,
-                        'mobile_verified' => $user->mobile_verified,
+                       
+                        'phone' => $user->phone,
+                       
                         'otp' => $user->otp,
                         'gender' => $user->gender,
-                        'phone' => $user->phone,
                         'username' => $user->username,
-                        
-                        'active' => $user->active, 
-                        'offline_access' => $user->offline_access ,
-                        'email_notification' => $user->email_notification,
+                        'status' => $user->active, 
+                        // 'offline_access' => $user->offline_access ,
+                        // 'email_notification' => $user->email_notification,
+                        // 'mobile_verification_code' => $user->mobile_verification_code,
+                        // 'mobile_verified' => $user->mobile_verified,
                         // 'date_of_birth'=> $date_of_birth
+                        // 'ipaddress' => $user->ipaddress,
                     ];
 
                     // $response['userData'] = $user;
@@ -492,7 +505,7 @@ class AuthController extends \yii\web\Controller
             $user = Customer::find()->where(['authKey' => $token])->one();
 
             if($user){
-                $users = Customer::find()->all();
+                $users = Customer::find()->orderBy(['id' => SORT_DESC])->all();
                 $response['list'] = $users;
                 $response['userImagePath'] = Yii::$app->params['userImagePath'];
                 $response['imagePath'] = Yii::$app->params['userImagePath'];

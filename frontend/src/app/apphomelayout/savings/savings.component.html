@@ -12,11 +12,10 @@
 <div class="row mb-3">
     <div class="col">
         <input type="text" class="form-control" id="name" [(ngModel)]="queryParam" 
-        placeholder="{{'ENTER_QUERY' | translate}}" (input)="resetTotalExpense()">
+        placeholder="{{'ENTER_QUERY' | translate}}" > <!--(input)="resetTotalExpense()"-->
     </div>
     <div class="col">
-        <select [(ngModel)]="category" class="form-control " (input)="resetTotalExpense()">
-            <!-- <option value="">{{'SELECT'| translate}}</option> -->
+        <select [(ngModel)]="category" class="form-control " ><!--(input)="resetTotalExpense()"-->
             <option *ngFor="let category of categoryList" [value]="category.id_category">{{category.category_name}}</option>
         </select>
     </div>

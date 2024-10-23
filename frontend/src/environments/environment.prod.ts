@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://walletplus.in/',
+  apiUrl: 'https://walletplus.in/portal/',
 };

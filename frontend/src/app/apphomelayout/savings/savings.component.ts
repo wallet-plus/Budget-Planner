@@ -116,7 +116,7 @@ export class SavingsComponent implements OnInit {
   getCategories() {
     this.categoryService.categoryList('savings').subscribe(
       (response) => {
-        this.categoryList = response;
+        this.categoryList = response.list;
       },
       (error) => {},
     );
