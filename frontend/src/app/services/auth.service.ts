@@ -185,4 +185,21 @@ export class AuthService {
       profileData,
     );
   }
+
+
+  // deleteUser(profileData: FormData): Observable<any> {
+  //   return this._httpClient.post(
+  //     `${environment.apiUrl}auth/delete-user`,
+  //     profileData,
+  //   );
+  // }
+
+  deleteUser(cardId: number): Observable<any> {
+    const formData = new FormData();
+    formData.append('id', cardId.toString());
+    return this._httpClient.post(
+      `${environment.apiUrl}auth/delete-user`,
+      formData,
+    );
+  }
 }

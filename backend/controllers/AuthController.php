@@ -747,9 +747,43 @@ class AuthController extends \yii\web\Controller
         }
     }
 
+    public function actionDeleteUser() {
+        $headers = Yii::$app->request->headers;
+        if ($headers->has('Authorization')) {
+           
+            $authorizationHeader = $headers->get('Authorization');
+            $token = str_replace('Bearer ', '', $authorizationHeader);
+            $user = Customer::find()->where(['authKey' => $token])->one();
+           
+            if ($user) {
+                $userId = Yii::$app->request->post('id');
+                $customer = Customer::findOne($userId);
+                if ($customer) {
+                    if ($customer->delete()) {
+                        Yii::$app->response->statusCode = 204; // No Content status code
+                        return \yii\helpers\Json::encode(['message' => 'User deleted successfully']);
+                    } else {
+                        Yii::$app->response->statusCode = 500; // Internal Server Error status code
+                        return \yii\helpers\Json::encode(['error' => 'Failed to delete User']);
+                    }
+                } else {
+                    Yii::$app->response->statusCode = 404; // Not Found status code
+                    return \yii\helpers\Json::encode(['error' => 'User not found']);
+                }
+            } else {
+                Yii::$app->response->statusCode = 401;
+                return \yii\helpers\Json::encode(['error' => 'UnAuthorized']);
+            }
+        } else {
+            Yii::$app->response->statusCode = 401;
+            return \yii\helpers\Json::encode(['error' => 'UnAuthorized']);
+        }
+    }
+
+
     public function beforeAction($action)
     {
-        if (in_array($action->id, ['update-user','create-user', 'user-details', 'users', 'login', 'register','forgot-password','reset-password', 'profile', 'save-profile','verifyemail'])) {
+        if (in_array($action->id, ['update-user','create-user','delete-user', 'user-details', 'users', 'login', 'register','forgot-password','reset-password', 'profile', 'save-profile','verifyemail'])) {
             $this->enableCsrfValidation = false;
         }
         return parent::beforeAction($action);

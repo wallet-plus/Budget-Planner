@@ -5,7 +5,7 @@ import {
   ValidationErrors,
   Validators,
 } from '@angular/forms';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { AuthService } from 'src/app/services/auth.service';
 import Swal from 'sweetalert2';
@@ -28,6 +28,7 @@ export class UserDetailsComponent implements OnInit {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private activatedRoute: ActivatedRoute,
+    private router : Router
   ) {}
 
   ngOnInit(): void {
@@ -193,7 +194,7 @@ export class UserDetailsComponent implements OnInit {
               showConfirmButton: false,
               timer: 1500,
             });
-            // this.router.navigateByUrl('/profile');
+            this.router.navigateByUrl('/users');
           },
           (error) => {
             Swal.fire({
@@ -238,5 +239,43 @@ export class UserDetailsComponent implements OnInit {
       }
       return null;
     };
+  }
+
+
+  delete() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Want to Delete User',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Delete',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.authService.deleteUser(this.currentId).subscribe(
+          (response) => {
+            Swal.fire({
+              icon: 'success',
+              title: 'User',
+              text: 'User Deleted',
+              showConfirmButton: false,
+              timer: 1500,
+            }).then((deleteResult) => {
+              this.router.navigateByUrl('/users');
+            });
+          },
+          (error) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'User',
+              text: 'User Delete Failed!',
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          },
+        );
+      }
+    });
   }
 }

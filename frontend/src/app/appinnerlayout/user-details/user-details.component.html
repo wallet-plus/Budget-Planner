@@ -4,8 +4,8 @@
         </h6>
     </div>
     <div class="col-auto align-self-center">
-        <a *ngIf="!!this.currentId" class="small">Delete</a>
-        <!-- (click)="delete()" -->
+        <a *ngIf="!!this.currentId" class="small" (click)="delete()">Delete</a>
+        
     </div>
 </div>
 
