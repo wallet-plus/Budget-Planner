@@ -98,7 +98,12 @@
         {{expense.firstname}} {{expense.lastname}}<br>
     </div>
     <div class="col-auto align-self-center">
-        <a (click)="delete()" class="small">{{expense.total_amount | currency}}</a>
+        <a class="small">{{expense.total_income_amount | currency}}</a> - 
+        <a class="small">{{expense.total_expense_amount | currency}}</a>
+    </div>
+
+    <div class="col-auto align-self-center">
+        <a class="small">= {{expense.total_income_amount - expense.total_expense_amount | currency}}</a>
     </div>
 </div>
 
@@ -108,7 +113,8 @@
         <h6>Total Expenses</h6>
     </div>
     <div class="col-auto align-self-center">
-        <a (click)="delete()" class="small"><h6>{{eventExpenseData?.event_total| currency}}</h6></a>
+        <!-- (click)="delete()" -->
+        <a class="small"><h6>{{eventExpenseData?.event_income_total}} - {{ eventExpenseData?.event_expense_total}} = {{(eventExpenseData?.event_income_total - eventExpenseData?.event_expense_total) | currency}}</h6></a>
     </div>
 </div>
 

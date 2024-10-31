@@ -2108,7 +2108,7 @@
     justify-content: center;
     transition: background-color 90ms cubic-bezier(0, 0, 0.2, 0.1), opacity 90ms cubic-bezier(0, 0, 0.2, 0.1);
     -webkit-print-color-adjust: exact;
-    color-adjust: exact
+    print-color-adjust: exact;
   }
 
   ._mat-animation-noopable .mat-checkbox-background {
