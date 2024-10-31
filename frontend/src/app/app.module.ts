@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { SwiperModule } from 'swiper/angular';
-import { ChartsModule } from 'ng2-charts';
-import { NgCircleProgressModule } from 'ng-circle-progress';
-import { NouisliderModule } from 'ng2-nouislider';
-import { FullCalendarModule } from '@fullcalendar/angular'; // must go before plugins
-import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin!
-import { Daterangepicker } from 'ng2-daterangepicker';
+// import { SwiperModule } from 'swiper/angular';
+// import { ChartsModule } from 'ng2-charts';
+// import { NgCircleProgressModule } from 'ng-circle-progress';
+// import { NouisliderModule } from 'ng2-nouislider';
+// import { FullCalendarModule } from '@fullcalendar/angular'; // must go before plugins
+// import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin!
+// import { Daterangepicker } from 'ng2-daterangepicker';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { ImageCropperModule } from 'ngx-image-cropper';
+// import { ImageCropperModule } from 'ngx-image-cropper';
 import { TranslateModule } from '@ngx-translate/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -37,7 +37,6 @@ import { MessagesComponent } from './appinnerlayout/messages/messages.component'
 import { NotificationsComponent } from './appinnerlayout/notifications/notifications.component';
 import { PagesComponent } from './appinnerlayout/pages/pages.component';
 import { FaqsComponent } from './appinnerlayout/faqs/faqs.component';
-import { UserlistComponent } from './appinnerlayout/userlist/userlist.component';
 import { ContactusComponent } from './appinnerlayout/contactus/contactus.component';
 import { TermsandcoditionComponent } from './appinnerlayout/termsandcodition/termsandcodition.component';
 import { PagenotfoundComponent } from './appinnerlayout/pagenotfound/pagenotfound.component';
@@ -62,10 +61,10 @@ import { EventsComponent } from './apphomelayout/events/events.component';
 import { MembersComponent } from './apphomelayout/members/members.component';
 import { AddMemberComponent } from './appinnerlayout/add-member/add-member.component';
 
-FullCalendarModule.registerPlugins([
-  // register FullCalendar plugins
-  dayGridPlugin,
-]);
+// FullCalendarModule.registerPlugins([
+//   // register FullCalendar plugins
+//   dayGridPlugin,
+// ]);
 
 @NgModule({
   declarations: [
@@ -94,7 +93,6 @@ FullCalendarModule.registerPlugins([
     NotificationsComponent,
     PagesComponent,
     FaqsComponent,
-    UserlistComponent,
     ContactusComponent,
     TermsandcoditionComponent,
     PagenotfoundComponent,
@@ -120,17 +118,17 @@ FullCalendarModule.registerPlugins([
   imports: [
     BrowserModule,
     AppRoutingModule,
-    SwiperModule,
-    ChartsModule,
-    NgCircleProgressModule.forRoot(),
-    NouisliderModule,
-    FullCalendarModule,
-    Daterangepicker,
+    // SwiperModule,
+    // ChartsModule,
+    // NgCircleProgressModule.forRoot(),
+    // NouisliderModule,
+    // FullCalendarModule,
+    // Daterangepicker,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
     SharedModule,
-    ImageCropperModule,
+    // ImageCropperModule,
     // PdfViewerModule
     TranslateModule.forRoot(),
   ],

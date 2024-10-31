@@ -13,8 +13,8 @@ export class ExpensesComponent implements OnInit {
   expenseList: any;
   imagePath: string = '';
   categoryImagePath: string = '';
-  queryParam: string;
-  category: number;
+  queryParam: string = '';
+  category!: number;
   categoryList: any;
 
   startDate: any;

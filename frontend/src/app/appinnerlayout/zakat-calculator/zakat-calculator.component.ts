@@ -8,7 +8,7 @@ import { ZakatService } from 'src/app/services/zakat.service';
   styleUrls: ['./zakat-calculator.component.scss'],
 })
 export class ZakatCalulatorComponent implements OnInit {
-  zakatForm: FormGroup;
+  zakatForm!: FormGroup;
   categoryList: any;
   cityList: any;
   stateList: any;

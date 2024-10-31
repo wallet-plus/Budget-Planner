@@ -13,11 +13,11 @@ import {
 })
 export class ApphomelayoutComponent implements AfterViewInit {
   @ViewChild('HeaderEl', { read: ElementRef, static: false })
-  headerView: ElementRef;
+  headerView!: ElementRef;
   @ViewChild('mainPage', { read: ElementRef, static: false })
-  mainPageView: ElementRef;
+  mainPageView!: ElementRef;
   @ViewChild('FooterEl', { read: ElementRef, static: false })
-  footerView: ElementRef;
+  footerView!: ElementRef;
 
   constructor(private renderer: Renderer2) {}
 

@@ -14,16 +14,16 @@ export class AddMemberComponent implements OnInit {
   typeList: any;
   userInfo: any;
   categoryList: any;
-  categoryImagePath: string;
-  memberForm: FormGroup;
-  selectedImage: File;
-  imagePath: string;
-  currentId: number;
+  categoryImagePath!: string;
+  memberForm!: FormGroup;
+  selectedImage!: File;
+  imagePath!: string;
+  currentId!: number;
   formSubmitted: boolean = false;
   eventsList: any = [];
   expenseSuggestion: any = [];
   transactionData: any;
-  eventUsers: any[];
+  eventUsers: any[] = [];
   constructor(
     private formBuilder: FormBuilder,
     private localStorageService: LocalStorageService,
@@ -34,7 +34,7 @@ export class AddMemberComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe((params: Params) => {
-      this.currentId = parseInt(params.id_member);
+      this.currentId = parseInt(params['id_member']);
     });
 
     this.memberForm = this.formBuilder.group({

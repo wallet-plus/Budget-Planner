@@ -8,7 +8,6 @@ import { MessagesComponent } from './messages/messages.component';
 import { ChatlistComponent } from './chatlist/chatlist.component';
 import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
 import { FaqsComponent } from './faqs/faqs.component';
-import { UserlistComponent } from './userlist/userlist.component';
 import { ContactusComponent } from './contactus/contactus.component';
 import { TermsandcoditionComponent } from './termsandcodition/termsandcodition.component';
 import { AboutusComponent } from './aboutus/aboutus.component';
@@ -103,10 +102,6 @@ const routes: Routes = [
       {
         path: 'faqs',
         component: FaqsComponent,
-      },
-      {
-        path: 'userlist',
-        component: UserlistComponent,
       },
       {
         path: 'contactus',

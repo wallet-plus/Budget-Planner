@@ -3,23 +3,23 @@ import { Router } from '@angular/router';
 import { BudgetService } from 'src/app/services/budget.service';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 
-import SwiperCore, {
-  Navigation,
-  Pagination,
-  Scrollbar,
-  A11y,
-} from 'swiper/core';
+// import SwiperCore, {
+//   Navigation,
+//   Pagination,
+//   Scrollbar,
+//   A11y,
+// } from 'swiper/core';
 
-SwiperCore.use([Navigation, Pagination, Scrollbar, A11y]);
+// SwiperCore.use([Navigation, Pagination, Scrollbar, A11y]);
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
 })
 export class HomeComponent implements OnInit {
-  userImagePath: string;
-  expenseImagePath: string;
-  categoryImagePath: string;
+  userImagePath!: string;
+  expenseImagePath!: string;
+  categoryImagePath!: string;
   userInfo: any;
 
   expenseList: any;

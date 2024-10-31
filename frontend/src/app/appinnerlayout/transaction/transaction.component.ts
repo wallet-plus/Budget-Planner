@@ -16,16 +16,16 @@ import { EventService } from 'src/app/services/event.service';
 export class TransactionComponent implements OnInit {
   userInfo: any;
   categoryList: any;
-  expenseForm: FormGroup;
+  expenseForm!: FormGroup;
   type: string = 'Expense';
-  selectedImage: File;
-  imagePath: string;
-  currentId: number;
+  selectedImage!: File;
+  imagePath!: string;
+  currentId!: number;
   formSubmitted: boolean = false;
   eventsList: any = [];
   expenseSuggestion: any = [];
   transactionData: any;
-  eventUsers: any[];
+  eventUsers!: any[];
   categoryImagePath: string = '';
   members: any = [];
   constructor(
@@ -46,8 +46,8 @@ export class TransactionComponent implements OnInit {
     const formattedDate = `${year}-${month}-${day}`;
 
     this.activatedRoute.params.subscribe((params: Params) => {
-      this.type = params.type;
-      this.currentId = parseInt(params.id_expense);
+      this.type = params['type'];
+      this.currentId = parseInt(params['id_expense']);
     });
 
     this.expenseForm = this.formBuilder.group({

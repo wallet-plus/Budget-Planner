@@ -14,13 +14,13 @@ import {
 })
 export class AppinnerlayoutComponent implements AfterViewInit {
   @ViewChild('HeaderEl', { read: ElementRef, static: false })
-  headerView: ElementRef;
+  headerView!: ElementRef;
   @ViewChild('mainPage', { read: ElementRef, static: false })
-  mainPageView: ElementRef;
+  mainPageView!: ElementRef;
   @ViewChild('mainContainer', { read: ElementRef, static: false })
-  mainContainerView: ElementRef;
+  mainContainerView!: ElementRef;
   @ViewChild('FooterEl', { read: ElementRef, static: false })
-  footerView: ElementRef;
+  footerView!: ElementRef;
 
   constructor(private renderer: Renderer2) {}
 

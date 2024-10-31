@@ -7,20 +7,20 @@ import {
 } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { ImageCroppedEvent } from 'ngx-image-cropper';
+// import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { AuthService } from 'src/app/services/auth.service';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { TranslationService } from 'src/app/services/translation.service';
 import * as moment from 'moment';
 import Swal from 'sweetalert2';
-import SwiperCore, {
-  Navigation,
-  Pagination,
-  Scrollbar,
-  A11y,
-} from 'swiper/core';
+// import SwiperCore, {
+//   Navigation,
+//   Pagination,
+//   Scrollbar,
+//   A11y,
+// } from 'swiper/core';
 
-SwiperCore.use([Navigation, Pagination, Scrollbar, A11y]);
+// SwiperCore.use([Navigation, Pagination, Scrollbar, A11y]);
 
 @Component({
   selector: 'app-profile',
@@ -42,8 +42,8 @@ export class ProfileComponent implements OnInit {
 
   userData: any;
   profileForm: FormGroup;
-  selectedImage: File;
-  imagePath: string;
+  selectedImage!: File;
+  imagePath!: string;
   constructor(
     private fb: FormBuilder,
     private _authService: AuthService,
@@ -113,7 +113,7 @@ export class ProfileComponent implements OnInit {
             emailNotification: this.userData.email_notification === '1',
           });
 
-          if (this.profileForm.controls.date_of_birth.value) {
+          if (this.profileForm.controls['date_of_birth'].value) {
             this.singlePicker = {
               ...this.singlePicker,
             };
@@ -132,19 +132,19 @@ export class ProfileComponent implements OnInit {
     this.imageChangedEvent = event;
   }
 
-  imageCropped(event: ImageCroppedEvent) {
-    this.croppedImage = event.blob;
+  // imageCropped(event: ImageCroppedEvent) {
+  //   this.croppedImage = event.blob;
 
-    // If you want to convert the blob to base64 for display purposes
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      if (reader.result) {
-        this.croppedImageBase64 = reader.result as string;
-      }
-    };
-    // @ts-ignore
-    reader.readAsDataURL(event.blob);
-  }
+  //   // If you want to convert the blob to base64 for display purposes
+  //   const reader = new FileReader();
+  //   reader.onloadend = () => {
+  //     if (reader.result) {
+  //       this.croppedImageBase64 = reader.result as string;
+  //     }
+  //   };
+  //   // @ts-ignore
+  //   reader.readAsDataURL(event.blob);
+  // }
   imageLoaded() {
     // show cropper
   }

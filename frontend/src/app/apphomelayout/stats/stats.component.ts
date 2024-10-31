@@ -9,7 +9,7 @@ import * as moment from 'moment';
   styleUrls: ['./stats.component.scss'],
 })
 export class StatsComponent implements OnInit {
-  categoryImagePath: string;
+  categoryImagePath!: string;
   statisticsData: any;
   userInfo: any;
   public daterange: any = {};

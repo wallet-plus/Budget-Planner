@@ -33,8 +33,8 @@ export class ResetpasswordComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe((params: Params) => {
       this.resetPasswordForm.patchValue({
-        email: params.email,
-        code: params.code,
+        email: params['email'],
+        code: params['code'],
       });
     });
 
