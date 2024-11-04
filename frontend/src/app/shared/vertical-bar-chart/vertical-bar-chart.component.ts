@@ -14,7 +14,7 @@ export class VerticalBarChartComponent implements OnInit, OnChanges {
       type: 'column'
     },
     title: {
-      text: 'Transaction Amounts'
+      text: 'Expenses'
     },
     xAxis: {
       categories: [],  // This will be populated dynamically
@@ -25,7 +25,7 @@ export class VerticalBarChartComponent implements OnInit, OnChanges {
     yAxis: {
       min: 0,
       title: {
-        text: 'Amount (in Currency)'
+        text: 'Amount (Rs.)'
       }
     },
     series: [

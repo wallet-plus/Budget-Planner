@@ -14,7 +14,7 @@ export class PieChartComponent implements OnInit, OnChanges {
       type: 'pie'
     },
     title: {
-      text: 'Donut Chart Example'
+      text: 'Categories'
     },
     plotOptions: {
       pie: {
