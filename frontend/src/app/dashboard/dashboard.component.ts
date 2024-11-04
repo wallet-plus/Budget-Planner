@@ -1,14 +1,14 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { BudgetService } from 'src/app/services/budget.service';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 import * as moment from 'moment';
 
 @Component({
-  selector: 'app-stats',
-  templateUrl: './stats.component.html',
-  styleUrls: ['./stats.component.scss'],
+  selector: 'app-dashboard',
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.scss']
 })
-export class StatsComponent implements OnInit {
+export class DashboardComponent {
   categoryImagePath!: string;
   statisticsData: any;
   userInfo: any;
@@ -39,7 +39,7 @@ export class StatsComponent implements OnInit {
     private bugetService: BudgetService,
     private localStorageService: LocalStorageService,
     private cdr: ChangeDetectorRef,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     const today = moment();
@@ -77,7 +77,7 @@ export class StatsComponent implements OnInit {
           this.expenseData = response.expenseData;
           this.cdr.detectChanges();
         },
-        (error) => {},
+        (error) => { },
       );
     }
   }

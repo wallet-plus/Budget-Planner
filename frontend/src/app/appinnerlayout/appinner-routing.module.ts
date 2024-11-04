@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { AppinnerlayoutComponent } from './appinnerlayout.component';
-import { PagesComponent } from './pages/pages.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { MessagesComponent } from './messages/messages.component';
 import { ChatlistComponent } from './chatlist/chatlist.component';
@@ -90,10 +89,6 @@ const routes: Routes = [
       {
         path: 'card/:id_card',
         component: CardComponent,
-      },
-      {
-        path: 'pages',
-        component: PagesComponent,
       },
       {
         path: 'pagenotfound',
