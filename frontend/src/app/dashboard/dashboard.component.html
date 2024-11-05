@@ -5,7 +5,19 @@
     <div class="main-container container">
         <div class="clearfix"></div>
 
-    
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="card mb-4">
+                    <div class="card-header border-0">
+                        <div class="row">
+                            <div class="col position-relative align-self-center">
+                                <h6 class="mb-1">{{'DASHBOARD' |translate}}</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="row">
             <div class="col-12 col-sm-12 col-md-12 col-lg-12">
@@ -13,16 +25,31 @@
                     <div class="card-header border-0">
                         <div class="row">
                             <div class="col position-relative align-self-center">
-                                <h6 class="mb-1">{{'EXPENSES' |translate}}</h6>
-                                <!-- <input type="text" placeholder="Select date range" readonly="readonly"
-                            id="daterange" class="calendar-daterange text-muted small"  daterangepicker [options]="options" (selected)="selectedDate($event, daterange)" /> -->
-
-                            </div>
-                            <div class="col-auto align-self-center">
-                                <button class="btn btn-light btn-44 daterange-btn"
-                                    onclick="document.getElementById('daterange').click()">
-                                    <i class="bi bi-calendar-range size-22"></i>
-                                </button>
+                                <h6 class="mb-1">{{'Select Date Range' |translate}}</h6>
+                                <input
+                                    type="text"
+                                    id="rangeCalendarCenter"
+                                    class="form-control"
+                                    style="box-shadow: none; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;"
+                                    readonly
+                                    ngxDaterangepickerBootstrap
+                                    [(ngModel)]="selectedRangeCalendarCenter"
+                                    [drops]="dropsDown"
+                                    [opens]="opensCenter"
+                                    [locale]="locale"
+                                    [ranges]="ranges"
+                                    [showCustomRangeLabel]="true"
+                                    [showCancel]="true"
+                                    [linkedCalendars]="true"
+                                    [alwaysShowCalendars]="false"
+                                    [showRangeLabelOnInput]="false"
+                                    [keepCalendarOpeningWithRange]="false"
+                                    [isTooltipDate]="isTooltipDate"
+                                    (datesUpdated)="datesUpdatedRange($event)"
+                                    aria-describedby="rangeCalendarCenterDesc"
+                                    [isInvalidDate]="isInvalidDate"
+                                    [isCustomDate]="isCustomDate"
+                                />
                             </div>
                         </div>
                     </div>
@@ -33,10 +60,9 @@
         <div class="row">
             <div class="col-12 col-sm-12 col-md-12 col-lg-12s">
                 <div class="card mb-4">
+                    <div class="card-body px-2" *ngIf="expenseData && expenseData.length > 0">
+                        
 
-
-                    {{expenseData.length | json}}
-                    <div class="card-body px-2" *ngIf="expenseData.length > 0">
                         <app-vertical-bar-chart [expenseData]="expenseData"></app-vertical-bar-chart>
                         
                         <!-- <app-barchart [expenseData]="expenseData"></app-barchart> -->

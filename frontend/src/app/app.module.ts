@@ -53,6 +53,7 @@ import { AddEventComponent } from './appinnerlayout/add-event/add-event.componen
 import { EventsComponent } from './apphomelayout/events/events.component';
 import { MembersComponent } from './apphomelayout/members/members.component';
 import { AddMemberComponent } from './appinnerlayout/add-member/add-member.component';
+import { NgxDaterangepickerBootstrapModule } from 'ngx-daterangepicker-bootstrap';
 
 // FullCalendarModule.registerPlugins([
 //   // register FullCalendar plugins
@@ -117,6 +118,8 @@ import { AddMemberComponent } from './appinnerlayout/add-member/add-member.compo
     // ImageCropperModule,
     // PdfViewerModule
     TranslateModule.forRoot(),
+    NgxDaterangepickerBootstrapModule.forRoot(),
+
   ],
   providers: [
     {
