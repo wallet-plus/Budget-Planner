@@ -36,7 +36,13 @@
             "scripts": [
               "node_modules/@popperjs/core/dist/umd/popper.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.min.js"
-            ]
+            ],
+            "allowedCommonJsDependencies": [
+            "dayjs",
+            "sweetalert2",
+            "moment",
+            "highcharts"
+          ]
           },
           "configurations": {
             "production": {
@@ -63,7 +69,8 @@
               "namedChunks": true
             }
           },
-          "defaultConfiguration": "production"
+          "defaultConfiguration": "production",
+          
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",

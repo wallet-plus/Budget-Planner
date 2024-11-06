@@ -41,9 +41,6 @@ export class ResetpasswordComponent implements OnInit {
     const tooltiptriggerList = [].slice.call(
       document.querySelectorAll('[data-bs-toggle="tooltip"]'),
     );
-    tooltiptriggerList.map((e) => {
-      return new bootstrap.Tooltip(e);
-    });
   }
 
   onSubmit() {

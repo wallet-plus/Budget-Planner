@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
 import { BudgetService } from 'src/app/services/budget.service';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 import * as moment from 'moment';
@@ -71,6 +71,7 @@ export class DashboardComponent {
     private bugetService: BudgetService,
     private localStorageService: LocalStorageService,
     private cdr: ChangeDetectorRef,
+    private renderer: Renderer2
   ) {
 
     this.selectedRangeCalendarCenter = {
@@ -124,4 +125,28 @@ export class DashboardComponent {
   }
 
 
+  @ViewChild('HeaderEl', { read: ElementRef, static: false })
+  headerView!: ElementRef;
+  @ViewChild('mainPage', { read: ElementRef, static: false })
+  mainPageView!: ElementRef;
+  @ViewChild('FooterEl', { read: ElementRef, static: false })
+  footerView!: ElementRef;
+
+  ngAfterViewInit() {
+    this.renderer.setStyle(
+      this.mainPageView.nativeElement,
+      'padding-top',
+      `${this.headerView.nativeElement.offsetHeight + 10}px`,
+    );
+    this.renderer.setStyle(
+      this.mainPageView.nativeElement,
+      'padding-bottom',
+      `${this.headerView.nativeElement.offsetHeight + 10}px`,
+    );
+    this.renderer.setStyle(
+      this.mainPageView.nativeElement,
+      'min-height',
+      `${window.outerHeight}px`,
+    );
+  }
 }

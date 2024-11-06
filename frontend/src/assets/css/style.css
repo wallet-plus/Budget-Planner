@@ -13562,15 +13562,15 @@ a.card {
 }
 
 .logo-small img {
-  width: 32px;
-  margin: 0;
+  width: 150px;
+  /* margin: 0;
   border-radius: calc(var(--fimobile-rounded) - 10px);
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.15);
   -webkit-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.15);
   -moz-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.15);
   margin-right: 8px;
   border: 0;
-  vertical-align: middle;
+  vertical-align: middle; */
 }
 
 .logo-small h5, .logo-small .h5 {

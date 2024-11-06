@@ -65,9 +65,6 @@ export class SignupComponent implements OnInit {
     const tooltiptriggerList = [].slice.call(
       document.querySelectorAll('[data-bs-toggle="tooltip"]'),
     );
-    tooltiptriggerList.map((e) => {
-      return new bootstrap.Tooltip(e);
-    });
   }
 
   validateNumber(event: Event) {
