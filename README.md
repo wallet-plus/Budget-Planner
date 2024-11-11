@@ -1,4 +1,4 @@
-# WalletPlus
+# WalletPlus Budget Planner
 <div align="center"> <a href="https://beta.walletplus.in"> <img src="https://walletplus.in/wp-content/uploads/2024/10/walletplus-logo.png" alt="WalletPlus" > </a>  <p align="center"> Free Financial Planner App - Budget Planning, Expense Tracking, and More! <br /> <a href="https://secure.walletplus.in">View Demo</a> | <a href="https://github.com/wallet-plus/WalletPlus_v2/issues">Report Bug</a> | <a href="https://github.com/wallet-plus/WalletPlus_v2/issues">Request Feature</a> </p> </div>
 About The Project
 WalletPlus is a free personal finance management app that assists users with budgeting, tracking expenses, and achieving financial discipline. Here’s what makes WalletPlus unique:
