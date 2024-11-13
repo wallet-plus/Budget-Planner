@@ -54,6 +54,8 @@ import { EventsComponent } from './apphomelayout/events/events.component';
 import { MembersComponent } from './apphomelayout/members/members.component';
 import { AddMemberComponent } from './appinnerlayout/add-member/add-member.component';
 import { NgxDaterangepickerBootstrapModule } from 'ngx-daterangepicker-bootstrap';
+import { MemberSearchPipe } from './apphomelayout/members/member-pipe.pipe';
+import { MembersSortPipe } from './apphomelayout/members/member-sort-pipe.pipe';
 
 // FullCalendarModule.registerPlugins([
 //   // register FullCalendar plugins
@@ -100,7 +102,9 @@ import { NgxDaterangepickerBootstrapModule } from 'ngx-daterangepicker-bootstrap
     AddEventComponent,
     EventsComponent,
     MembersComponent,
-    AddMemberComponent
+    AddMemberComponent,
+    MemberSearchPipe,
+    MembersSortPipe
   ],
   imports: [
     BrowserModule,
