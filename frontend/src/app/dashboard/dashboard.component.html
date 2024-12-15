@@ -1,0 +1,197 @@
+<app-sidebar class="sidebar-wrap  sidebar-pushcontent"></app-sidebar>
+
+<main #mainPage>
+    <app-headermenu class="header position-fixed" #HeaderEl></app-headermenu>
+    <div class="main-container container">
+
+        <div class="row">
+
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="card mb-4">
+                    <div class="card-header border-0">
+                        <div class="row align-items-center">
+                            <div class="d-none d-sm-block col-auto">
+                                <h6 class="mb-1">{{'Select Date Range' |translate}}</h6>
+                            </div>
+                            <div class="col">
+                                <input type="text" id="rangeCalendarCenter" class="form-control"
+                                    style="box-shadow: none; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;"
+                                    readonly ngxDaterangepickerBootstrap [(ngModel)]="selectedRangeCalendarCenter"
+                                    [drops]="dropsDown" [opens]="opensCenter" [locale]="locale" [ranges]="ranges"
+                                    [showCustomRangeLabel]="true" [showCancel]="true" [linkedCalendars]="true"
+                                    [alwaysShowCalendars]="false" [showRangeLabelOnInput]="false"
+                                    [keepCalendarOpeningWithRange]="false" [isTooltipDate]="isTooltipDate"
+                                    (datesUpdated)="datesUpdatedRange($event)"
+                                    aria-describedby="rangeCalendarCenterDesc" [isInvalidDate]="isInvalidDate"
+                                    [isCustomDate]="isCustomDate" />
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-auto">
+                                <div class="avatar avatar-44 shadow-sm rounded-10 bg-danger text-white">
+                                    <i class="bi bi-phone vm"></i>
+                                </div>
+                            </div>
+                            <div class="col align-self-center ps-0">
+                                <p class="mb-0 size-12"><span class="text-color-theme fw-medium">{{'BALANCE' |
+                                        translate}}</span></p>
+                                <p>{{ statisticsData?.balance | currency}} </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-auto">
+                                <div class="avatar avatar-44 shadow-sm rounded-10 bg-info text-white">
+                                    <i class="bi bi-moisture vm"></i>
+                                </div>
+                            </div>
+                            <div class="col align-self-center ps-0">
+                                <p class="mb-0 size-12"><span class="text-color-theme fw-medium">{{'INCOME' |
+                                        translate}}</span> </p>
+                                <p>{{statisticsData?.incomeTotal | currency}}</p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-auto">
+                                <div class="avatar avatar-44 shadow-sm rounded-10 bg-danger text-white">
+                                    <i class="bi bi-phone vm"></i>
+                                </div>
+                            </div>
+                            <div class="col align-self-center ps-0">
+                                <p class="mb-0 size-12"><span class="text-color-theme fw-medium">{{'EXPENSES' |
+                                        translate}}</span></p>
+                                <p>{{statisticsData?.expenseTotal | currency}} </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-auto">
+                                <div class="avatar avatar-44 shadow-sm rounded-10 bg-info text-white">
+                                    <i class="bi bi-moisture vm"></i>
+                                </div>
+                            </div>
+                            <div class="col align-self-center ps-0">
+                                <p class="mb-0 size-12"><span class="text-color-theme fw-medium">{{'SAVINGS' |
+                                        translate}}</span> </p>
+                                <p>{{statisticsData?.expenditureTotal | currency}}</p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="card mb-4">
+                    <div class="card-body px-2" *ngIf="expenseData && expenseData.length > 0">
+                        <app-vertical-bar-chart [expenseData]="expenseData"></app-vertical-bar-chart>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="card mb-4">
+                    <div class="card-body px-2" *ngIf="!!statisticsData?.expenseTotal">
+                        <app-pie-chart [chartData]="statisticsData?.categories"></app-pie-chart>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <div class="row mb-1">
+            <div class="col-12 col-md-6 col-lg-3" *ngFor="let category of statisticsData?.categories">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-auto">
+                                <div class="avatar avatar-44 shadow-sm rounded-10 bg-danger text-white">
+                                    <img *ngIf="!!categoryImagePath+category.category_image"
+                                        [src]="categoryImagePath+category.category_image" [alt]="category.expense_name">
+                                </div>
+                            </div>
+                            <div class="col align-self-center ps-0">
+                                <p class="mb-0 size-12"><span
+                                        class="text-color-theme fw-medium">{{category.category_name}}</span></p>
+                                <p>{{category.total | currency}} </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+        <!-- <div class="row mb-4">
+    <div class="col-12">
+        <div class="card bg-danger text-white text-center">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col align-self-center">
+                        <h1>15% OFF</h1>
+                        <p class="size-12 text-muted">
+                            On every bill pay, launch offer get 5% Extra
+                        </p>
+                        <div class="tag border-dashed border-opac">
+                            BILLPAY15OFF
+                        </div>
+                    </div>
+                    <div class="col-6 align-self-center ps-0">
+                        <img src="assets/img/offergraphics-red.png" alt="" class="mw-100">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+
+        <div class="clearfix"></div>
+    </div>
+</main>
+
+<app-staticfooter class="footer" #FooterEl></app-staticfooter>

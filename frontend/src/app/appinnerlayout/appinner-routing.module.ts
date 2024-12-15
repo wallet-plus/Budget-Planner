@@ -2,13 +2,11 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { AppinnerlayoutComponent } from './appinnerlayout.component';
-import { PagesComponent } from './pages/pages.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { MessagesComponent } from './messages/messages.component';
 import { ChatlistComponent } from './chatlist/chatlist.component';
 import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
 import { FaqsComponent } from './faqs/faqs.component';
-import { UserlistComponent } from './userlist/userlist.component';
 import { ContactusComponent } from './contactus/contactus.component';
 import { TermsandcoditionComponent } from './termsandcodition/termsandcodition.component';
 import { AboutusComponent } from './aboutus/aboutus.component';
@@ -93,20 +91,12 @@ const routes: Routes = [
         component: CardComponent,
       },
       {
-        path: 'pages',
-        component: PagesComponent,
-      },
-      {
         path: 'pagenotfound',
         component: PagenotfoundComponent,
       },
       {
         path: 'faqs',
         component: FaqsComponent,
-      },
-      {
-        path: 'userlist',
-        component: UserlistComponent,
       },
       {
         path: 'contactus',

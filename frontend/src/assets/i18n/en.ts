@@ -73,7 +73,7 @@ export const locale = {
 
     ADD: 'Add',
     TOTAL: 'Total',
-    STATISTICS: 'Statistics',
+    DASHBOARD: 'Dashboard',
     BALANCE: 'Balance',
     TOP_CATEGORIES: 'Top Categories',
 

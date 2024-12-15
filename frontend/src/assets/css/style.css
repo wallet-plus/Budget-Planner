@@ -2578,7 +2578,7 @@ textarea.form-control-lg {
   background-size: contain;
   border: 1px solid rgba(0, 0, 0, 0.25);
   appearance: none;
-  color-adjust: exact;
+  print-color-adjust: exact;
 }
 
 .form-check-input[type="checkbox"] {
@@ -13562,15 +13562,15 @@ a.card {
 }
 
 .logo-small img {
-  width: 32px;
-  margin: 0;
+  width: 150px;
+  /* margin: 0;
   border-radius: calc(var(--fimobile-rounded) - 10px);
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.15);
   -webkit-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.15);
   -moz-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.15);
   margin-right: 8px;
   border: 0;
-  vertical-align: middle;
+  vertical-align: middle; */
 }
 
 .logo-small h5, .logo-small .h5 {
@@ -13717,4 +13717,48 @@ a.card {
 .tabs .nav-item > .nav-link.active {
   color: var(--fimobile-theme-text);
   background-color: var(--fimobile-theme-color);
+}
+
+
+.fixed-width {
+  background-color: #f4f4f4; /* Light Gray Background */
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Icon Colors */
+.expenses-icon {
+  color: #28a745; /* Green */
+}
+.income-icon {
+  color: #007bff; /* Blue */
+}
+.members-icon {
+  color: #fd7e14; /* Orange */
+}
+.events-icon {
+  color: #6f42c1; /* Purple */
+}
+.cards-icon {
+  color: #20c997; /* Teal */
+}
+.profile-icon {
+  color: #dc3545; /* Red */
+}
+
+.icon-20 {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+/* Tooltip Styling */
+.card:hover .nav-icon {
+  color: #ffffff; /* Change to white when hovered */
+}
+
+/* Hover Effect */
+.card:hover {
+  background-color: #e9ecef; /* Slightly darker gray background */
 }

@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./headerback.component.scss'],
 })
 export class HeaderbackComponent implements OnInit {
-  pageName: string;
+  pageName!: string;
 
   ngOnInit() {
     const currentURL = document.location.href;

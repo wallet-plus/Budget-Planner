@@ -29,7 +29,7 @@ export class ForgetpasswordComponent {
   onSubmit() {
     if (this.forgotPasswordForm.valid) {
       this._authService
-        .forgotPassword(this.forgotPasswordForm.controls.email.value)
+        .forgotPassword(this.forgotPasswordForm.controls['email'].value)
         .subscribe(
           (response) => {
             Swal.fire({

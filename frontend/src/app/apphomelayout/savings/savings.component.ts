@@ -16,8 +16,8 @@ export class SavingsComponent implements OnInit {
   imagePath: string = '';
   categoryImagePath: string = '';
 
-  queryParam: string;
-  category: number;
+  queryParam!: string;
+  category!: number;
   categoryList: any;
 
   public daterange: any = {};

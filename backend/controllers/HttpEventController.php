@@ -462,76 +462,157 @@ class HttpEventController extends \yii\web\Controller
 
 
     public function actionExpenseMemberTotal()
-    {
+{
+    $user = $this->getAuthorizedUser();
+    if ($user) {
+        $eventId = Yii::$app->request->post('id');
 
-        $user = $this->getAuthorizedUser();
-        if ($user) {
-            $eventId = Yii::$app->request->post('id');
+        // Fetch both income and expense amounts per member
+        $query = (new Query())
+            ->select([
+                'em.id_member',
+                'm.firstname',
+                'm.lastname',
+                'e.amount AS amount', // Get the amount for each income/expense
+                'e.id_type', // Determine if it's income (3) or expense (2)
+                '(SELECT COUNT(*) FROM bt_expense_member WHERE id_expense = e.id_expense) AS member_count' // Count of members involved
+            ])
+            ->from('bt_expense e')
+            ->innerJoin('bt_expense_member em', 'e.id_expense = em.id_expense')
+            ->innerJoin('bt_member m', 'em.id_member = m.id_member')
+            ->andWhere(['in', 'e.id_type', [2, 3]]) // Fetch both income (3) and expense (2)
+            ->andWhere(['e.id_event' => $eventId]);
 
-            // Fetch total expense per expense and divide by the number of members involved
-            $query = (new Query())
-                ->select([
-                    'em.id_member',
-                    'm.firstname',
-                    'm.lastname',
-                    'e.amount AS expense_amount', // Get the amount for each expense
-                    '(SELECT COUNT(*) FROM bt_expense_member WHERE id_expense = e.id_expense) AS member_count' // Count of members involved in the expense
-                ])
-                ->from('bt_expense e')
-                ->innerJoin('bt_expense_member em', 'e.id_expense = em.id_expense')
-                ->innerJoin('bt_member m', 'em.id_member = m.id_member') // Join with member table
-                ->where(['e.id_event' => $eventId]);
+        $command = $query->createCommand();
+        $results = $command->queryAll();
 
-            $command = $query->createCommand();
-            $results = $command->queryAll();
+        if ($results) {
+            $memberShares = [];
+            $totalExpenseAmount = 0;
+            $totalIncomeAmount = 0;
 
-            // Check if results were found
-            if ($results) {
-                $memberShares = [];
-                $totalExpenseAmount = 0; // Initialize total expense amount
+            foreach ($results as $result) {
+                // Calculate share based on expense or income
+                $shareAmount = $result['amount'] / $result['member_count'];
 
-                // Iterate over each result (each expense and member)
-                foreach ($results as $result) {
-                    // Calculate the individual share for this member in the current expense
-                    $shareAmount = $result['expense_amount'] / $result['member_count'];
-
-                    // Accumulate the total amount for each member
-                    if (!isset($memberShares[$result['id_member']])) {
-                        $memberShares[$result['id_member']] = [
-                            'id_member' => $result['id_member'],
-                            'firstname' => $result['firstname'],
-                            'lastname' => $result['lastname'],
-                            'total_amount' => 0, // Initialize total amount
-                        ];
-                    }
-
-                    // Add the share amount for the current expense
-                    $memberShares[$result['id_member']]['total_amount'] += $shareAmount;
-
-                    // Add to the total expense amount
-                    $totalExpenseAmount += $result['expense_amount'];
+                // Initialize data for each member if not already present
+                if (!isset($memberShares[$result['id_member']])) {
+                    $memberShares[$result['id_member']] = [
+                        'id_member' => $result['id_member'],
+                        'firstname' => $result['firstname'],
+                        'lastname' => $result['lastname'],
+                        'total_expense_amount' => 0,
+                        'total_income_amount' => 0,
+                    ];
                 }
 
-                // Calculate the event total based on individual member totals
-                $eventTotal = array_sum(array_column($memberShares, 'total_amount'));
-
-                // Prepare the response
-                $response = [
-                    'data' => array_values($memberShares), // Re-index the array for response
-                    'event_total' => $eventTotal,           // Total amount from individual members' totals
-                    'imagePath' => Yii::$app->params['expenseImagePath'],
-                ];
-                Yii::$app->response->statusCode = 200;
-                return \yii\helpers\Json::encode($response);
-            } else {
-                Yii::$app->response->statusCode = 404;
-                return \yii\helpers\Json::encode(['error' => 'No expenses found for the specified event']);
+                // Separate expense and income totals
+                if ($result['id_type'] == 2) { // Expense
+                    $memberShares[$result['id_member']]['total_expense_amount'] += $shareAmount;
+                    $totalExpenseAmount += $result['amount'];
+                } else if ($result['id_type'] == 3) { // Income
+                    $memberShares[$result['id_member']]['total_income_amount'] += $shareAmount;
+                    $totalIncomeAmount += $result['amount'];
+                }
             }
+
+            // Calculate the event totals based on individual member totals
+            $eventExpenseTotal = array_sum(array_column($memberShares, 'total_expense_amount'));
+            $eventIncomeTotal = array_sum(array_column($memberShares, 'total_income_amount'));
+
+            // Prepare the response
+            $response = [
+                'data' => array_values($memberShares), // Re-index the array for response
+                'event_expense_total' => $eventExpenseTotal, // Total of all expenses
+                'event_income_total' => $eventIncomeTotal,   // Total of all incomes
+                'imagePath' => Yii::$app->params['expenseImagePath'],
+            ];
+            Yii::$app->response->statusCode = 200;
+            return \yii\helpers\Json::encode($response);
         } else {
-            Yii::$app->response->statusCode = 401;
-            return \yii\helpers\Json::encode(['error' => 'Unauthorized']);
+            Yii::$app->response->statusCode = 404;
+            return \yii\helpers\Json::encode(['error' => 'No expenses or incomes found for the specified event']);
         }
+    } else {
+        Yii::$app->response->statusCode = 401;
+        return \yii\helpers\Json::encode(['error' => 'Unauthorized']);
     }
+}
+
+
+    // public function actionExpenseMemberTotal()
+    // {
+
+    //     $user = $this->getAuthorizedUser();
+    //     if ($user) {
+    //         $eventId = Yii::$app->request->post('id');
+
+    //         // Fetch total expense per expense and divide by the number of members involved
+    //         $query = (new Query())
+    //             ->select([
+    //                 'em.id_member',
+    //                 'm.firstname',
+    //                 'm.lastname',
+    //                 'e.amount AS expense_amount', // Get the amount for each expense
+    //                 '(SELECT COUNT(*) FROM bt_expense_member WHERE id_expense = e.id_expense) AS member_count' // Count of members involved in the expense
+    //             ])
+    //             ->from('bt_expense e')
+    //             ->innerJoin('bt_expense_member em', 'e.id_expense = em.id_expense')
+    //             ->innerJoin('bt_member m', 'em.id_member = m.id_member') // Join with member table
+    //             ->andWhere(['in', 'e.id_type', [2, 3]]) // Fetch both income (3) and expense (2)
+    //             ->andWhere(['e.id_event' => $eventId]);
+    //             // ->where(['e.id_type' => 2])
+
+    //         $command = $query->createCommand();
+    //         $results = $command->queryAll();
+
+    //         // Check if results were found
+    //         if ($results) {
+    //             $memberShares = [];
+    //             $totalExpenseAmount = 0; // Initialize total expense amount
+
+    //             // Iterate over each result (each expense and member)
+    //             foreach ($results as $result) {
+    //                 // Calculate the individual share for this member in the current expense
+    //                 $shareAmount = $result['expense_amount'] / $result['member_count'];
+
+    //                 // Accumulate the total amount for each member
+    //                 if (!isset($memberShares[$result['id_member']])) {
+    //                     $memberShares[$result['id_member']] = [
+    //                         'id_member' => $result['id_member'],
+    //                         'firstname' => $result['firstname'],
+    //                         'lastname' => $result['lastname'],
+    //                         'total_amount' => 0, // Initialize total amount
+    //                     ];
+    //                 }
+
+    //                 // Add the share amount for the current expense
+    //                 $memberShares[$result['id_member']]['total_amount'] += $shareAmount;
+
+    //                 // Add to the total expense amount
+    //                 $totalExpenseAmount += $result['expense_amount'];
+    //             }
+
+    //             // Calculate the event total based on individual member totals
+    //             $eventTotal = array_sum(array_column($memberShares, 'total_amount'));
+
+    //             // Prepare the response
+    //             $response = [
+    //                 'data' => array_values($memberShares), // Re-index the array for response
+    //                 'event_total' => $eventTotal,           // Total amount from individual members' totals
+    //                 'imagePath' => Yii::$app->params['expenseImagePath'],
+    //             ];
+    //             Yii::$app->response->statusCode = 200;
+    //             return \yii\helpers\Json::encode($response);
+    //         } else {
+    //             Yii::$app->response->statusCode = 404;
+    //             return \yii\helpers\Json::encode(['error' => 'No expenses found for the specified event']);
+    //         }
+    //     } else {
+    //         Yii::$app->response->statusCode = 401;
+    //         return \yii\helpers\Json::encode(['error' => 'Unauthorized']);
+    //     }
+    // }
 
 
 

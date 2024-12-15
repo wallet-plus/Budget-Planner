@@ -13,10 +13,10 @@ import Swal from 'sweetalert2';
 export class CardComponent implements OnInit {
   userInfo: any;
   categoryList: any;
-  cardForm: FormGroup;
-  selectedImage: File;
-  imagePath: string;
-  currentId: number;
+  cardForm!: FormGroup;
+  selectedImage!: File;
+  imagePath: string = '';
+  currentId!: number;
   formSubmitted: boolean = false;
 
   cardData: any;
@@ -30,7 +30,7 @@ export class CardComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe((params: Params) => {
-      this.currentId = parseInt(params.id_card);
+      this.currentId = parseInt(params['id_card']);
     });
 
     this.cardForm = this.formBuilder.group({

@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { HomeComponent } from './home/home.component';
-import { StatsComponent } from './stats/stats.component';
 import { ApphomelayoutComponent } from './apphomelayout.component';
 import { StyleComponent } from '../appinnerlayout/style/style.component';
 import { ExpensesComponent } from './expenses/expenses.component';
@@ -24,10 +23,6 @@ const routes: Routes = [
       {
         path: 'home',
         component: HomeComponent,
-      },
-      {
-        path: 'stats',
-        component: StatsComponent,
       },
       {
         path: 'expenses',

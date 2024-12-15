@@ -14,16 +14,16 @@ export class AddCategoryComponent implements OnInit {
   typeList: any;
   userInfo: any;
   categoryList: any;
-  categoryImagePath: string;
-  categoryForm: FormGroup;
-  selectedImage: File;
-  imagePath: string;
-  currentId: number;
+  categoryImagePath!: string;
+  categoryForm!: FormGroup;
+  selectedImage!: File;
+  imagePath!: string;
+  currentId!: number;
   formSubmitted: boolean = false;
   eventsList: any = [];
   expenseSuggestion: any = [];
   transactionData: any;
-  eventUsers: any[];
+  eventUsers: any[] = [];
   constructor(
     private formBuilder: FormBuilder,
     private localStorageService: LocalStorageService,
@@ -34,7 +34,7 @@ export class AddCategoryComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe((params: Params) => {
-      this.currentId = parseInt(params.id_category);
+      this.currentId = parseInt(params['id_category']);
     });
 
     this.categoryForm = this.formBuilder.group({

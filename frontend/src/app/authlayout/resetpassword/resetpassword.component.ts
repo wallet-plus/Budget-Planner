@@ -33,17 +33,14 @@ export class ResetpasswordComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe((params: Params) => {
       this.resetPasswordForm.patchValue({
-        email: params.email,
-        code: params.code,
+        email: params['email'],
+        code: params['code'],
       });
     });
 
     const tooltiptriggerList = [].slice.call(
       document.querySelectorAll('[data-bs-toggle="tooltip"]'),
     );
-    tooltiptriggerList.map((e) => {
-      return new bootstrap.Tooltip(e);
-    });
   }
 
   onSubmit() {

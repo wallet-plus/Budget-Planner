@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { SwiperModule } from 'swiper/angular';
-import { ChartsModule } from 'ng2-charts';
-import { NgCircleProgressModule } from 'ng-circle-progress';
-import { NouisliderModule } from 'ng2-nouislider';
-import { FullCalendarModule } from '@fullcalendar/angular'; // must go before plugins
-import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin!
-import { Daterangepicker } from 'ng2-daterangepicker';
+// import { SwiperModule } from 'swiper/angular';
+// import { ChartsModule } from 'ng2-charts';
+// import { NgCircleProgressModule } from 'ng-circle-progress';
+// import { NouisliderModule } from 'ng2-nouislider';
+// import { FullCalendarModule } from '@fullcalendar/angular'; // must go before plugins
+// import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin!
+// import { Daterangepicker } from 'ng2-daterangepicker';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { ImageCropperModule } from 'ngx-image-cropper';
+// import { ImageCropperModule } from 'ngx-image-cropper';
 import { TranslateModule } from '@ngx-translate/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -22,12 +22,7 @@ import { ForgetpasswordComponent } from './authlayout/forgetpassword/forgetpassw
 import { ResetpasswordComponent } from './authlayout/resetpassword/resetpassword.component';
 import { VerifyComponent } from './authlayout/verify/verify.component';
 import { ThankyouComponent } from './authlayout/thankyou/thankyou.component';
-import { StaticfooterComponent } from './apphomelayout/partials/staticfooter/staticfooter.component';
-import { HeadermenuComponent } from './apphomelayout/partials/headermenu/headermenu.component';
-import { SidebarComponent } from './apphomelayout/partials/sidebar/sidebar.component';
 import { HomeComponent } from './apphomelayout/home/home.component';
-import { StatsComponent } from './apphomelayout/stats/stats.component';
-import { BarchartComponent } from './apphomelayout/stats/barchart/barchart.component';
 import { ProfileComponent } from './appinnerlayout/profile/profile.component';
 import { StyleComponent } from './appinnerlayout/style/style.component';
 import { FooterinfoComponent } from './appinnerlayout/partials/footerinfo/footerinfo.component';
@@ -35,13 +30,10 @@ import { HeaderbackComponent } from './appinnerlayout/partials/headerback/header
 import { ChatlistComponent } from './appinnerlayout/chatlist/chatlist.component';
 import { MessagesComponent } from './appinnerlayout/messages/messages.component';
 import { NotificationsComponent } from './appinnerlayout/notifications/notifications.component';
-import { PagesComponent } from './appinnerlayout/pages/pages.component';
 import { FaqsComponent } from './appinnerlayout/faqs/faqs.component';
-import { UserlistComponent } from './appinnerlayout/userlist/userlist.component';
 import { ContactusComponent } from './appinnerlayout/contactus/contactus.component';
 import { TermsandcoditionComponent } from './appinnerlayout/termsandcodition/termsandcodition.component';
 import { PagenotfoundComponent } from './appinnerlayout/pagenotfound/pagenotfound.component';
-import { DoughnutChartComponent } from './apphomelayout/stats/doughnut-chart/doughnut-chart.component';
 import { AboutusComponent } from './appinnerlayout/aboutus/aboutus.component';
 import { ExpensesComponent } from './apphomelayout/expenses/expenses.component';
 import { IncomeComponent } from './apphomelayout/income/income.component';
@@ -61,11 +53,14 @@ import { AddEventComponent } from './appinnerlayout/add-event/add-event.componen
 import { EventsComponent } from './apphomelayout/events/events.component';
 import { MembersComponent } from './apphomelayout/members/members.component';
 import { AddMemberComponent } from './appinnerlayout/add-member/add-member.component';
+import { NgxDaterangepickerBootstrapModule } from 'ngx-daterangepicker-bootstrap';
+import { MemberSearchPipe } from './apphomelayout/members/member-pipe.pipe';
+import { MembersSortPipe } from './apphomelayout/members/member-sort-pipe.pipe';
 
-FullCalendarModule.registerPlugins([
-  // register FullCalendar plugins
-  dayGridPlugin,
-]);
+// FullCalendarModule.registerPlugins([
+//   // register FullCalendar plugins
+//   dayGridPlugin,
+// ]);
 
 @NgModule({
   declarations: [
@@ -79,12 +74,7 @@ FullCalendarModule.registerPlugins([
     ResetpasswordComponent,
     VerifyComponent,
     ThankyouComponent,
-    StaticfooterComponent,
-    HeadermenuComponent,
-    SidebarComponent,
     HomeComponent,
-    StatsComponent,
-    BarchartComponent,
     ProfileComponent,
     StyleComponent,
     FooterinfoComponent,
@@ -92,13 +82,10 @@ FullCalendarModule.registerPlugins([
     ChatlistComponent,
     MessagesComponent,
     NotificationsComponent,
-    PagesComponent,
     FaqsComponent,
-    UserlistComponent,
     ContactusComponent,
     TermsandcoditionComponent,
     PagenotfoundComponent,
-    DoughnutChartComponent,
     AboutusComponent,
     ExpensesComponent,
     IncomeComponent,
@@ -116,23 +103,27 @@ FullCalendarModule.registerPlugins([
     EventsComponent,
     MembersComponent,
     AddMemberComponent,
+    MemberSearchPipe,
+    MembersSortPipe
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    SwiperModule,
-    ChartsModule,
-    NgCircleProgressModule.forRoot(),
-    NouisliderModule,
-    FullCalendarModule,
-    Daterangepicker,
+    // SwiperModule,
+    // ChartsModule,
+    // NgCircleProgressModule.forRoot(),
+    // NouisliderModule,
+    // FullCalendarModule,
+    // Daterangepicker,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
     SharedModule,
-    ImageCropperModule,
+    // ImageCropperModule,
     // PdfViewerModule
     TranslateModule.forRoot(),
+    NgxDaterangepickerBootstrapModule.forRoot(),
+
   ],
   providers: [
     {

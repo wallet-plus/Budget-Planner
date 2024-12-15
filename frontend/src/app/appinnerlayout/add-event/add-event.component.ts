@@ -14,15 +14,15 @@ import Swal from 'sweetalert2';
 export class AddEventComponent implements OnInit {
   userInfo: any;
   categoryList: any;
-  eventForm: FormGroup;
-  selectedImage: File;
-  imagePath: string;
-  currentId: number;
+  eventForm!: FormGroup;
+  selectedImage!: File;
+  imagePath!: string;
+  currentId!: number;
   formSubmitted: boolean = false;
   eventsList: any = [];
   expenseSuggestion: any = [];
   eventExpenseData: any;
-  members: any[];
+  members: any[] = [];
   constructor(
     private formBuilder: FormBuilder,
     private eventService: EventService,
@@ -41,7 +41,7 @@ export class AddEventComponent implements OnInit {
 
     this.activatedRoute.params.subscribe((params: Params) => {
       // this.type = params['type'];
-      this.currentId = parseInt(params.id_event);
+      this.currentId = parseInt(params['id_event']);
     });
 
     this.eventForm = this.formBuilder.group({

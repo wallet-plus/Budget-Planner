@@ -9,12 +9,13 @@ import { LocalStorageService } from 'src/app/services/local-storage.service';
   styleUrls: ['./members.component.scss'],
 })
 export class MembersComponent implements OnInit {
-  conversionPrice: number = 1;
-  userInfo: any;
 
+  queryParam : string = '';
+  sortOrder: 'asc' | 'desc' = 'asc';
+  
+  userInfo: any;
   memberList: any;
   imagePath: string = '';
-  categoryImagePath: string = '';
 
   constructor(
     private router: Router,
@@ -28,7 +29,6 @@ export class MembersComponent implements OnInit {
       this.eventService.getMembers().subscribe(
         (response) => {
           this.imagePath = response.imagePath;
-          this.categoryImagePath = response.categoryImagePath;
           this.memberList = response.list;
         },
         (error) => {},
@@ -36,7 +36,16 @@ export class MembersComponent implements OnInit {
     }
   }
 
+  toggleSortOrder() {
+    this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
+  }
+
   openMember(member: any) {
     this.router.navigate(['/add-member', member.id_member]);
   }
+
+  clearQuery() {
+    this.queryParam = '';  // Clear the search parameter
+  }
+  
 }
