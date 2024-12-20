@@ -3,9 +3,9 @@
 use yii\db\Migration;
 
 /**
- * Class m241220_100834_create_bt_types
+ * Class m241220_100834_create_types
  */
-class m241220_100834_create_bt_types extends Migration
+class m241220_100834_create_types_table extends Migration
 {
     /**
      * {@inheritdoc}
@@ -13,14 +13,14 @@ class m241220_100834_create_bt_types extends Migration
     public function safeUp()
     {
         // Create table
-        $this->createTable('{{%bt_type}}', [
+        $this->createTable('{{%type}}', [
             'id_type' => $this->primaryKey(),
             'name' => $this->string(255)->notNull(),
             'status' => $this->tinyInteger(1)->notNull(),
         ]);
 
         // Insert data
-        $this->batchInsert('{{%bt_type}}', ['id_type', 'name', 'status'], [
+        $this->batchInsert('{{%type}}', ['id_type', 'name', 'status'], [
             [1, 'savings', 1],
             [2, 'expenses', 1],
             [3, 'income', 1],
@@ -34,7 +34,7 @@ class m241220_100834_create_bt_types extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('{{%bt_type}}');
+        $this->dropTable('{{%type}}');
     }
 
 }

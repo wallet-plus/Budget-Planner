@@ -3,16 +3,16 @@
 use yii\db\Migration;
 
 /**
- * Handles the creation of table `{{%bt_cards}}`.
+ * Handles the creation of table `{{%cards}}`.
  */
-class m241220_094826_create_bt_cards_table extends Migration
+class m241220_094826_create_cards_table extends Migration
 {
     /**
      * {@inheritdoc}
      */
     public function safeUp()
     {
-        $this->createTable('{{%bt_cards}}', [
+        $this->createTable('{{%cards}}', [
             'id_card' => $this->primaryKey(),
             'id_cards_type' => $this->integer()->defaultValue(null),
             'id_customer' => $this->integer()->defaultValue(null),
@@ -26,7 +26,6 @@ class m241220_094826_create_bt_cards_table extends Migration
      */
     public function safeDown()
     {
-        $this->dropForeignKey('fk-bt_cards-id_cards_type', 'bt_cards');
-        $this->dropTable('bt_cards');
+        $this->dropTable('{{%cards}}');
     }
 }

@@ -3,17 +3,17 @@
 use yii\db\Migration;
 
 /**
- * Class m241220_101740_create_bt_expense
+ * Class m241220_101740_create_expense
  */
-class m241220_101740_create_bt_expense extends Migration
+class m241220_101740_create_expense_table extends Migration
 {
     /**
      * {@inheritdoc}
      */
     public function safeUp()
     {
-        // Create bt_expense table
-        $this->createTable('bt_expense', [
+        // Create expense table
+        $this->createTable('{{%expense}}', [
             'id_expense' => $this->integer(11)->notNull(),
             'id_type' => $this->integer(11)->defaultValue(null),
             'id_category' => $this->integer(11)->notNull(),
@@ -36,7 +36,7 @@ class m241220_101740_create_bt_expense extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('bt_expense');
+        $this->dropTable('{{%expense}}');
 
     }
 

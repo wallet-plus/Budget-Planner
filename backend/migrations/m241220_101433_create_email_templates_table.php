@@ -3,9 +3,9 @@
 use yii\db\Migration;
 
 /**
- * Class m241220_101433_create_bt_email_templates
+ * Class m241220_101433_create_email_templates
  */
-class m241220_101433_create_bt_email_templates extends Migration
+class m241220_101433_create_email_templates_table extends Migration
 {
     /**
      * {@inheritdoc}
@@ -13,7 +13,7 @@ class m241220_101433_create_bt_email_templates extends Migration
     public function safeUp()
     {
         // Create table
-        $this->createTable('{{%bt_email_templates}}', [
+        $this->createTable('{{%email_templates}}', [
             'id_email_template' => $this->primaryKey(),
             'title' => $this->string(255)->defaultValue(null),
             'email_template' => $this->text()->defaultValue(null),
@@ -24,7 +24,7 @@ class m241220_101433_create_bt_email_templates extends Migration
         ]);
 
         // Insert default data
-        $this->insert('{{%bt_email_templates}}', [
+        $this->insert('{{%email_templates}}', [
             'id_email_template' => 1,
             'title' => 'Wallet Plus Email Template',
             'email_template' => '<!DOCTYPE html>
@@ -111,6 +111,6 @@ class m241220_101433_create_bt_email_templates extends Migration
     public function safeDown()
     {
         // Drop table
-        $this->dropTable('{{%bt_email_templates}}');
+        $this->dropTable('{{%email_templates}}');
     }
 }

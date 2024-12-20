@@ -3,25 +3,25 @@
 use yii\db\Migration;
 
 /**
- * Class m241220_101756_create_bt_language_tables
+ * Class m241220_101756_create_language_tables
  */
-class m241220_101756_create_bt_language_tables extends Migration
+class m241220_101756_create_language_table extends Migration
 {
     /**
      * {@inheritdoc}
      */
     public function safeUp()
     {
-        // Create bt_language table
-        $this->createTable('bt_language', [
+        // Create language table
+        $this->createTable('{{%language}}', [
             'id_language' => $this->integer(11)->notNull(),
             'name' => $this->string(200)->defaultValue(null),
             'code' => $this->string(2)->notNull(),
             'status' => $this->integer(1)->defaultValue(null)->comment('1:Enable;0:Disable'),
         ], 'ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci');
 
-        // Insert data into bt_language table
-        $this->batchInsert('bt_language', ['id_language', 'name', 'code', 'status'], [
+        // Insert data into language table
+        $this->batchInsert('{{%language}}', ['id_language', 'name', 'code', 'status'], [
             [1, 'English', 'en', 1],
             [2, 'Hindi', 'hi', 1],
             [3, 'Bengali', 'bn', 1],
@@ -37,7 +37,7 @@ class m241220_101756_create_bt_language_tables extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('bt_language');
+        $this->dropTable('{{%language}}');
     }
 
 }

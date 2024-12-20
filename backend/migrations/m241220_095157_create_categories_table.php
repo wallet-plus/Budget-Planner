@@ -3,9 +3,9 @@
 use yii\db\Migration;
 
 /**
- * Class m241220_095157_create_bt_categories
+ * Class m241220_095157_create_categories
  */
-class m241220_095157_create_bt_categories extends Migration
+class m241220_095157_create_categories_table extends Migration
 {
     /**
      * {@inheritdoc}
@@ -13,7 +13,7 @@ class m241220_095157_create_bt_categories extends Migration
     public function safeUp()
     {
         // Create table
-        $this->createTable('bt_category', [
+        $this->createTable('{{%category}}', [
             'id_category' => $this->primaryKey(),
             'id_type' => $this->integer()->notNull(),
             'id_user' => $this->integer()->notNull(),
@@ -25,7 +25,7 @@ class m241220_095157_create_bt_categories extends Migration
         ]);
 
         // Insert data
-        $this->batchInsert('bt_category', 
+        $this->batchInsert('{{%category}}', 
             ['id_category', 'id_type', 'id_user', 'parent', 'category_name', 'category_description', 'category_image', 'status'], 
             [
                 [1, 2, 0, null, 'Groceries', '', 'geM7260aDJwZDFSg.jpg', 1],
@@ -82,6 +82,6 @@ class m241220_095157_create_bt_categories extends Migration
     public function safeDown()
     {
         // Drop table
-        $this->dropTable('bt_category');
+        $this->dropTable('{{%category}}');
     }
 }

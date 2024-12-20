@@ -3,9 +3,9 @@
 use yii\db\Migration;
 
 /**
- * Class m241220_101150_create_bt_customers
+ * Class m241220_101150_create_customers
  */
-class m241220_101150_create_bt_customers extends Migration
+class m241220_101150_create_customer_table extends Migration
 {
     /**
      * {@inheritdoc}
@@ -13,7 +13,7 @@ class m241220_101150_create_bt_customers extends Migration
     public function safeUp()
     {
         // Create table
-        $this->createTable('{{%bt_customer}}', [
+        $this->createTable('{{%customer}}', [
             'id' => $this->primaryKey(),
             'id_customer_type' => $this->integer(1)->notNull(),
             'firstname' => $this->string(255)->notNull(),
@@ -44,7 +44,7 @@ class m241220_101150_create_bt_customers extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('{{%bt_customer}}');
+        $this->dropTable('{{%customer}}');
     }
 
 }

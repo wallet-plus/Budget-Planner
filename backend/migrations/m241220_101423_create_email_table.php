@@ -3,9 +3,9 @@
 use yii\db\Migration;
 
 /**
- * Class m241220_101423_create_bt_email
+ * Class m241220_101423_create_email
  */
-class m241220_101423_create_bt_email extends Migration
+class m241220_101423_create_email_table extends Migration
 {
     /**
      * {@inheritdoc}
@@ -13,7 +13,7 @@ class m241220_101423_create_bt_email extends Migration
     public function safeUp()
     {
         // Create table
-        $this->createTable('{{%bt_email}}', [
+        $this->createTable('{{%email}}', [
             'id_email' => $this->primaryKey(),
             'name' => $this->string(255)->defaultValue(null),
             'id_email_template' => $this->integer()->defaultValue(null),
@@ -29,7 +29,7 @@ class m241220_101423_create_bt_email extends Migration
         ]);
 
         // Insert default data
-        $this->batchInsert('{{%bt_email}}', [
+        $this->batchInsert('{{%email}}', [
             'id_email', 
             'name', 
             'id_email_template', 
@@ -58,7 +58,7 @@ class m241220_101423_create_bt_email extends Migration
     public function safeDown()
     {
         // Drop table
-        $this->dropTable('{{%bt_email}}');
+        $this->dropTable('{{%email}}');
     }
 
 }
