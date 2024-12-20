@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { LoaderService } from './loader.service'; // Adjust the path
 import { LocalStorageService } from './local-storage.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class WalletInterceptor implements HttpInterceptor {
@@ -36,7 +37,7 @@ export class WalletInterceptor implements HttpInterceptor {
 
     return next.handle(authRequest).pipe(
       catchError((error) => {
-        if (!navigator.onLine) {
+        if (environment.production && !navigator.onLine) {
           this.showNetworkIssueDialog();
         }
 

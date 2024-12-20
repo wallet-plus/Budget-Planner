@@ -4,8 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl : 'https://walletplus.in/',
-  // apiUrl: 'http://localhost/w2/backend/',
+  apiUrl: 'http://localhost/w2/backend/',
 };
 
 /*
