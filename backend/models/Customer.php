@@ -182,9 +182,9 @@ class Customer extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
      * @param string $username
      * @return static|null
      */
-    public static function findByUsername($username)
+    public static function findByPhone($phone)
     {
-        return self::findOne(['username'=>$username]);
+        return self::findOne(['phone'=>$phone]);
     }
 
 

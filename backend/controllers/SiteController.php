@@ -484,6 +484,7 @@ class SiteController extends Controller
 
                 $tempArray = [];
                 $tempArray['name'] = $data['Customer']['firstname'];
+                $tempArray['phone'] = $data['Customer']['phone'];
                 $tempArray['email'] = $data['Customer']['email'];
                 $tempArray['code'] = $genetated_verification_code;
 
@@ -496,16 +497,15 @@ class SiteController extends Controller
                 // $model->mobile_verified = 0;
 
                 if ($model->load($this->request->post()) && $model->save()) {
-                    // exit("Control here2");
-                    // Send Welcome Email
-                
-                    
-                    // Send Email Verification Link Email
                     Yii::$app->session->setFlash('success', "Welcome to WalletPlus! Your Account created successfully."); 
-    
-                    // Send Email Verification Link Email
-    
                     return $this->redirect(['login']);
+                }else{
+                    foreach ($model->errors as $attribute => $errors) {
+                        echo $attribute . ': ' . implode(', ', $errors) . "<br>";
+                    }
+                    Yii::$app->session->setFlash('error', "There was an error saving your account. Please try again.");
+                    
+                    return $this->refresh(); 
                 }
 
             }

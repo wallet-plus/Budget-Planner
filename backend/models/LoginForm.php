@@ -13,7 +13,7 @@ use yii\base\Model;
  */
 class LoginForm extends Model
 {
-    public $username;
+    public $phone;
     public $password;
     public $rememberMe = true;
 
@@ -27,7 +27,7 @@ class LoginForm extends Model
     {
         return [
             // username and password are both required
-            [['username', 'password'], 'required'],
+            [['phone', 'password'], 'required'],
             // rememberMe must be a boolean value
             ['rememberMe', 'boolean'],
             // password is validated by validatePassword()
@@ -73,7 +73,7 @@ class LoginForm extends Model
     public function getUser()
     {
         if ($this->_user === false) {
-            $this->_user = Customer::findByUsername($this->username);
+            $this->_user = Customer::findByPhone($this->phone);
         }
 
         return $this->_user;
@@ -83,7 +83,7 @@ class LoginForm extends Model
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'username' => Yii::t('app', 'Phone Number'),
+            'phone' => Yii::t('app', 'Phone Number'),
             'password' => Yii::t('app', 'Password'),
         ];
     }

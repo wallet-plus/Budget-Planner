@@ -69,10 +69,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
 
                     <div class="mb-3">
-                        <label for="username"
-                            class="form-label"><?php echo Html::activeLabel($model, 'username') ?></label>
-                        <?php echo Html::activeTextInput($model, 'username', ['class' => 'form-control', 'placeholder' => $model->getAttributeLabel('username')]); ?>
-                        <?php echo Html::error($model, 'username'); ?>
+                        <label for="phone"
+                            class="form-label"><?php echo Html::activeLabel($model, 'phone') ?></label>
+                        <?php echo Html::activeTextInput($model, 'phone', ['class' => 'form-control', 'placeholder' => $model->getAttributeLabel('phone')]); ?>
+                        <?php echo Html::error($model, 'phone'); ?>
                     </div>
                     <div class="mb-3">
                         <label for="email" class="form-label"><?php echo Html::activeLabel($model, 'email') ?></label>
