@@ -32,13 +32,12 @@ cd Budget-Tracker-App
 ### Step 3: Install Dependencies
 Download and install Composer.
 In the project directory, run:
-composer install
+`composer install`
 
 ### Step 4: Database Setup
 Open PHPMyAdmin (usually at http://localhost/phpmyadmin).
-Create a new database named walletplus.
-Import the database:
-Select the walletplus database, go to the Import tab, and upload the SQL file from the database folder in the project.
+Create a new database named walletplus. run:
+`php yii migrate`
 
 
 ### Step 5: Configuration
