@@ -1,6 +1,19 @@
 <?php
 
-$params = require __DIR__ . '/params.php';
+require __DIR__ . '/../vendor/autoload.php';
+use Dotenv\Dotenv;
+$dotenv = Dotenv::createImmutable(__DIR__ . '/../');
+$dotenv->load();
+
+$environment = $_ENV['YII_ENV'];
+
+$params = [];
+if ($environment === 'dev') {
+    $params = require __DIR__ . '/params-local.php';
+} else {
+    $params = require __DIR__ . '/params-prod.php';
+}
+
 $db = require __DIR__ . '/db.php';
 use \yii\web\Request;
 $baseUrl = str_replace('/web', '', (new Request)->getBaseUrl());

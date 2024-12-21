@@ -19,7 +19,8 @@
         "yiisoft/yii2-bootstrap4": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0",
         "yiisoft/yii2-jui": "^2.0",
-        "intervention/image": "^2.7"
+        "intervention/image": "^2.7",
+        "vlucas/phpdotenv": "^5.6"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

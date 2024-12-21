@@ -2,15 +2,15 @@
 
 return [
     'allowedOrigins' => ['http://localhost:4200', 'https://secure.walletplus.in', 'https://walletplus.in'],
-    'productionMode' => false, // default / basic
+    'productionMode' => false, 
     'currentTheme' => 'fareed', // default / basic / fareed
     'adminEmail' => 'info@walletplus.in',
     'senderEmail' => 'info@walletplus.in',
     'senderName' => 'Wallet Plus',
     'address' => 'address',
     'phone' => 'phone',
-    'categoryImagePath' => 'https://walletplus.in/backend/category/',
-    'expenseImagePath' => 'https://walletplus.in/backend/expenses/',
-    'userImagePath' => 'https://walletplus.in/backend/users/', //  Yii::$app->params['categoryImagePath']
-    'cardImagePath' => 'https://walletplus.in/backend/cards/'
+    'categoryImagePath' => 'https://localhost/w2/backend/category/',
+    'expenseImagePath' => 'http://localhost/w2/backend/expenses/',
+    'userImagePath' => 'http://localhost/w2/backend/users/', //  Yii::$app->params['categoryImagePath']
+    'cardImagePath' => 'http://localhost/w2/backend/cards/'
 ];
