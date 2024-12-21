@@ -9,7 +9,7 @@ return [
     'senderName' => 'Wallet Plus',
     'address' => 'address',
     'phone' => 'phone',
-    'categoryImagePath' => 'https://localhost/w2/backend/category/',
+    'categoryImagePath' => 'http://localhost/w2/backend/category/',
     'expenseImagePath' => 'http://localhost/w2/backend/expenses/',
     'userImagePath' => 'http://localhost/w2/backend/users/', //  Yii::$app->params['categoryImagePath']
     'cardImagePath' => 'http://localhost/w2/backend/cards/'

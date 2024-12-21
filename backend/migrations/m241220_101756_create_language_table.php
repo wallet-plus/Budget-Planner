@@ -18,7 +18,7 @@ class m241220_101756_create_language_table extends Migration
             'name' => $this->string(200)->defaultValue(null),
             'code' => $this->string(2)->notNull(),
             'status' => $this->integer(1)->defaultValue(null)->comment('1:Enable;0:Disable'),
-        ], 'ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci');
+        ]);
 
         // Insert data into language table
         $this->batchInsert('{{%language}}', ['id_language', 'name', 'code', 'status'], [

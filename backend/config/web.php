@@ -6,7 +6,6 @@ $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv->load();
 
 $environment = $_ENV['YII_ENV'];
-
 $params = [];
 if ($environment === 'dev') {
     $params = require __DIR__ . '/params-local.php';
