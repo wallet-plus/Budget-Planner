@@ -12,9 +12,6 @@ use yii\bootstrap4\NavBar;
 AppAsset::register($this);
 
 use yii\helpers\Url;
-// echo Url::base(); 
-// exit;
-
 ?>
 <!doctype html>
 <html lang="en">
@@ -33,6 +30,9 @@ use yii\helpers\Url;
     <link href="https://fonts.googleapis.com/css?family=Nunito:400,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="<?php echo Url::base()?>/css/style-starter.css">
 
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3364764390236729"
+     crossorigin="anonymous"></script>
+     
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-B09KR6R78F"></script>
     <script>
@@ -135,7 +135,7 @@ use yii\helpers\Url;
                       <span class="fa fa-linkedin" aria-hidden="true"></span>
                     </a>
                   </li>
-
+                  
                   <li class="youtube">
                     <a href="https://www.youtube.com/@WalletPlusOfficial" title="Youtube"  target="_blank">
                       <span class="fa fa-youtube" aria-hidden="true"></span>
@@ -147,12 +147,6 @@ use yii\helpers\Url;
                       <span class="fa fa-github" aria-hidden="true"></span>
                     </a>
                   </li>
-
-                  <!-- <li class="google">
-                    <a href="#link" title="Google">
-                      <span class="fa fa-google" aria-hidden="true"></span>
-                    </a>
-                  </li> -->
                 </ul>
               </div>
             </div>

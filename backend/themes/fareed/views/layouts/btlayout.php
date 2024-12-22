@@ -1,4 +1,4 @@
-
+<? exit("Control Here");?>
 <!DOCTYPE HTML>
 <html lang="<?= Yii::$app->language ?>">
 <head>
@@ -29,6 +29,6 @@
 
 </head> 
 <body class="cbp-spmenu-push">
-    <?= $content ?>
+    <?= exit("Test");$content ?>
 </body>
 </html>

@@ -16,6 +16,17 @@ use yii\web\UploadedFile;
 
 class SiteController extends Controller
 {
+
+    public function __construct($id, $module, $config = [])
+    {
+        
+        $themeName =Yii::$app->params['currentTheme'];
+        $this->layout = '@app/themes/'.$themeName.'/views/layouts/main';
+        $theme = Yii::$app->view->theme;
+        $theme->pathMap = ['@app/views' => '@app/themes/'.$themeName.'/views'];
+        parent::__construct($id, $module, $config);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -218,8 +229,6 @@ class SiteController extends Controller
             'content' => 'WalletPlus is a free financial planner app that helps you track your expenses, create budgets, and achieve your financial goals. With features like bill reminders, income and expense tracking, and custom savings goals, WalletPlus is the only app you need to get your money in shape. Download WalletPlus now and take control of your personal finances today.'
         ]);
 
-        
-        
         return $this->render('index');
     }
 
