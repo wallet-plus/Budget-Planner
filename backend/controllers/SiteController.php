@@ -755,4 +755,19 @@ class SiteController extends Controller
         return $this->render('support');
     }
 
+
+        /**
+     * Displays about page.
+     *
+     * @return string
+     */
+    public function actionPricing()
+    {
+        if (!Yii::$app->user->isGuest) {
+            $this->redirect(['dashboard']);
+        }
+
+        return $this->render('pricing');
+    }
+
 }
