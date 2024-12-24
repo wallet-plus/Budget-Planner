@@ -26,7 +26,7 @@ Navigate to your server’s root directory:
 For XAMPP: cd xampp/htdocs
 For WAMP: cd wamp/www
 Clone the repository:
-git clone https://github.com/Wallet-Plus/Budget-Tracker-App.git
+`git clone https://github.com/Wallet-Plus/Budget-Tracker-App.git`
 cd Budget-Tracker-App
 
 ### Step 3: Install Dependencies
