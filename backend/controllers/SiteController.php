@@ -80,13 +80,7 @@ class SiteController extends Controller
     public function actionDashboard()
     {
 
-
-        
-        // $this->layout = '@app/views/admin/applayout';
-        // function x_week_range($date) {
-            $date = '2024/05/20';// date("Y/m/d");
-            
-        // }
+        $date = date("Y/m/d");
 
         /** Month wise */
         $timestamp    = strtotime($date);
