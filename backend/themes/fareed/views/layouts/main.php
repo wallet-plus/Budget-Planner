@@ -12,6 +12,7 @@ use yii\bootstrap4\NavBar;
 AppAsset::register($this);
 
 use yii\helpers\Url;
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -28,7 +29,8 @@ use yii\helpers\Url;
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/css?family=Nunito:400,700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="<?php echo Url::base()?>/css/style-starter.css">
+    <link rel="stylesheet" href="<?php echo Yii::$app->view->theme->baseUrl;?>/fareed/css/style-starter.css">
+    <link rel="stylesheet" href="<?php echo Yii::$app->view->theme->baseUrl;?>/fareed/css/style-liberty.css">
 
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3364764390236729"
      crossorigin="anonymous"></script>
@@ -52,8 +54,7 @@ use yii\helpers\Url;
         
           <a class="navbar-brand" href="<?php echo Url::base('')?>">
               <!--<span class="fa fa-cube"></span>--> 
-              <img src="<?php echo Url::base()?>/images/walletplus-icon.png" height="40px;" alt="<?php echo Yii::$app->name; ?>"/>
-                  <?php echo Yii::$app->name; ?>
+              <img src="<?php echo Url::base()?>/images/walletplus-logo.png"  alt="<?php echo Yii::$app->name; ?>"/>
           </a>
           <button class="navbar-toggler  collapsed bg-gradient" type="button" data-toggle="collapse"
               data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false"
@@ -181,11 +182,6 @@ use yii\helpers\Url;
                     <li><?php echo Html::a('Login', 'https://secure.walletplus.in/signin');?></li>
                   </ul>
                 </div>
-                <!-- <div class="col-md-4 footer-list-28 mt-5">
-                  <h6 class="footer-title-28">Download</h6>
-                  <a href="#playstore"><img src="<?php echo Url::base('https')?>/images/googleplay.png" class="img-fluid" alt=""></a>
-                  <a href="#appstore"><img src="<?php echo Url::base()?>/images/appstore.png" class="img-fluid mt-md-2" alt=""></a>
-                </div> -->
               </div>
             </div>
           </div>
@@ -228,12 +224,12 @@ use yii\helpers\Url;
 
   <!-- all js scripts and files here -->
 
-  <script src="<?php echo Url::base()?>/js/theme-change.js"></script><!-- theme switch js (light and dark)-->
+  <script src="<?php echo Yii::$app->view->theme->baseUrl;?>/fareed/js/theme-change.js"></script><!-- theme switch js (light and dark)-->
 
-  <script src="<?php echo Url::base()?>/js/jquery-3.3.1.min.js"></script><!-- default jQuery -->
+  <script src="<?php echo Yii::$app->view->theme->baseUrl;?>/fareed/js/jquery-3.3.1.min.js"></script><!-- default jQuery -->
 
 <!-- magnific popup -->
-<script src="<?php echo Url::base()?>/js/jquery.magnific-popup.min.js"></script>
+<script src="<?php echo Yii::$app->view->theme->baseUrl;?>/fareed/js/jquery.magnific-popup.min.js"></script>
 <script>
   $(document).ready(function () {
     $('.popup-with-zoom-anim').magnificPopup({
@@ -343,10 +339,10 @@ use yii\helpers\Url;
   <!--//MENU-JS-->
 
   <!-- bootstrap js -->
-  <script src="<?php echo Url::base()?>/js/bootstrap.min.js"></script>
+  <script src="<?php echo Yii::$app->view->theme->baseUrl;?>/fareed/js/bootstrap.min.js"></script>
   <!-- stats number counter-->
-  <script src="<?php echo Url::base()?>/js/jquery.waypoints.min.js"></script>
-  <script src="<?php echo Url::base()?>/js/jquery.countup.js"></script>
+  <script src="<?php echo Yii::$app->view->theme->baseUrl;?>/fareed/js/jquery.waypoints.min.js"></script>
+  <script src="<?php echo Yii::$app->view->theme->baseUrl;?>/fareed/js/jquery.countup.js"></script>
   <script>
     $('.counter').countUp();
   </script>
