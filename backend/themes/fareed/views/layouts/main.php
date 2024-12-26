@@ -30,6 +30,8 @@ use yii\helpers\Url;
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/css?family=Nunito:400,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="<?php echo Yii::$app->view->theme->baseUrl;?>/fareed/css/style-starter.css">
+    <link rel="stylesheet" href="<?php echo Yii::$app->view->theme->baseUrl;?>/fareed/css/style-liberty.css">
+
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3364764390236729"
      crossorigin="anonymous"></script>
      
