@@ -75,14 +75,26 @@ use yii\helpers\Url;
                   <li class="nav-item <?php echo ($this->context->route == 'site/about')?'active':''; ?>">
                       <?php echo Html::a('About', ['/site/about'], ['class'=>'nav-link']);?>
                   </li>
-
+                  <!-- 
                   <li class="nav-item <?php echo ($this->context->route == 'site/register')?'active':''; ?>">
                     <?php echo Html::a('Register', ['/site/register'], ['class' => 'nav-link']); ?>
                   </li>
 
+                  
+
                   <li class="nav-item <?php echo ($this->context->route == 'site/login')?'active':''; ?>">
                     <?php echo Html::a('Login', ['/site/login'], ['class' => 'nav-link']); ?>
+                  </li> -->
+
+                  <li class="nav-item">
+                      <?= Html::a('Register', 'https://secure.walletplus.in/signup', ['class' => 'nav-link']) ?>
                   </li>
+
+                  <li class="nav-item">
+                      <?= Html::a('Login', 'https://secure.walletplus.in/signin', ['class' => 'nav-link']) ?>
+                  </li>
+
+                  
               </ul>
           </div>
           <!-- toggle switch for light and dark theme -->
