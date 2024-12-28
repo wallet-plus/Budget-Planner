@@ -2,12 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-
-use app\models\Category
-
-/* @var $this yii\web\View */
-/* @var $model app\models\Expense */
-/* @var $form yii\widgets\ActiveForm */
+use app\models\Category;
 ?>
 
 
@@ -25,6 +20,14 @@ use app\models\Category
 
                 <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label"
+                        for="basic-default-company"><?= Html::label('Name', null, []); ?></label>
+                    <div class="col-sm-10">
+                        <?php echo Html::activeTextInput($model, 'name', ['class' => 'form-control']); ?>
+                        <?php echo Html::error($model, 'name'); ?>
+                    </div>
+                </div>
 
                 <div class="row mb-3">
                     <label class="col-sm-2 col-form-label"
@@ -49,14 +52,7 @@ use app\models\Category
                     </div>
                 </div>
 
-                <div class="row mb-3">
-                    <label class="col-sm-2 col-form-label"
-                        for="basic-default-company"><?= Html::label('Name', null, []); ?></label>
-                    <div class="col-sm-10">
-                        <?php echo Html::activeTextInput($model, 'name', ['class' => 'form-control']); ?>
-                        <?php echo Html::error($model, 'name'); ?>
-                    </div>
-                </div>
+                
 
 
                 <div class="row mb-3">
@@ -91,10 +87,6 @@ use app\models\Category
                         </div>
                     </div>
                 </div>
-
-
-               
-
 
 
                 <div class="row justify-content-end">

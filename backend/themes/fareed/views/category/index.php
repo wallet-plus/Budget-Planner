@@ -13,16 +13,13 @@ $this->title = Yii::t('app', 'Categories');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
  
-
- 
-
 <div class="container-xxl flex-grow-1 container-p-y">
   <div class="d-flex align-items-center justify-content-between mb-4" >
     <h4 class="py-3 mb-0"><span class="text-muted fw-light"><?= Html::a('Home', ['/site/dashboard']) ?> / <?= Html::encode($this->title) ?></span></h4>
     <small class="text-muted float-end">
     <?= Html::a(Yii::t('app', ' <button type="button" class="btn btn-primary">
         <span class="tf-icons bx bx-plus me-1"></span>Add '.Html::encode($this->title).'
-      </button>'), ['create'], ['class' => 'btn']) ?>           
+      </button>'), ['create'], ['class' => 'btn']) ?>  
     </small>
   </div>
 
@@ -111,8 +108,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'class' => \app\components\CustomLinkPager::class,
           ],
           ]); ?>
-
-           
           </div>
         </div>
 

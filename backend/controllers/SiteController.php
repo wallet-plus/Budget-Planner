@@ -79,7 +79,6 @@ class SiteController extends Controller
      */
     public function actionDashboard()
     {
-
         $date = date("Y/m/d");
 
         /** Month wise */
@@ -705,16 +704,6 @@ class SiteController extends Controller
         return parent::beforeAction($action);
     }
 
-    public function actionDownloadImage($filename)
-    {
-        $path = Yii::getAlias('@webroot') . '/expenses/' . $filename;
-        if (file_exists($path)) {
-            Yii::$app->response->sendFile($path);
-        } else {
-            throw new NotFoundHttpException("The file '{$filename}' does not exist.");
-        }
-    }
-
 
     /**
      * Personal Finance action.
@@ -763,5 +752,7 @@ class SiteController extends Controller
 
         return $this->render('pricing');
     }
+
+
 
 }

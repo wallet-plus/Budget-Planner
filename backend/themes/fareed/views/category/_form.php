@@ -80,14 +80,14 @@ use app\models\Category
                     <div class="col-sm-10">
                         <?php if($model->category_image) { ?> 
                             <?= Html::a(
-                                Html::img('@web/expenses/' . $model->category_image, [
+                                Html::img('@web/category/' . $model->category_image, [
                                     'width' => '100',
                                     'height' => '100',
                                     'class' => 'd-block rounded',
                                     'id' => 'uploadedAvatar',
                                     'alt' => 'user-avatar'
                                 ]), 
-                                ['site/download-image', 'filename' => $model->category_image]
+                                ['category/download-image', 'filename' => $model->category_image]
                             ) ?>
                         <?php } ?>
                     

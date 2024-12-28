@@ -38,13 +38,10 @@ class CategoryController extends Controller
 
     public function __construct($id, $module, $config = [])
     {
-       
-        
         $themeName =Yii::$app->params['currentTheme'];
         $this->layout = '@app/themes/'.$themeName.'/views/admin/applayout';
         $theme = Yii::$app->view->theme;
         $theme->pathMap = ['@app/views' => '@app/themes/'.$themeName.'/views'];
-        
         parent::__construct($id, $module, $config);
     }
 
@@ -246,6 +243,17 @@ class CategoryController extends Controller
         }
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+    }
+
+
+    public function actionDownloadImage($filename)
+    {
+        $path = Yii::getAlias('@webroot') . '/category/' . $filename;
+        if (file_exists($path)) {
+            Yii::$app->response->sendFile($path);
+        } else {
+            throw new \yii\web\NotFoundHttpException("The file '{$filename}' does not exist.");
+        }
     }
 
     public function beforeAction($action)

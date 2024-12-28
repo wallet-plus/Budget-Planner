@@ -10,24 +10,30 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class ResetpasswordComponent implements OnInit {
   showPassword: boolean = false;
-  resetPasswordForm: FormGroup = this.fb.group({
-    email: [
-      '',
-      [
-        Validators.required,
-        Validators.pattern(/^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/),
+
+  resetPasswordForm: FormGroup = this.fb.group(
+    {
+      email: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(/^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/),
+        ],
       ],
-    ],
-    code: ['', [Validators.required]],
-    password: ['', [Validators.required, Validators.minLength(5)]],
-    confirmPassword: ['', [Validators.required, Validators.minLength(5)]],
-  });
+      code: ['', [Validators.required]],
+      password: ['', [Validators.required, Validators.minLength(5)]],
+      confirmPassword: ['', [Validators.required, Validators.minLength(5)]],
+    },
+    {
+      validators: this.passwordsMatchValidator, // Add the custom validator
+    }
+  );
 
   constructor(
     private _authService: AuthService,
     private activatedRoute: ActivatedRoute,
     private fb: FormBuilder,
-    private router: Router,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -37,10 +43,12 @@ export class ResetpasswordComponent implements OnInit {
         code: params['code'],
       });
     });
+  }
 
-    const tooltiptriggerList = [].slice.call(
-      document.querySelectorAll('[data-bs-toggle="tooltip"]'),
-    );
+  passwordsMatchValidator(form: FormGroup) {
+    const password = form.get('password')?.value;
+    const confirmPassword = form.get('confirmPassword')?.value;
+    return password === confirmPassword ? null : { passwordsMismatch: true };
   }
 
   onSubmit() {
@@ -56,21 +64,21 @@ export class ResetpasswordComponent implements OnInit {
               .get(controlName)
               ?.setErrors({ invalid: true });
             const element = document.querySelector(
-              `[formControlName="${controlName}"]`,
+              `[formControlName="${controlName}"]`
             ) as HTMLElement | null;
             if (element) {
               element.focus();
             }
           }
-        },
+        }
       );
     } else {
       const firstInvalidControl = Object.keys(
-        this.resetPasswordForm.controls,
+        this.resetPasswordForm.controls
       ).find((controlName) => this.resetPasswordForm.get(controlName)?.invalid);
       if (firstInvalidControl) {
         const element = document.querySelector(
-          `[formControlName="${firstInvalidControl}"]`,
+          `[formControlName="${firstInvalidControl}"]`
         ) as HTMLElement | null;
         if (element) {
           element.focus();
