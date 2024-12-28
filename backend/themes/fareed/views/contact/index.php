@@ -9,7 +9,7 @@ use app\components\CustomLinkPager;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Members';
+$this->title = 'Contacts';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
  

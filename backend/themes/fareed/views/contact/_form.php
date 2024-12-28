@@ -13,7 +13,7 @@ use yii\widgets\ActiveForm;
     <div class="col-xxl">
         <div class="card mb-4">
             <div class="card-header d-flex align-items-center justify-content-between">
-                <h5 class="mb-0">Member Form</h5>
+                <h5 class="mb-0">Contact Form</h5>
                 <small class="text-muted float-end">Please fill out the form below</small>
             </div>
             <div class="card-body">

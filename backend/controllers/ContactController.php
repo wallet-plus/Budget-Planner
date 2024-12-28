@@ -11,7 +11,7 @@ use yii\filters\VerbFilter;
 /**
  * MemberController implements the CRUD actions for Member model.
  */
-class MemberController extends Controller
+class ContactController extends Controller
 { 
     public function __construct($id, $module, $config = [])
     {
