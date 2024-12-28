@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthlayoutRoutingModule } from './authlayout/authlayout-routing.module';
 import { AppinnerlayoutRoutingModule } from './appinnerlayout/appinner-routing.module';
 import { ApphomelayoutRoutingModule } from './apphomelayout/apphome-routing.module';
+import { SharedModule } from './shared/shared.module';
 
 const routes: Routes = [
   {

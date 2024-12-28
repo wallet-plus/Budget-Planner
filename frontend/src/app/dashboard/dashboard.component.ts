@@ -105,6 +105,7 @@ export class DashboardComponent {
         endDate: this.selectedRangeCalendarCenter.endDate.format('YYYY-MM-DD'), //  "2024-11-01"
       };
       this.expenseData = [];
+      this.statisticsData = [];
       this.bugetService.statistics(request).subscribe(
         (response) => {
           this.categoryImagePath = response.categoryImagePath;

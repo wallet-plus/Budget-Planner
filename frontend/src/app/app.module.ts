@@ -39,7 +39,6 @@ import { ExpensesComponent } from './apphomelayout/expenses/expenses.component';
 import { IncomeComponent } from './apphomelayout/income/income.component';
 import { SavingsComponent } from './apphomelayout/savings/savings.component';
 import { SharedModule } from './shared/shared.module';
-import { CurrencyPipe } from './pipes/currency.pipe';
 import { WalletInterceptor } from './services/wallet.interceptor';
 import { TransactionComponent } from './appinnerlayout/transaction/transaction.component';
 import { CardComponent } from './appinnerlayout/card/card.component';
@@ -90,7 +89,6 @@ import { MembersSortPipe } from './apphomelayout/members/member-sort-pipe.pipe';
     ExpensesComponent,
     IncomeComponent,
     SavingsComponent,
-    CurrencyPipe,
     TransactionComponent,
     CardComponent,
     CardsComponent,

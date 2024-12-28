@@ -18,6 +18,7 @@ import { ZakatCalulatorComponent } from './zakat-calculator/zakat-calculator.com
 import { AddCategoryComponent } from './add-category/add-category.component';
 import { AddEventComponent } from './add-event/add-event.component';
 import { AddMemberComponent } from './add-member/add-member.component';
+import { SharedModule } from '../shared/shared.module';
 
 const routes: Routes = [
   {
@@ -120,7 +121,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes), TranslateModule.forChild()],
+  imports: [RouterModule.forRoot(routes), TranslateModule.forChild(), SharedModule],
   exports: [RouterModule],
 })
 export class AppinnerlayoutRoutingModule {}

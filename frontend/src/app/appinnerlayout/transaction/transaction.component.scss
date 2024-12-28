@@ -1,0 +1,10 @@
+.suggestion-item {
+    cursor: pointer;
+    color: #007bff; /* Blue color for clickable text */
+    margin-right: 5px; /* Space between items */
+  }
+  
+  .suggestion-item:hover {
+    text-decoration: underline;
+  }
+  

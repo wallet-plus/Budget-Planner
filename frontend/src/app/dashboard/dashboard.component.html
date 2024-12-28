@@ -120,7 +120,7 @@
 
             <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                 <div class="card mb-4">
-                    <div class="card-body px-2" *ngIf="!!statisticsData?.expenseTotal">
+                    <div class="card-body px-2" *ngIf="!!statisticsData?.categories">
                         <app-pie-chart [chartData]="statisticsData?.categories"></app-pie-chart>
                     </div>
                 </div>

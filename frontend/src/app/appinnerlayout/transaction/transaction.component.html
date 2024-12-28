@@ -13,24 +13,20 @@
     <form [formGroup]="expenseForm">
         <div class="form-group form-floating mb-1"
             [class.is-valid]="expenseForm.controls['name'].valid && (expenseForm.controls['name'].dirty || expenseForm.controls['name'].touched)"
-            [class.is-invalid]="expenseForm.controls['name'].invalid && (expenseForm.controls['name'].dirty || expenseForm.controls['name'].touched)">
-            <!-- (input)="getSuggestions($event.target)" -->
+            [class.is-invalid]="expenseForm.controls['name'].invalid && (expenseForm.controls['name'].dirty || expenseForm.controls['name'].touched)"  (input)="getSuggestions($event)" >
             <input type="text" class="form-control " id="name" placeholder="{{ type | uppercase | translate }} "
                 formControlName="name">
             <label class="form-control-label" for="name"> {{ type | uppercase | translate }} {{'NAME' | translate}}</label>
         </div>
-
-        <div (click)="onOptionSelect(option)" *ngFor="let option of expenseSuggestion"
-            class="card shadow-sm mb-4 alert-danger">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-auto"> </div>
-                    <div class="col px-0">
-                        <p class="text-muted small">{{option.expense_name}}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div>
+            <span 
+              *ngFor="let option of expenseSuggestion; let last = last" 
+              (click)="onOptionSelect(option)" 
+              class="suggestion-item"
+            >
+              {{ option.expense_name }}<span *ngIf="!last">, </span>
+            </span>
+          </div>
 
 
         <div class="form-floating mb-3"
