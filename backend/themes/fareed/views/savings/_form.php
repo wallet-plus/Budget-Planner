@@ -114,7 +114,7 @@ use app\models\Category
                 <div class="row justify-content-end">
                     <div class="col-sm-10">
                         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-primary']) ?>
-                        <?= Html::a('Cancel', ['/expense/index'], ['class' => 'btn btn-primary']) ?>
+                        <?= Html::a('Cancel', ['/savings/index'], ['class' => 'btn btn-primary']) ?>
                     </div>
                 </div>
                 <<?php ActiveForm::end(); ?>

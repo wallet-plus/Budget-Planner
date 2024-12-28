@@ -53,7 +53,7 @@ class EventsController extends Controller
     {
         $searchModel = new EventSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
-
+        $dataProvider->query->orderBy(['id_event' => SORT_DESC]);
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

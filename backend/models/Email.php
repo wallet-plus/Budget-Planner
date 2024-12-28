@@ -64,4 +64,17 @@ class Email extends \yii\db\ActiveRecord
             'updated_at' => 'Updated At',
         ];
     }
+
+
+    public function beforeSave($insert) {
+
+        if ($this->isNewRecord) {
+            $this->created_by = Yii::$app->user->id;
+            $this->date_created = new \yii\db\Expression('NOW()');
+        } else {
+            $this->updated_by = Yii::$app->user->id;
+            $this->date_updated = new \yii\db\Expression('NOW()');
+        }
+        return parent::beforeSave($insert);
+    }
 }

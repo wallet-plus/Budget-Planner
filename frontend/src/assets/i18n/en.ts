@@ -18,6 +18,7 @@ export const locale = {
     CHANGE_PASSWORD: 'Change Password',
     PASSWORD: 'Password',
     CONFIRM_PASSWORD: 'Confirm Password',
+    PASSWORDS_DO_NOT_MATCH : 'Passwords Not Matching',
     NOTIFICATION_RECEIVE: 'Notification Receive',
     EMAIL_NOTIFICATION: 'Email Notification',
     EMAIL_NOTIFICATION_TEXT: 'Default all notification will be sent',

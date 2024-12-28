@@ -17,20 +17,24 @@
 
     <div class="col-10 col-md-6 col-lg-5 col-xl-3 mx-auto align-self-center text-center py-4">
         
+        <div *ngIf="statusMessage" class="alert alert-success" role="alert">
+            {{ statusMessage }}
+        </div>
+        
         <h1 class="mb-4 text-color-theme">{{'SIGN_IN' | translate}}</h1>
         <form  [formGroup]="loginForm" class="was-validated needs-validation">
 
             
             <div class="form-group form-floating mb-3" [class.is-valid]="loginForm.controls['phone'].valid && (loginForm.controls['phone'].dirty || loginForm.controls['phone'].touched)"
             [class.is-invalid]="loginForm.controls['phone'].invalid && (loginForm.controls['phone'].dirty || loginForm.controls['phone'].touched)">
-                <input type="text" class="form-control" value="maxartkiller" id="phone" placeholder="phone" formControlName="phone">
+                <input type="text" class="form-control" id="phone" placeholder="phone" formControlName="phone" maxlength="10">
                 <label class="form-control-label" for="phone">{{'PHONE' | translate}}</label>
             </div>
 
             <div class="form-group form-floating mb-3" [class.is-valid]="loginForm.controls['password'].valid && (loginForm.controls['password'].dirty || loginForm.controls['password'].touched)"
             [class.is-invalid]="loginForm.controls['password'].invalid && (loginForm.controls['password'].dirty || loginForm.controls['password'].touched)">
             <input type="password" [attr.type]="showPassword ? 'text' : 'password'"
-            class="form-control " id="password" placeholder="Password" formControlName="password">
+            class="form-control " id="password" placeholder="Password" formControlName="password" maxlength="50">
                 <label class="form-control-label" for="password">{{'PASSWORD' | translate}}</label>
                 <button type="button" class="text-danger tooltip-btn" data-bs-toggle="tooltip"
                     data-bs-placement="left" title="Enter valid Password" id="passworderror">

@@ -79,14 +79,7 @@ class SiteController extends Controller
      */
     public function actionDashboard()
     {
-
-
-        
-        // $this->layout = '@app/views/admin/applayout';
-        // function x_week_range($date) {
-            $date = '2024/05/20';// date("Y/m/d");
-            
-        // }
+        $date = date("Y/m/d");
 
         /** Month wise */
         $timestamp    = strtotime($date);
@@ -711,16 +704,6 @@ class SiteController extends Controller
         return parent::beforeAction($action);
     }
 
-    public function actionDownloadImage($filename)
-    {
-        $path = Yii::getAlias('@webroot') . '/expenses/' . $filename;
-        if (file_exists($path)) {
-            Yii::$app->response->sendFile($path);
-        } else {
-            throw new NotFoundHttpException("The file '{$filename}' does not exist.");
-        }
-    }
-
 
     /**
      * Personal Finance action.
@@ -769,5 +752,7 @@ class SiteController extends Controller
 
         return $this->render('pricing');
     }
+
+
 
 }

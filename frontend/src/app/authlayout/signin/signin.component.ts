@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
@@ -12,7 +12,7 @@ import { LocalStorageService } from 'src/app/services/local-storage.service';
 })
 export class SigninComponent implements OnInit {
   showPassword: boolean = false;
-
+  statusMessage : string | null = null;
   loginForm: FormGroup = this.fb.group({
     phone: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
     password: ['', [Validators.required, Validators.minLength(5)]],
@@ -24,9 +24,14 @@ export class SigninComponent implements OnInit {
     private router: Router,
     private localStorageService: LocalStorageService,
     private loaderService: LoaderService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
+    this.route.queryParamMap.subscribe(params => {
+      this.statusMessage = params.get('status');
+    });
+    
     // check if user loggedIn
     const userInfo = this.localStorageService.getItem('userInfo');
     if (userInfo) {
