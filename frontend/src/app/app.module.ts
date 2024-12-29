@@ -35,9 +35,6 @@ import { ContactusComponent } from './appinnerlayout/contactus/contactus.compone
 import { TermsandcoditionComponent } from './appinnerlayout/termsandcodition/termsandcodition.component';
 import { PagenotfoundComponent } from './appinnerlayout/pagenotfound/pagenotfound.component';
 import { AboutusComponent } from './appinnerlayout/aboutus/aboutus.component';
-import { ExpensesComponent } from './apphomelayout/expenses/expenses.component';
-import { IncomeComponent } from './apphomelayout/income/income.component';
-import { SavingsComponent } from './apphomelayout/savings/savings.component';
 import { SharedModule } from './shared/shared.module';
 import { WalletInterceptor } from './services/wallet.interceptor';
 import { TransactionComponent } from './appinnerlayout/transaction/transaction.component';
@@ -45,7 +42,6 @@ import { CardComponent } from './appinnerlayout/card/card.component';
 import { CardsComponent } from './apphomelayout/cards/cards.component';
 import { UsersComponent } from './apphomelayout/users/users.component';
 import { UserDetailsComponent } from './appinnerlayout/user-details/user-details.component';
-import { CategoriesComponent } from './apphomelayout/categories/categories.component';
 import { ZakatCalulatorComponent } from './appinnerlayout/zakat-calculator/zakat-calculator.component';
 import { AddCategoryComponent } from './appinnerlayout/add-category/add-category.component';
 import { AddEventComponent } from './appinnerlayout/add-event/add-event.component';
@@ -55,6 +51,7 @@ import { AddMemberComponent } from './appinnerlayout/add-member/add-member.compo
 import { NgxDaterangepickerBootstrapModule } from 'ngx-daterangepicker-bootstrap';
 import { MemberSearchPipe } from './apphomelayout/members/member-pipe.pipe';
 import { MembersSortPipe } from './apphomelayout/members/member-sort-pipe.pipe';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // FullCalendarModule.registerPlugins([
 //   // register FullCalendar plugins
@@ -86,15 +83,11 @@ import { MembersSortPipe } from './apphomelayout/members/member-sort-pipe.pipe';
     TermsandcoditionComponent,
     PagenotfoundComponent,
     AboutusComponent,
-    ExpensesComponent,
-    IncomeComponent,
-    SavingsComponent,
     TransactionComponent,
     CardComponent,
     CardsComponent,
     UsersComponent,
     UserDetailsComponent,
-    CategoriesComponent,
     ZakatCalulatorComponent,
     AddCategoryComponent,
     AddEventComponent,
@@ -121,6 +114,7 @@ import { MembersSortPipe } from './apphomelayout/members/member-sort-pipe.pipe';
     // PdfViewerModule
     TranslateModule.forRoot(),
     NgxDaterangepickerBootstrapModule.forRoot(),
+    BrowserAnimationsModule,
 
   ],
   providers: [

@@ -10,6 +10,14 @@ import * as dayjs from 'dayjs';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent {
+
+  @ViewChild('HeaderEl', { read: ElementRef, static: false })
+  headerView!: ElementRef;
+  @ViewChild('mainPage', { read: ElementRef, static: false })
+  mainPageView!: ElementRef;
+  @ViewChild('FooterEl', { read: ElementRef, static: false })
+  footerView!: ElementRef;
+  
   selectedRangeCalendarCenter: any;
 
   categoryImagePath!: string;
@@ -126,12 +134,7 @@ export class DashboardComponent {
   }
 
 
-  @ViewChild('HeaderEl', { read: ElementRef, static: false })
-  headerView!: ElementRef;
-  @ViewChild('mainPage', { read: ElementRef, static: false })
-  mainPageView!: ElementRef;
-  @ViewChild('FooterEl', { read: ElementRef, static: false })
-  footerView!: ElementRef;
+
 
   ngAfterViewInit() {
     this.renderer.setStyle(

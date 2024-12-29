@@ -6,7 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class CurrencyPipe implements PipeTransform {
   transform(amount: number, symbol: string = '₹'): string {
     if (Number.isNaN(amount)) {
-      return '';
+      return '0';  
     }
 
     const formatter = new Intl.NumberFormat('en-IN', {

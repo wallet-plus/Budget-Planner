@@ -7,6 +7,10 @@ import { SharedModule } from './shared/shared.module';
 
 const routes: Routes = [
   {
+    path: 'budget',
+    loadChildren: () => import('./budget/budget.module').then(m => m.BudgetModule)
+  },
+  {
     path: 'dashboard',
     loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule)
   },
