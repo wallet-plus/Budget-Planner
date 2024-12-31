@@ -9,6 +9,12 @@ import { environment } from 'src/environments/environment';
 export class CategoryService {
   constructor(private _httpClient: HttpClient) {}
 
+  categoryTypes(): Observable<any> {
+    return this._httpClient.post(
+      `${environment.apiUrl}http-category/category-types`,{}
+    );
+  }
+
   categoryList(type: string): Observable<any> {
     return this._httpClient.post(
       `${environment.apiUrl}http-category/category-list`,

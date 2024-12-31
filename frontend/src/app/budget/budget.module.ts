@@ -9,6 +9,7 @@ import { SavingsComponent } from './components/savings/savings.component';
 import { CategoriesComponent } from './components/categories/categories.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
+import { MaterialModule } from '../material.module';
 
 const routes: Routes = [
   {
@@ -50,7 +51,8 @@ const routes: Routes = [
     SharedModule,
     RouterModule.forChild(routes),
     TranslateModule.forChild(),
-    FormsModule
+    FormsModule,
+    MaterialModule
   ]
 })
 export class BudgetModule { }

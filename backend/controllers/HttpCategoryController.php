@@ -7,6 +7,7 @@ use app\models\ExpenseCategory;
 use yii\db\Query;
 use yii\web\UploadedFile;
 use app\models\Customer;
+use app\models\Type;
 use Intervention\Image\ImageManagerStatic as Image;
 
 class HttpCategoryController extends \yii\web\Controller
@@ -47,6 +48,37 @@ class HttpCategoryController extends \yii\web\Controller
         return $behaviors;
     }
 
+    public function actionCategoryTypes()
+    {
+        $headers = Yii::$app->request->headers;
+        if ($headers->has('Authorization')) {
+            $authorizationHeader = $headers->get('Authorization');
+            $token = str_replace('Bearer ', '', $authorizationHeader);
+            $user = Customer::find()->where(['authKey' => $token])->one();
+            if ($user) {
+ 
+
+
+                $types = Type::find();
+
+                $types = $types->orderBy(['id_type' => SORT_ASC])->all();
+                    
+                $response['list'] = $types;
+                $response['categoryImagePath'] = Yii::$app->params['categoryImagePath'];
+                $response['imagePath'] = Yii::$app->params['expenseImagePath']; ;
+
+                Yii::$app->response->statusCode = 200;
+                return \yii\helpers\Json::encode($response);
+            } else {
+                Yii::$app->response->statusCode = 401;
+                return \yii\helpers\Json::encode(['error' => 'UnAuthorized']);
+            }
+        } else {
+            Yii::$app->response->statusCode = 401;
+            return \yii\helpers\Json::encode(['error' => 'UnAuthorized']);
+        }
+    }
+
     public function actionCategoryList()
     {
         $headers = Yii::$app->request->headers;
@@ -57,7 +89,6 @@ class HttpCategoryController extends \yii\web\Controller
             if ($user) {
                 $rawBody = Yii::$app->request->rawBody;
                 $data = json_decode($rawBody, true);
-                $id_type = 2;
 
                 switch ($data['type']) {
                     case 'expense':
@@ -69,10 +100,17 @@ class HttpCategoryController extends \yii\web\Controller
                     case 'income':
                         $id_type = 3;
                         break;
+                    default: 
+                        $id_type = 0;
+                        break;
                 }
 
-                $categories = ExpenseCategory::find()
-                    ->where(['id_type' => $id_type]);
+                $categories = ExpenseCategory::find();
+
+                if ($id_type !== 0) {
+                    $categories->where(['id_type' => $id_type]);
+                }
+                
                 $categories->andWhere(['id_user' => 1]);
 
                 if ($user->id != 1) { // if any user crated categories
@@ -236,7 +274,7 @@ class HttpCategoryController extends \yii\web\Controller
 
     public function beforeAction($action)
     {
-        if (in_array($action->id, ['category', 'category-details', 'category-list', 'delete-category'])) {
+        if (in_array($action->id, ['category','category-types', 'category-details', 'category-list', 'delete-category'])) {
             $this->enableCsrfValidation = false;
         }
         return parent::beforeAction($action);

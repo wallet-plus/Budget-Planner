@@ -15,7 +15,7 @@ export class CategoriesComponent implements OnInit {
   categoryList: any;
   imagePath: string = '';
   categoryImagePath: string = '';
-
+  categoryTypesList :any = [];
   constructor(
     private router: Router,
     private categoryService: CategoryService,
@@ -25,15 +25,32 @@ export class CategoriesComponent implements OnInit {
   ngOnInit(): void {
     this.userInfo = this.localStorageService.getItem('userInfo');
     if (this.userInfo) {
-      this.categoryService.categoryList('0').subscribe(
-        (response) => {
-          // this.imagePath = response.imagePath;
-          this.categoryImagePath = response.categoryImagePath;
-          this.categoryList = response.list;
-        },
-        (error) => {},
-      );
+      this.getCategoryList();
+      this.getCategoryTypes();
     }
+  }
+
+  getCategoryTypes(){
+    this.categoryService.categoryTypes().subscribe(
+      (response) => {
+        // this.imagePath = response.imagePath;
+        this.categoryImagePath = response.categoryImagePath;
+        this.categoryTypesList = response.list;
+      },
+      (error) => {},
+    );
+  }
+
+
+  getCategoryList(){
+    this.categoryService.categoryList('0').subscribe(
+      (response) => {
+        // this.imagePath = response.imagePath;
+        this.categoryImagePath = response.categoryImagePath;
+        this.categoryList = response.list;
+      },
+      (error) => {},
+    );
   }
 
   openCategory(category: any) {
