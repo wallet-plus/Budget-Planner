@@ -399,9 +399,10 @@ class HttpCategoryController extends \yii\web\Controller
                     ->leftJoin('bt_budget_planner bp', 
                         'bp.category_id = c.id_category AND bp.user_id = :user_id AND YEAR(bp.created_at) = :year')
                     ->addParams([
-                        ':user_id' => $user->id, // Bind user_id only for budget_planner
-                        ':year' => $year // Bind the year
+                        ':user_id' => $user->id, 
+                        ':year' => $year
                     ])
+                    ->orderBy(['c.category_name' => SORT_ASC]) 
                     ->all();
     
                 return \yii\helpers\Json::encode([

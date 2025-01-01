@@ -197,13 +197,13 @@ export class TransactionComponent implements OnInit {
   navigateBack() {
     switch (this.type) {
       case 'expense':
-        this.router.navigateByUrl('/expenses');
+        this.router.navigateByUrl('/budget/expenses');
         break;
       case 'income':
-        this.router.navigateByUrl('/income');
+        this.router.navigateByUrl('/budget/income');
         break;
       case 'savings':
-        this.router.navigateByUrl('/savings');
+        this.router.navigateByUrl('/budget/savings');
         break;
       default:
         break;
