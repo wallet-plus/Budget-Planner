@@ -1,11 +1,18 @@
 <div class="row mb-3">
     <div class="col">
-        <h6 class="title">{{'BUDGET_PLANNER' | translate}}<br></h6>
+      <h6 class="title">{{ 'BUDGET_PLANNER' | translate }}<br></h6>
     </div>
     <div class="col-auto align-self-center">
-        <a [routerLink]="['/add-category']" class="small">{{'ADD' | translate}}</a>
+      <select 
+        [(ngModel)]="currentYear" 
+        class="form-select" 
+        aria-label="Select Year" 
+        (change)="getBudgetAllocations()">
+        <option *ngFor="let year of yearList" [value]="year">{{ year }}</option>
+      </select>
     </div>
-</div>
+  </div>
+  
 
 <form *ngIf="categoryList"  [formGroup]="categoryForm" >
     <div class="row mb-4">

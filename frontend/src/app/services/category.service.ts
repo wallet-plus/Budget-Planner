@@ -9,16 +9,16 @@ import { environment } from 'src/environments/environment';
 export class CategoryService {
   constructor(private _httpClient: HttpClient) {}
 
-  getBudgetAllocations(): Observable<any> {
+  getBudgetAllocations( year : number): Observable<any> {
     return this._httpClient.post(
       `${environment.apiUrl}http-category/get-budget-allocations`,
-      {},
+      {year},
     );
   }
   
 
   saveBudgetAllocations(budgetAllocations: any[]): Observable<any> {
-    const request = { budgetAllocations };
+    
     return this._httpClient.post(
       `${environment.apiUrl}http-category/budget-allocations`, budgetAllocations
     );

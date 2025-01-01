@@ -295,11 +295,19 @@ class HttpCategoryController extends \yii\web\Controller
                     foreach ($data as $allocation) {
                         $categoryId = $allocation['category_id'] ?? null;
                         $amount = $allocation['amount'] ?? 0;
+                        $year = $allocation['year'] ?? null;
+                        if (!$year) {
+                            Yii::$app->response->statusCode = 400;
+                            return \yii\helpers\Json::encode([
+                                'error' => 'Year is required.',
+                            ]);
+                        }
 
-                        // Check if the category already exists for this user
+                        // Check if the category already exists for this user and year
                         $existingPlanner = BudgetPlanner::findOne([
                             'user_id' => $user->id,
                             'category_id' => $categoryId,
+                            'year' => $year,
                         ]);
 
                         if ($existingPlanner) {
@@ -318,6 +326,7 @@ class HttpCategoryController extends \yii\web\Controller
                             $planner->user_id = $user->id;
                             $planner->category_id = $categoryId;
                             $planner->amount = $amount;
+                            $planner->year = $year; // Use the year from the API request
 
                             if (!$planner->save()) {
                                 Yii::$app->response->statusCode = 400;
@@ -350,16 +359,28 @@ class HttpCategoryController extends \yii\web\Controller
     }
 
 
+
     public function actionGetBudgetAllocations()
     {
         $headers = Yii::$app->request->headers;
-
+    
         if ($headers->has('Authorization')) {
             $authorizationHeader = $headers->get('Authorization');
             $token = str_replace('Bearer ', '', $authorizationHeader);
             $user = Customer::find()->where(['authKey' => $token])->one();
-
+    
             if ($user) {
+                $request = Yii::$app->request;
+                $data = json_decode($request->getRawBody(), true);
+                $year = $data['year']; 
+    
+                if (!$year || !preg_match('/^\d{4}$/', $year)) {
+                    return \yii\helpers\Json::encode([
+                        'success' => false,
+                        'error' => 'Invalid or missing year parameter',
+                    ]);
+                }
+    
                 $allocations = (new \yii\db\Query())
                     ->select([
                         'c.id_category',
@@ -375,10 +396,14 @@ class HttpCategoryController extends \yii\web\Controller
                         'bp.updated_at',
                     ])
                     ->from('bt_category c')
-                    ->leftJoin('bt_budget_planner bp', 'bp.category_id = c.id_category AND bp.user_id = :user_id')
-                    ->addParams([':user_id' => $user->id]) // Bind user_id only for budget_planner
+                    ->leftJoin('bt_budget_planner bp', 
+                        'bp.category_id = c.id_category AND bp.user_id = :user_id AND YEAR(bp.created_at) = :year')
+                    ->addParams([
+                        ':user_id' => $user->id, // Bind user_id only for budget_planner
+                        ':year' => $year // Bind the year
+                    ])
                     ->all();
-
+    
                 return \yii\helpers\Json::encode([
                     'success' => true,
                     'allocations' => $allocations,
@@ -392,6 +417,7 @@ class HttpCategoryController extends \yii\web\Controller
             return \yii\helpers\Json::encode(['error' => 'Unauthorized']);
         }
     }
+    
 
 
 
