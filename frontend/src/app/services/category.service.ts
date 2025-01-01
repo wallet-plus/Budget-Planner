@@ -9,6 +9,27 @@ import { environment } from 'src/environments/environment';
 export class CategoryService {
   constructor(private _httpClient: HttpClient) {}
 
+  getBudgetAllocations( year : number): Observable<any> {
+    return this._httpClient.post(
+      `${environment.apiUrl}http-category/get-budget-allocations`,
+      {year},
+    );
+  }
+  
+
+  saveBudgetAllocations(budgetAllocations: any[]): Observable<any> {
+    
+    return this._httpClient.post(
+      `${environment.apiUrl}http-category/budget-allocations`, budgetAllocations
+    );
+  }
+
+  categoryTypes(): Observable<any> {
+    return this._httpClient.post(
+      `${environment.apiUrl}http-category/category-types`,{}
+    );
+  }
+
   categoryList(type: string): Observable<any> {
     return this._httpClient.post(
       `${environment.apiUrl}http-category/category-list`,
@@ -17,6 +38,7 @@ export class CategoryService {
       },
     );
   }
+
   getCategoryDetails(id: number): Observable<any> {
     const request = { id };
     return this._httpClient.post(

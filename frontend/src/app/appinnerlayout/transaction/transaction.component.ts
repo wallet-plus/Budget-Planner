@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { BudgetService } from 'src/app/services/budget.service';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 import Swal from 'sweetalert2';
-import { forkJoin } from 'rxjs';
+import { debounceTime, distinctUntilChanged, forkJoin, Subject } from 'rxjs';
 import { CategoryService } from 'src/app/services/category.service';
 import { EventService } from 'src/app/services/event.service';
 
@@ -28,6 +28,8 @@ export class TransactionComponent implements OnInit {
   eventUsers!: any[];
   categoryImagePath: string = '';
   members: any = [];
+  private searchSubject = new Subject<string>();
+
   constructor(
     private formBuilder: FormBuilder,
     private localStorageService: LocalStorageService,
@@ -36,9 +38,17 @@ export class TransactionComponent implements OnInit {
     private categoryService: CategoryService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-  ) {}
+    private cdr: ChangeDetectorRef
+  ) {
+
+    this.setupDebouncedSearch();
+
+  }
 
   ngOnInit(): void {
+
+    
+
     const today = new Date();
     const year = today.getFullYear();
     const month = String(today.getMonth() + 1).padStart(2, '0');
@@ -74,6 +84,7 @@ export class TransactionComponent implements OnInit {
     // if edit mode get the details
     this.getDetails();
   }
+
   getDetails() {
     if (this.currentId) {
       forkJoin({
@@ -247,16 +258,41 @@ export class TransactionComponent implements OnInit {
     });
   }
 
-  getSuggestions(param: any) {
-    this.bugetService.getSuggestion(param.value).subscribe(
-      (response) => {
-        this.expenseSuggestion = response;
-        // this.categoryList = response;
-      },
-      (error) => {},
-    );
-  }
 
+
+  getSuggestions(event: any) {
+    this.expenseSuggestion =[];
+    const inputElement = event.target as HTMLInputElement;
+    const inputValue = inputElement.value.trim(); // Get value from the input
+    this.searchSubject.next(inputValue); // Push to subject to trigger debounce
+  }
+  setupDebouncedSearch() {
+    
+    this.searchSubject
+      .pipe(
+        debounceTime(300), // Debounce to wait 300ms after each keystroke
+        distinctUntilChanged() // Only proceed if input value has changed
+      )
+      .subscribe((inputValue) => {
+        if (inputValue.length > 1) {
+          // If the input length is more than 2, call the API
+          this.bugetService.getSuggestion(inputValue).subscribe(
+            (response) => {
+              this.expenseSuggestion = response;
+              this.cdr.detectChanges(); 
+
+              if (this.expenseSuggestion && this.expenseSuggestion.length > 0) {
+                // this.onOptionSelect(this.expenseSuggestion[0]);
+              }
+            },
+            (error) => {
+              console.error('Error fetching suggestions:', error);
+            }
+          );
+        } 
+      });
+  }
+  
   onOptionSelect(option: any) {
     this.expenseForm.patchValue({
       name: option.expense_name,

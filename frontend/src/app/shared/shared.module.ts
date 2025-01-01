@@ -9,6 +9,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { VerticalBarChartComponent } from './vertical-bar-chart/vertical-bar-chart.component';
 import { PieChartComponent } from './pie-chart/pie-chart.component';
 import { HighchartsChartModule } from 'highcharts-angular';
+import { CurrencyPipe } from './pipes/currency.pipe';
+import { FilterByCategoryTypePipe } from './pipes/filter-by-category-type.pipe';
 
 @NgModule({
   declarations: [LoaderComponent,
@@ -16,7 +18,9 @@ import { HighchartsChartModule } from 'highcharts-angular';
     HeadermenuComponent,
     SidebarComponent,
     VerticalBarChartComponent,
-    PieChartComponent
+    PieChartComponent,
+    CurrencyPipe,
+    FilterByCategoryTypePipe
   ],
   imports: [CommonModule, RouterModule,
     TranslateModule.forChild(),
@@ -27,7 +31,9 @@ import { HighchartsChartModule } from 'highcharts-angular';
     HeadermenuComponent,
     SidebarComponent,
     VerticalBarChartComponent,
-    PieChartComponent
+    PieChartComponent,
+    CurrencyPipe,
+    FilterByCategoryTypePipe
   ],
 
 })

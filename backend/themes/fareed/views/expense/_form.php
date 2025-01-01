@@ -113,7 +113,7 @@ use app\models\Category;
                                     'id' => 'uploadedAvatar',
                                     'alt' => 'user-avatar'
                                 ]),
-                                ['site/download-image', 'filename' => $model->image]
+                                ['expense/download-image', 'filename' => $model->image]
                             ) ?>
                         <?php } ?>
 

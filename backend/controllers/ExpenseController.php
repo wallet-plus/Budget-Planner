@@ -219,4 +219,14 @@ class ExpenseController extends Controller
 
         return parent::beforeAction($action);
     }
+
+    public function actionDownloadImage($filename)
+    {
+        $path = Yii::getAlias('@webroot') . '/expenses/' . $filename;
+        if (file_exists($path)) {
+            Yii::$app->response->sendFile($path);
+        } else {
+            throw new \yii\web\NotFoundHttpException("The file '{$filename}' does not exist.");
+        }
+    }
 }

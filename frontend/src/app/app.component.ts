@@ -8,6 +8,8 @@ import { locale as taLang } from '../assets/i18n/ta';
 import { locale as mrLang } from '../assets/i18n/mr';
 import { locale as bnLang } from '../assets/i18n/bn';
 import { locale as knLang } from '../assets/i18n/kn';
+import { NavigationEnd, Router } from '@angular/router';
+import { LocalStorageService } from './services/local-storage.service';
 
 @Component({
   selector: 'app-root',
@@ -22,7 +24,10 @@ export class AppComponent implements OnInit, AfterViewInit {
     private cdr: ChangeDetectorRef,
     private translationService: TranslationService,
     private renderer: Renderer2,
-    private el: ElementRef
+    private el: ElementRef,
+    private router: Router,
+    private localStorageService: LocalStorageService,
+    
   ) {
     this.translationService.loadTranslations(
       enLang,
@@ -36,9 +41,22 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+
+    /* Load the Last session Screen */
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.localStorageService.setItem('currentURL', event.urlAfterRedirects);
+      }
+    });
+    const savedURL = this.localStorageService.getItem('currentURL');
+    if (savedURL) {
+      this.router.navigateByUrl(savedURL);
+    }
+
+
     // Set language from localStorage if available
-    if (localStorage.getItem('language')) {
-      this.translationService.setLanguage(localStorage.getItem('language'));
+    if (this.localStorageService.getItem('language')) {
+      this.translationService.setLanguage(this.localStorageService.getItem('language'));
     }
 
     // Listen for loading state changes

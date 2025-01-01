@@ -105,6 +105,16 @@ AppAsset::register($this);
 
     <?php } ?>
 
+    <li class="menu-header small text-uppercase"><span class="menu-header-text">Budget </span></li>
+
+    <li class="menu-item">
+      <?php echo Html::a(
+        '<i class="menu-icon tf-icons bx bx-pie-chart-alt "></i> <div data-i18n="Contacts">Contacts</div>',
+        ['/contact/index'],
+        ['class' => 'menu-link', 'encode' => false]
+      ); ?>
+    </li>
+    
     <?php if (Yii::$app->user->identity && Yii::$app->user->identity->id_customer_type == 1) { ?>
 
       <li class="menu-header small text-uppercase"><span class="menu-header-text">Admin </span></li>

@@ -109,5 +109,6 @@ export const locale = {
     FIRST_NAME: 'First Name',
     LAST_NAME: 'Last Name',
     PHONE_NUMBER: 'Phone Number',
+    BUDGET_PLANNER : 'Budget Planner'
   },
 };

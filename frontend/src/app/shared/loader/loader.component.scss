@@ -1,11 +1,18 @@
+/* Ensure the loader covers the entire viewport and has a transparent background */
 .page-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100vh; /* Set the height to the full viewport height */
-  background-color: #f0f0f0; /* Set your desired background color */
+  background-color: transparent; /* Set background to transparent */
+  position: fixed; /* Make it cover the entire screen */
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999; /* Ensure it's above app layout but below any other components like modals */
 }
 
+/* Center the spinner and ensure it has the proper styles */
 .progress-spinner {
   display: flex;
   align-items: center;
@@ -15,8 +22,10 @@
   background-color: transparent; /* Transparent background */
   border-radius: 50%;
   position: relative;
+  z-index: 1000; /* Ensure the spinner appears above the background */
 }
 
+/* Circle with spinning animation */
 .circle {
   width: 80px;
   height: 80px;
@@ -26,6 +35,7 @@
   animation: spin 1s linear infinite;
 }
 
+/* Spin animation */
 @keyframes spin {
   0% {
     transform: rotate(0deg);
