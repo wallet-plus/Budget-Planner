@@ -7,6 +7,7 @@ use app\models\ExpenseCategory;
 use yii\db\Query;
 use yii\web\UploadedFile;
 use app\models\Customer;
+use app\models\BudgetPlanner;
 use app\models\Type;
 use Intervention\Image\ImageManagerStatic as Image;
 
@@ -56,16 +57,16 @@ class HttpCategoryController extends \yii\web\Controller
             $token = str_replace('Bearer ', '', $authorizationHeader);
             $user = Customer::find()->where(['authKey' => $token])->one();
             if ($user) {
- 
+
 
 
                 $types = Type::find();
 
                 $types = $types->orderBy(['id_type' => SORT_ASC])->all();
-                    
+
                 $response['list'] = $types;
                 $response['categoryImagePath'] = Yii::$app->params['categoryImagePath'];
-                $response['imagePath'] = Yii::$app->params['expenseImagePath']; ;
+                $response['imagePath'] = Yii::$app->params['expenseImagePath'];;
 
                 Yii::$app->response->statusCode = 200;
                 return \yii\helpers\Json::encode($response);
@@ -100,7 +101,7 @@ class HttpCategoryController extends \yii\web\Controller
                     case 'income':
                         $id_type = 3;
                         break;
-                    default: 
+                    default:
                         $id_type = 0;
                         break;
                 }
@@ -110,7 +111,7 @@ class HttpCategoryController extends \yii\web\Controller
                 if ($id_type !== 0) {
                     $categories->where(['id_type' => $id_type]);
                 }
-                
+
                 $categories->andWhere(['id_user' => 1]);
 
                 if ($user->id != 1) { // if any user crated categories
@@ -118,10 +119,10 @@ class HttpCategoryController extends \yii\web\Controller
                 }
 
                 $categories = $categories->orderBy(['id_user' => SORT_DESC, 'category_name' => SORT_ASC])->all();
-                    
+
                 $response['list'] = $categories;
                 $response['categoryImagePath'] = Yii::$app->params['categoryImagePath'];
-                $response['imagePath'] = Yii::$app->params['expenseImagePath']; ;
+                $response['imagePath'] = Yii::$app->params['expenseImagePath'];;
 
                 Yii::$app->response->statusCode = 200;
                 return \yii\helpers\Json::encode($response);
@@ -135,7 +136,8 @@ class HttpCategoryController extends \yii\web\Controller
         }
     }
 
-    public function actionCategoryDetails(){
+    public function actionCategoryDetails()
+    {
         $headers = Yii::$app->request->headers;
         if ($headers->has('Authorization')) {
             $authorizationHeader = $headers->get('Authorization');
@@ -166,7 +168,8 @@ class HttpCategoryController extends \yii\web\Controller
         }
     }
 
-    public function actionDeleteCategory(){
+    public function actionDeleteCategory()
+    {
         $headers = Yii::$app->request->headers;
         if ($headers->has('Authorization')) {
             $authorizationHeader = $headers->get('Authorization');
@@ -203,7 +206,8 @@ class HttpCategoryController extends \yii\web\Controller
 
 
 
-    public function actionCategory(){
+    public function actionCategory()
+    {
         $headers = Yii::$app->request->headers;
         if ($headers->has('Authorization')) {
             $authorizationHeader = $headers->get('Authorization');
@@ -272,9 +276,128 @@ class HttpCategoryController extends \yii\web\Controller
         }
     }
 
+
+
+    public function actionBudgetAllocations()
+    {
+        $headers = Yii::$app->request->headers;
+
+        if ($headers->has('Authorization')) {
+            $authorizationHeader = $headers->get('Authorization');
+            $token = str_replace('Bearer ', '', $authorizationHeader);
+            $user = Customer::find()->where(['authKey' => $token])->one();
+
+            if ($user) {
+                $request = Yii::$app->request;
+                $data = json_decode($request->getRawBody(), true);
+
+                if (!empty($data) && is_array($data)) {
+                    foreach ($data as $allocation) {
+                        $categoryId = $allocation['category_id'] ?? null;
+                        $amount = $allocation['amount'] ?? 0;
+
+                        // Check if the category already exists for this user
+                        $existingPlanner = BudgetPlanner::findOne([
+                            'user_id' => $user->id,
+                            'category_id' => $categoryId,
+                        ]);
+
+                        if ($existingPlanner) {
+                            // Update the existing record
+                            $existingPlanner->amount = $amount;
+                            if (!$existingPlanner->save()) {
+                                Yii::$app->response->statusCode = 400;
+                                return \yii\helpers\Json::encode([
+                                    'error' => 'Failed to update budget allocation.',
+                                    'details' => $existingPlanner->getErrors(),
+                                ]);
+                            }
+                        } else {
+                            // Create a new record
+                            $planner = new BudgetPlanner();
+                            $planner->user_id = $user->id;
+                            $planner->category_id = $categoryId;
+                            $planner->amount = $amount;
+
+                            if (!$planner->save()) {
+                                Yii::$app->response->statusCode = 400;
+                                return \yii\helpers\Json::encode([
+                                    'error' => 'Failed to save budget allocation.',
+                                    'details' => $planner->getErrors(),
+                                ]);
+                            }
+                        }
+                    }
+
+                    return \yii\helpers\Json::encode([
+                        'success' => true,
+                        'message' => 'Budget allocations saved successfully.',
+                    ]);
+                } else {
+                    Yii::$app->response->statusCode = 400;
+                    return \yii\helpers\Json::encode([
+                        'error' => 'Invalid or missing budgetAllocations data.',
+                    ]);
+                }
+            } else {
+                Yii::$app->response->statusCode = 401;
+                return \yii\helpers\Json::encode(['error' => 'UnAuthorized']);
+            }
+        } else {
+            Yii::$app->response->statusCode = 401;
+            return \yii\helpers\Json::encode(['error' => 'UnAuthorized']);
+        }
+    }
+
+
+    public function actionGetBudgetAllocations()
+    {
+        $headers = Yii::$app->request->headers;
+
+        if ($headers->has('Authorization')) {
+            $authorizationHeader = $headers->get('Authorization');
+            $token = str_replace('Bearer ', '', $authorizationHeader);
+            $user = Customer::find()->where(['authKey' => $token])->one();
+
+            if ($user) {
+                $allocations = (new \yii\db\Query())
+                    ->select([
+                        'c.id_category',
+                        'c.category_name',
+                        'c.category_description',
+                        'c.category_image',
+                        'c.id_type',
+                        'c.status',
+                        'bp.id_planner',
+                        'bp.user_id',
+                        'bp.amount',
+                        'bp.created_at',
+                        'bp.updated_at',
+                    ])
+                    ->from('bt_category c')
+                    ->leftJoin('bt_budget_planner bp', 'bp.category_id = c.id_category AND bp.user_id = :user_id')
+                    ->addParams([':user_id' => $user->id]) // Bind user_id only for budget_planner
+                    ->all();
+
+                return \yii\helpers\Json::encode([
+                    'success' => true,
+                    'allocations' => $allocations,
+                ]);
+            } else {
+                Yii::$app->response->statusCode = 401;
+                return \yii\helpers\Json::encode(['error' => 'Unauthorized']);
+            }
+        } else {
+            Yii::$app->response->statusCode = 401;
+            return \yii\helpers\Json::encode(['error' => 'Unauthorized']);
+        }
+    }
+
+
+
     public function beforeAction($action)
     {
-        if (in_array($action->id, ['category','category-types', 'category-details', 'category-list', 'delete-category'])) {
+        if (in_array($action->id, ['category', 'get-budget-allocations', 'budget-allocations', 'category-types', 'category-details', 'category-list', 'delete-category'])) {
             $this->enableCsrfValidation = false;
         }
         return parent::beforeAction($action);

@@ -15,6 +15,10 @@ const routes: Routes = [
     loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule)
   },
   {
+    path: 'budget-planner',
+    loadChildren: () => import('./budget-planner/budget-planner.module').then(m => m.BudgetPlannerModule)
+  },
+  {
     path: '**',
     redirectTo: '/pagenotfound',
   },

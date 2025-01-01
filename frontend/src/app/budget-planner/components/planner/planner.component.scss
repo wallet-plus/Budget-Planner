@@ -1,0 +1,9 @@
+.responsive-input {
+    width: 120px; /* Default for mobile */
+  }
+  
+  @media (min-width: 768px) {
+    .responsive-input {
+      width: 350px; /* Adjusted for desktop resolutions */
+    }
+  }
