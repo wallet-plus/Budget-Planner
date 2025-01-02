@@ -1,15 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-// import { SwiperModule } from 'swiper/angular';
-// import { ChartsModule } from 'ng2-charts';
-// import { NgCircleProgressModule } from 'ng-circle-progress';
-// import { NouisliderModule } from 'ng2-nouislider';
-// import { FullCalendarModule } from '@fullcalendar/angular'; // must go before plugins
-// import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin!
-// import { Daterangepicker } from 'ng2-daterangepicker';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-// import { ImageCropperModule } from 'ngx-image-cropper';
 import { TranslateModule } from '@ngx-translate/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -53,11 +45,6 @@ import { MemberSearchPipe } from './apphomelayout/members/member-pipe.pipe';
 import { MembersSortPipe } from './apphomelayout/members/member-sort-pipe.pipe';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-// FullCalendarModule.registerPlugins([
-//   // register FullCalendar plugins
-//   dayGridPlugin,
-// ]);
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -100,18 +87,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    // SwiperModule,
-    // ChartsModule,
-    // NgCircleProgressModule.forRoot(),
-    // NouisliderModule,
-    // FullCalendarModule,
-    // Daterangepicker,
+
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
     SharedModule,
-    // ImageCropperModule,
-    // PdfViewerModule
+
     TranslateModule.forRoot(),
     NgxDaterangepickerBootstrapModule.forRoot(),
     BrowserAnimationsModule,
