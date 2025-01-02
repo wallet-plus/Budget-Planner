@@ -16,13 +16,17 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '18.13.0'  # Specify Node.js version 18.13.0
+        node-version: '18'  # Specify Node.js version 18
 
     - name: Install Dependencies
-      run: npm install
+      run: |
+        cd frontend  # Change to the frontend directory where package.json is located
+        npm install  # Install the dependencies
 
     - name: Build Angular App
-      run: npm run build --prod  # Build the Angular app
+      run: |
+        cd frontend  # Change to the frontend directory
+        npm run build --prod  # Build the Angular app
 
     - name: Deploy to FTP Server
       uses: SamKirkland/FTP-Deploy-Action@4.3.0
@@ -30,5 +34,5 @@ jobs:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        local-dir: ./frontend/dist  # Path to your Angular build output
-        server-dir: /public_html/walletplus.in/secure/  # Remote server directory
+        local-dir: ./frontend/dist  # Path to the 'dist' folder
+        server-dir: /public_html/walletplus.in/secure/  # Path on the remote server
